@@ -1,3 +1,11 @@
 <resources>
-    <string name="app_name">Time_Waiting_Counter</string>
+    <string name="app_name">Time Waiting Counter</string>
+    <string name="title">Speed Test</string>
+    <string name="timeMove">Tempo in Movimento</string>
+    <string name="timeStop">Tempo Fermo</string>
+    <string name="startChronometer">Avvia</string>
+    <string name="stopChronometer">Stop</string>
+    <string name="timerChronometerMove">0 s</string>
+    <string name="timerChronometerStop">5 s</string>
+    <string name="reset">Reset</string>
 </resources>
