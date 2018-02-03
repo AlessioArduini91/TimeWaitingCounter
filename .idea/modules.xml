@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Time_Waiting_Counter.iml" filepath="$PROJECT_DIR$/Time_Waiting_Counter.iml" />
+      <module fileurl="file://$PROJECT_DIR$/TimeWaitingCounter.iml" filepath="$PROJECT_DIR$/TimeWaitingCounter.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
