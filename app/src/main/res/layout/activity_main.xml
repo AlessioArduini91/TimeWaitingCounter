@@ -19,7 +19,9 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="30dp"
-            android:text="@string/startChronometer"/>
+            android:background="@color/customActionBarColor"
+            android:text="@string/startChronometer"
+            android:textColor="@android:color/white" />
 
          <!--android:background="@color/green"-->
 
@@ -103,38 +105,26 @@
             android:id="@+id/resetChronometer"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/history"
             android:layout_below="@+id/buttonsStop"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp"
-            android:text="@string/reset" />
+            android:background="@color/customActionBarColor"
+            android:text="@string/reset"
+            android:textColor="@android:color/white" />
 
-
-        <TextView
-            android:id="@+id/speedometer"
-            android:layout_width="fill_parent"
-            android:layout_height="45dp"
-            android:layout_margin="0dp"
-            android:layout_below="@+id/resetChronometer"
-            android:gravity="center"
-            android:padding="0dp"
-            android:text="@string/speedometer"
-            android:textColor="#000"
-            />
 
         <Button
             android:id="@+id/history"
-            android:layout_margin="0dp"
-            android:layout_below="@+id/speedometer"
-            android:gravity="center"
-            android:padding="0dp"
-            android:text="@string/history"
-            android:textColor="#000"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/resetChronometer"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="50dp"
+            android:background="@color/customActionBarColor"
+            android:gravity="center"
+            android:padding="0dp"
 
-            />
+            android:text="@string/history"
+            android:textColor="#ffffff" />
 
     </RelativeLayout>
 
