@@ -7,3 +7,7 @@
 /build
 /captures
 .externalNativeBuild
+app/src/main/java/tacchella/arduini/com/time_waiting_counter/MainActivity_BACKUP_4502.java
+app/src/main/java/tacchella/arduini/com/time_waiting_counter/MainActivity_BASE_4502.java
+app/src/main/java/tacchella/arduini/com/time_waiting_counter/MainActivity_LOCAL_4502.java
+app/src/main/java/tacchella/arduini/com/time_waiting_counter/MainActivity_REMOTE_4502.java
