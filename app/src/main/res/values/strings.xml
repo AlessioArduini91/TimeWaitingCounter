@@ -10,5 +10,7 @@
     <string name="reset">Reset (per debug)</string>
     <string name="speedometer">50 km/h</string>
     <string name="history">Storico</string>
-
+    <string name="speed_unit_of_measure">Km/h</string>
+    <string name="access_fine_location_granted">Permission granted for location</string>
+    <string name="access_fine_location_denied">Permission denied for location</string>
 </resources>
