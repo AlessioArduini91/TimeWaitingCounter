@@ -7,5 +7,8 @@
     <string name="stopChronometer">Stop</string>
     <string name="timerChronometerMove">0 s</string>
     <string name="timerChronometerStop">5 s</string>
-    <string name="reset">Reset</string>
+    <string name="reset">Reset (per debug)</string>
+    <string name="speedometer">50 km/h</string>
+    <string name="history">Storico</string>
+
 </resources>

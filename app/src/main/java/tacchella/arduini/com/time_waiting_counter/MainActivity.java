@@ -11,52 +11,41 @@ public class MainActivity extends AppCompatActivity {
 
     Chronometer timerChronometerMove, timerChronometerStop;
     Button startChronometer, resetChronometer;
+
+    //boolean usato per scambiare tra pulsante avvio e pulsante stop
     boolean switchStartButton=true;
+    //long usato per far si che dopo la pausa il pulsante ritorni a contare dal punto in cui si era fermato
     private long lastPause;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        @Override
+        protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_main);
 
 
         //inizializzo componenti
-        timerChronometerMove= (Chronometer) findViewById(R.id.timerChronometerMove);
-        timerChronometerStop= (Chronometer) findViewById(R.id.timerChronometerStop);
+        timerChronometerMove= findViewById(R.id.timerChronometerMove);
+        timerChronometerStop= findViewById(R.id.timerChronometerStop);
 
-        startChronometer= (Button) findViewById(R.id.startChronometer);
-        resetChronometer= (Button) findViewById(R.id.resetChronometer);
-
-        //imposto il format del timer mettendo la scritta "secondi"
-        timerChronometerMove.setFormat("%s s");
-        timerChronometerStop.setFormat("%s s");
+        startChronometer= findViewById(R.id.startChronometer);
+        resetChronometer= findViewById(R.id.resetChronometer);
 
         lastPause = SystemClock.elapsedRealtime();
 
-        //reset timer dei cronometri dalla memoria
-        timerChronometerMove.setBase(SystemClock.elapsedRealtime());
-        timerChronometerStop.setBase(SystemClock.elapsedRealtime());
 
-
-
-        startChronometer.setOnClickListener(new View.OnClickListener() {
+            startChronometer.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
                 if(switchStartButton) {
+
                     startChronometer.setText(getString(R.string.stopChronometer));
+                    startChronometer();
 
-                    timerChronometerMove.setBase(timerChronometerMove.getBase() + SystemClock.elapsedRealtime() - lastPause);
-                    timerChronometerStop.setBase(timerChronometerStop.getBase() + SystemClock.elapsedRealtime() - lastPause);
-
-                    timerChronometerMove.start();
-                    timerChronometerStop.start();
                 }
                 else{
                     startChronometer.setText(getString(R.string.startChronometer));
-                    lastPause = SystemClock.elapsedRealtime();
-                    timerChronometerMove.stop();
-                    timerChronometerStop.stop();
+                    stopChronometer();
                 }
                 switchStartButton=!switchStartButton;
             }
@@ -66,30 +55,55 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                //imposto il cronometro come Stop
-                startChronometer.setText(getString(R.string.startChronometer));
-                timerChronometerMove.stop();
-                timerChronometerStop.stop();
-                switchStartButton=true;
-
-                //reset tempo
-                timerChronometerMove.setBase(SystemClock.elapsedRealtime());
-                timerChronometerStop.setBase(SystemClock.elapsedRealtime());
-
+                resetChronometer();
 
             }
         });
 
    }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    private void startChronometer(){
+
+        timerChronometerMove.setBase(timerChronometerMove.getBase() + SystemClock.elapsedRealtime() - lastPause);
+        timerChronometerStop.setBase(timerChronometerStop.getBase() + SystemClock.elapsedRealtime() - lastPause);
+
+        timerChronometerMove.start();
+        timerChronometerStop.start();
+
+    }
+
+    private void stopChronometer(){
+
+        lastPause = SystemClock.elapsedRealtime();
+
+        timerChronometerMove.stop();
+        timerChronometerStop.stop();
+
+    }
+
+    private void resetChronometer(){
+
+        //imposto il cronometro come Stop
+        startChronometer.setText(getString(R.string.startChronometer));
+        lastPause = SystemClock.elapsedRealtime();
+        timerChronometerMove.stop();
+        timerChronometerStop.stop();
+        switchStartButton=true;
+
         //reset tempo
         timerChronometerMove.setBase(SystemClock.elapsedRealtime());
         timerChronometerStop.setBase(SystemClock.elapsedRealtime());
 
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        //reset tempo
+        timerChronometerMove.setBase(SystemClock.elapsedRealtime());
+        timerChronometerStop.setBase(SystemClock.elapsedRealtime());
+
+    }
 
 }
