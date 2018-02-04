@@ -22,22 +22,22 @@ public class MainActivity extends AppCompatActivity {
     Button startChronometer, resetChronometer;
     TextView speedView;
     final int ACCESS_FINE_LOCATION_REQUEST_CODE = 5;
-
     //boolean usato per scambiare tra pulsante avvio e pulsante stop
     boolean switchStartButton=true;
     //long usato per far si che dopo la pausa il pulsante ritorni a contare dal punto in cui si era fermato
     private long lastPause;
 
-        @Override
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         speedView = (TextView) findViewById(R.id.speedView);
         //inizializzo componenti
-        timerChronometerMove= findViewById(R.id.timerChronometerMove);
-        timerChronometerStop= findViewById(R.id.timerChronometerStop);
-
+        timerChronometerMove = findViewById(R.id.timerChronometerMove);
+        timerChronometerStop = findViewById(R.id.timerChronometerStop);
+        startChronometer = findViewById(R.id.startChronometer);
+        resetChronometer = findViewById(R.id.resetChronometer);
         final SpeedMeterManager speedMeterManager = new SpeedMeterManager(speedView, getString(R.string.speed_unit_of_measure));
 
         int permissionCheck = ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION);
@@ -51,14 +51,11 @@ public class MainActivity extends AppCompatActivity {
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, speedMeterManager.locationListener);
         }
 
-        startChronometer= findViewById(R.id.startChronometer);
-        resetChronometer= findViewById(R.id.resetChronometer);
+
 
         lastPause = SystemClock.elapsedRealtime();
 
-
-            startChronometer.setOnClickListener(new View.OnClickListener() {
-
+        startChronometer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(switchStartButton) {
