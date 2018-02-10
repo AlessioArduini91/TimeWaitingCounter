@@ -1,8 +1,11 @@
 package tacchella.arduini.com.time_waiting_counter;
 
 import android.os.SystemClock;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.content.Context;
 import android.widget.Button;
@@ -16,16 +19,22 @@ import android.Manifest;
 import android.widget.Toast;
 import android.support.annotation.NonNull;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ChronometerFragmentList.OnFragmentEventListener {
 
     Chronometer timerChronometerMove, timerChronometerStop;
     Button startChronometer, resetChronometer;
     TextView speedView;
+    TextView chronoView;
     final int ACCESS_FINE_LOCATION_REQUEST_CODE = 5;
     //boolean usato per scambiare tra pulsante avvio e pulsante stop
     boolean switchStartButton=true;
     //long usato per far si che dopo la pausa il pulsante ritorni a contare dal punto in cui si era fermato
     private long lastPause;
+
+    @Override
+    public void toggleChronoInfo(int toggle) {
+        Log.d("index", "ciao");
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
         timerChronometerStop = findViewById(R.id.timerChronometerStop);
         startChronometer = findViewById(R.id.startChronometer);
         resetChronometer = findViewById(R.id.resetChronometer);
+
         final SpeedMeterManager speedMeterManager = new SpeedMeterManager(speedView, getString(R.string.speed_unit_of_measure));
 
         int permissionCheck = ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION);
@@ -50,7 +60,6 @@ public class MainActivity extends AppCompatActivity {
             LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, speedMeterManager.locationListener);
         }
-
 
 
         lastPause = SystemClock.elapsedRealtime();
