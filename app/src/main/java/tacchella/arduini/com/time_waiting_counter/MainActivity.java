@@ -18,14 +18,15 @@ import android.support.annotation.NonNull;
 
 public class MainActivity extends AppCompatActivity {
 
-    Chronometer timerChronometerMove, timerChronometerStop;
+    static Chronometer timerChronometerMove, timerChronometerStop;
     Button startChronometer, resetChronometer;
     TextView speedView;
     final int ACCESS_FINE_LOCATION_REQUEST_CODE = 5;
     //boolean usato per scambiare tra pulsante avvio e pulsante stop
     boolean switchStartButton=true;
-    //long usato per far si che dopo la pausa il pulsante ritorni a contare dal punto in cui si era fermato
-    private long lastPause;
+    static boolean started=false;
+
+    static ChronometerManager chronometerManager= null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +39,10 @@ public class MainActivity extends AppCompatActivity {
         timerChronometerStop = findViewById(R.id.timerChronometerStop);
         startChronometer = findViewById(R.id.startChronometer);
         resetChronometer = findViewById(R.id.resetChronometer);
+
+
+        chronometerManager= new ChronometerManager();
+
         final SpeedMeterManager speedMeterManager = new SpeedMeterManager(speedView, getString(R.string.speed_unit_of_measure));
 
         int permissionCheck = ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION);
@@ -53,7 +58,9 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        lastPause = SystemClock.elapsedRealtime();
+        chronometerManager.setLastPause1(SystemClock.elapsedRealtime());
+        chronometerManager.setLastPause2(SystemClock.elapsedRealtime());
+
 
         startChronometer.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,12 +68,12 @@ public class MainActivity extends AppCompatActivity {
                 if(switchStartButton) {
 
                     startChronometer.setText(getString(R.string.stopChronometer));
-                    startChronometer();
+                    started=true;
 
                 }
                 else{
                     startChronometer.setText(getString(R.string.startChronometer));
-                    stopChronometer();
+                    started=false;
                 }
                 switchStartButton=!switchStartButton;
             }
@@ -76,45 +83,25 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                resetChronometer();
+                startChronometer.setText(getString(R.string.startChronometer));
+                switchStartButton=true;
+                chronometerManager.resetChronometer();
 
             }
         });
 
     }
 
-    private void startChronometer(){
+    public static boolean getStarted(){
+            return started;
+    };
 
-        timerChronometerMove.setBase(timerChronometerMove.getBase() + SystemClock.elapsedRealtime() - lastPause);
-        timerChronometerStop.setBase(timerChronometerStop.getBase() + SystemClock.elapsedRealtime() - lastPause);
-
-        timerChronometerMove.start();
-        timerChronometerStop.start();
-
+    public static Chronometer getChronometer1() {
+       return timerChronometerMove;
     }
 
-    private void stopChronometer(){
-
-        lastPause = SystemClock.elapsedRealtime();
-
-        timerChronometerMove.stop();
-        timerChronometerStop.stop();
-
-    }
-
-    private void resetChronometer(){
-
-        //imposto il cronometro come Stop
-        startChronometer.setText(getString(R.string.startChronometer));
-        lastPause = SystemClock.elapsedRealtime();
-        timerChronometerMove.stop();
-        timerChronometerStop.stop();
-        switchStartButton=true;
-
-        //reset tempo
-        timerChronometerMove.setBase(SystemClock.elapsedRealtime());
-        timerChronometerStop.setBase(SystemClock.elapsedRealtime());
-
+    public static Chronometer getChronometer2() {
+        return timerChronometerStop;
     }
 
     @Override
@@ -140,5 +127,6 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
     }
+
 
 }
