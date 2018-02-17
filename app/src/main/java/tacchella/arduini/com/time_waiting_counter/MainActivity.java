@@ -121,7 +121,9 @@ public class MainActivity extends AppCompatActivity {
                 startChronometer.setText(getString(R.string.startChronometer));
                 switchStartButton=true;
                 chronometerManager.resetChronometer();
-                startActivity(new Intent("android.intent.action.ResultsActivity"));
+
+                Intent myIntent = new Intent(MainActivity.this, ResultsActivity.class);
+                MainActivity.this.startActivity(myIntent);
 
             }
         });

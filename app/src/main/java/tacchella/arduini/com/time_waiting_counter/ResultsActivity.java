@@ -22,8 +22,8 @@ public class ResultsActivity  extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                startActivity(new Intent("android.intent.action.MAIN"));
-
+                Intent myIntent = new Intent(ResultsActivity.this, MainActivity.class);
+                ResultsActivity.this.startActivity(myIntent);
             }
         });
     }
