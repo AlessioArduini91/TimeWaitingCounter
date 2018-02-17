@@ -7,7 +7,6 @@
     tools:context="tacchella.arduini.com.time_waiting_counter.MainActivity">
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:ads="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/relativeLayout2"
         android:layout_width="match_parent"
@@ -39,30 +38,6 @@
             <include android:id="@+id/chronoMoveLayout"
                 layout="@layout/chronometer_fragment"  />
 
-            <!--<TextView
-                android:id="@+id/timeStop"
-                android:layout_width="fill_parent"
-                android:layout_height="45dp"
-                android:layout_margin="0dp"
-                android:layout_weight="2"
-                android:gravity="center"
-                android:padding="0dp"
-                android:text="@string/timeStop"
-
-                android:textColor="#000" />
-
-            <Chronometer
-                android:id="@+id/timerChronometerMove"
-                android:layout_width="fill_parent"
-                android:layout_height="45dp"
-                android:layout_margin="0dp"
-                android:layout_weight="2"
-                android:gravity="center"
-                android:padding="0dp"
-                android:text="@string/timerChronometerMove"
-                android:textColor="#000" />-->
-
-
         </LinearLayout>
 
         <LinearLayout
@@ -79,65 +54,8 @@
             <include android:id="@+id/chronoStopLayout"
                 layout="@layout/chronometer_fragment"  />
 
-            <!--<TextView
-                android:id="@+id/timeStop"
-                android:layout_width="fill_parent"
-                android:layout_height="45dp"
-                android:layout_margin="0dp"
-                android:layout_weight="2"
-                android:gravity="center"
-                android:padding="0dp"
-                android:text="@string/timeStop"
-
-                android:textColor="#000" />
-
-            <Chronometer
-                android:id="@+id/timerChronometerMove"
-                android:layout_width="fill_parent"
-                android:layout_height="45dp"
-                android:layout_margin="0dp"
-                android:layout_weight="2"
-                android:gravity="center"
-                android:padding="0dp"
-                android:text="@string/timerChronometerMove"
-                android:textColor="#000" />-->
-
 
         </LinearLayout>
-
-
-        <!--<LinearLayout
-            android:id="@+id/buttonsStop"
-            android:layout_width="fill_parent"
-            android:layout_height="50dp"
-            android:layout_below="@id/buttonsMove"
-            android:layout_margin="0dp"
-            android:weightSum="4">
-
-            <TextView
-                android:id="@+id/timeMove"
-                android:layout_width="fill_parent"
-                android:layout_height="45dp"
-                android:layout_margin="0dp"
-                android:layout_weight="2"
-                android:gravity="center"
-                android:padding="0dp"
-                android:text="@string/timeMove"
-                android:textColor="#000" />
-
-            <Chronometer
-                android:id="@+id/timerChronometerStop"
-                android:layout_width="fill_parent"
-                android:layout_height="45dp"
-                android:layout_margin="0dp"
-                android:layout_weight="2"
-                android:gravity="center"
-                android:padding="0dp"
-                android:text="@string/timerChronometerStop"
-
-                android:textColor="#000" />
-
-        </LinearLayout>-->
 
 
         <Button
@@ -152,40 +70,6 @@
             android:textColor="@android:color/white" />
 
     </RelativeLayout>
-
-    <!--<fragment
-        android:id="@+id/chronoFragment"
-        android:name="tacchella.arduini.com.time_waiting_counter.ChronometerFragmentList"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="12dp"
-        android:layout_marginStart="12dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <fragment
-        android:id="@+id/placeholderFragmentMoving"
-        android:name="tacchella.arduini.com.time_waiting_counter.ChronometerFragment"
-        android:layout_width="130dp"
-        android:layout_height="130dp"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="350dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"></fragment>
-
-    <fragment
-        android:id="@+id/placeholderFragmentStopping"
-        android:name="tacchella.arduini.com.time_waiting_counter.ChronometerFragment"
-        android:layout_width="130dp"
-        android:layout_height="130dp"
-        android:layout_marginTop="350dp"
-        android:layout_marginRight="40dp"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"></fragment>
-    -->
-
 
     <TextView
         android:id="@+id/speedView"
