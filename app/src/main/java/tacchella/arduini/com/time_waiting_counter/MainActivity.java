@@ -54,7 +54,8 @@ public class MainActivity extends AppCompatActivity {
         percentMovingTextView = movingLayout.findViewById(R.id.timePercent);
         percentStoppingTextView = stoppingLayout.findViewById(R.id.timePercent);
 
-
+        toggleTextView(movingChrono, movingTextView);
+        toggleTextView(stoppingChrono, stoppingTextView);
         movingLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -189,10 +190,20 @@ public class MainActivity extends AppCompatActivity {
 
     private void toggleTextView(Chronometer chrono, TextView textView) {
         if (chrono.getVisibility() == View.VISIBLE){
-            textView.setText(R.string.timeMove);
+            if (textView.getId() == R.id.text_view_moving){
+                textView.setText(R.string.timeMove);
+            }
+            else {
+                textView.setText(R.string.timeStop);
+            }
         }
         else {
-            textView.setText(R.string.percentMove);
+            if (textView.getId() == R.id.text_view_moving){
+                textView.setText(R.string.percentMove);
+            }
+            else {
+                textView.setText(R.string.percentStopping);
+            }
         }
     }
 }
