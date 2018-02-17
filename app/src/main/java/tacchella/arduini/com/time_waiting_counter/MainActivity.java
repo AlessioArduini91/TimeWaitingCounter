@@ -8,6 +8,7 @@ import android.view.View;
 import android.content.Context;
 import android.widget.Button;
 import android.widget.Chronometer;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
@@ -19,9 +20,17 @@ import android.support.annotation.NonNull;
 
 public class MainActivity extends AppCompatActivity {
 
-    static Chronometer timerChronometerMove, timerChronometerStop;
     Button startChronometer, goToResult;
     TextView speedView;
+    TextView movingTextView;
+    TextView stoppingTextView;
+    TextView percentMovingTextView;
+    TextView percentStoppingTextView;
+    static Chronometer movingChrono;
+    static Chronometer stoppingChrono;
+    LinearLayout movingLayout;
+    LinearLayout stoppingLayout;
+    private int animationDuration;
     final int ACCESS_FINE_LOCATION_REQUEST_CODE = 5;
     //boolean usato per scambiare tra pulsante avvio e pulsante stop
     boolean switchStartButton=true;
@@ -33,11 +42,36 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        animationDuration = getResources().getInteger(android.R.integer.config_longAnimTime);
+        movingLayout = (LinearLayout) findViewById(R.id.chronoMoveLayout);
+        stoppingLayout = (LinearLayout) findViewById(R.id.chronoStopLayout);
+        movingTextView = movingLayout.findViewById(R.id.timeText);
+        stoppingTextView = stoppingLayout.findViewById(R.id.timeText);
+        movingTextView.setId(R.id.text_view_moving);
+        stoppingTextView.setId(R.id.text_view_stopping);
+        movingChrono = movingLayout.findViewById(R.id.timeChrono);
+        stoppingChrono = stoppingLayout.findViewById(R.id.timeChrono);
+        percentMovingTextView = movingLayout.findViewById(R.id.timePercent);
+        percentStoppingTextView = stoppingLayout.findViewById(R.id.timePercent);
 
+
+        movingLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toggleVisibility(movingChrono, percentMovingTextView);
+                toggleTextView(movingChrono, movingTextView);
+            }
+        });
+
+        stoppingLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toggleVisibility(stoppingChrono, percentStoppingTextView);
+                toggleTextView(stoppingChrono, stoppingTextView);
+            }
+        });
         speedView = (TextView) findViewById(R.id.speedView);
         //inizializzo componenti
-        timerChronometerMove = findViewById(R.id.timerChronometerMove);
-        timerChronometerStop = findViewById(R.id.timerChronometerStop);
         startChronometer = findViewById(R.id.startChronometer);
         goToResult = findViewById(R.id.goToResult);
 
@@ -99,11 +133,11 @@ public class MainActivity extends AppCompatActivity {
     };
 
     public static Chronometer getChronometer1() {
-       return timerChronometerMove;
+       return movingChrono;
     }
 
     public static Chronometer getChronometer2() {
-        return timerChronometerStop;
+        return stoppingChrono;
     }
 
     @Override
@@ -111,8 +145,8 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
 
         //reset tempo
-        timerChronometerMove.setBase(SystemClock.elapsedRealtime());
-        timerChronometerStop.setBase(SystemClock.elapsedRealtime());
+        movingChrono.setBase(SystemClock.elapsedRealtime());
+        stoppingChrono.setBase(SystemClock.elapsedRealtime());
 
     }
 
@@ -130,5 +164,35 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void toggleVisibility(Chronometer chrono, TextView percent){
 
+        if (chrono.getVisibility() == View.VISIBLE){
+            chrono.setVisibility(View.GONE);
+            percent.setVisibility(View.VISIBLE);
+            percent.setAlpha(0f);
+            percent.animate()
+                    .alpha(1f)
+                    .setDuration(animationDuration)
+                    .setListener(null);
+        }
+        else{
+            percent.setVisibility(View.GONE);
+            chrono.setVisibility(View.VISIBLE);
+            chrono.setAlpha(0f);
+            chrono.animate()
+                    .alpha(1f)
+                    .setDuration(animationDuration)
+                    .setListener(null);
+        }
+
+    }
+
+    private void toggleTextView(Chronometer chrono, TextView textView) {
+        if (chrono.getVisibility() == View.VISIBLE){
+            textView.setText(R.string.timeMove);
+        }
+        else {
+            textView.setText(R.string.percentMove);
+        }
+    }
 }

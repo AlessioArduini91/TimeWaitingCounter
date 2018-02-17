@@ -7,6 +7,8 @@
     <string name="stopChronometer">Stop</string>
     <string name="timerChronometerMove">0 s</string>
     <string name="timerChronometerStop">5 s</string>
+    <string name="percentMove">% Movimento</string>
+    <string name="percentStopping">% Fermo</string>
     <string name="goToResult">Vai ai risultati</string>
     <string name="speedometer">50 km/h</string>
     <string name="history">Storico</string>
