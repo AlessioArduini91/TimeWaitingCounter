@@ -102,13 +102,13 @@
         </LinearLayout>
 
         <Button
-            android:id="@+id/resetChronometer"
+            android:id="@+id/goToResult"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_alignStart="@+id/history"
             android:layout_below="@+id/buttonsStop"
             android:background="@color/customActionBarColor"
-            android:text="@string/reset"
+            android:text="@string/goToResult"
             android:textColor="@android:color/white" />
 
 
@@ -116,7 +116,7 @@
             android:id="@+id/history"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/resetChronometer"
+            android:layout_below="@+id/goToResult"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="50dp"
             android:background="@color/customActionBarColor"

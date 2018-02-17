@@ -1,5 +1,6 @@
 package tacchella.arduini.com.time_waiting_counter;
 
+import android.content.Intent;
 import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -19,7 +20,7 @@ import android.support.annotation.NonNull;
 public class MainActivity extends AppCompatActivity {
 
     static Chronometer timerChronometerMove, timerChronometerStop;
-    Button startChronometer, resetChronometer;
+    Button startChronometer, goToResult;
     TextView speedView;
     final int ACCESS_FINE_LOCATION_REQUEST_CODE = 5;
     //boolean usato per scambiare tra pulsante avvio e pulsante stop
@@ -38,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
         timerChronometerMove = findViewById(R.id.timerChronometerMove);
         timerChronometerStop = findViewById(R.id.timerChronometerStop);
         startChronometer = findViewById(R.id.startChronometer);
-        resetChronometer = findViewById(R.id.resetChronometer);
+        goToResult = findViewById(R.id.goToResult);
 
 
         chronometerManager= new ChronometerManager();
@@ -79,13 +80,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        resetChronometer.setOnClickListener(new View.OnClickListener() {
+        goToResult.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 startChronometer.setText(getString(R.string.startChronometer));
                 switchStartButton=true;
                 chronometerManager.resetChronometer();
+                startActivity(new Intent("android.intent.action.ResultsActivity"));
 
             }
         });

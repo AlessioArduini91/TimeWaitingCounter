@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="tacchella.arduini.com.time_waiting_counter.ResultsActivity">
+
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+        xmlns:ads="http://schemas.android.com/apk/res-auto"
+        android:layout_height="match_parent">
+
+
+
+
+        <LinearLayout
+            android:id="@+id/percentageStopLine"
+            android:layout_width="fill_parent"
+            android:layout_margin="0dp"
+            android:layout_height="50dp"
+            android:weightSum="4">
+
+            <TextView
+                android:id="@+id/percentageStopLabel"
+                android:layout_width="fill_parent"
+                android:layout_height="45dp"
+                android:layout_margin="0dp"
+                android:gravity="center"
+                android:padding="0dp"
+                android:text="@string/percentageStopLabel"
+                android:textColor="#000"
+
+                android:layout_weight="2"
+                />
+
+                <TextView
+                    android:id="@+id/percentageStop"
+                android:layout_width="fill_parent"
+                android:layout_height="45dp"
+                android:layout_margin="0dp"
+                android:gravity="center"
+                android:padding="0dp"
+                android:text="@string/percentageStop"
+                android:textColor="#000"
+
+                android:layout_weight="2"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/percentageMoveLine"
+            android:layout_width="fill_parent"
+            android:layout_margin="0dp"
+            android:layout_height="50dp"
+            android:weightSum="4"
+            android:layout_below="@id/percentageStopLine">
+
+            <TextView
+                android:id="@+id/percentageMoveLabel"
+                android:layout_width="fill_parent"
+                android:layout_height="45dp"
+                android:layout_margin="0dp"
+                android:gravity="center"
+                android:padding="0dp"
+                android:text="@string/percentageMoveLabel"
+                android:textColor="#000"
+
+                android:layout_weight="2"
+                />
+
+            <TextView
+                android:id="@+id/percentageMove"
+                android:layout_width="fill_parent"
+                android:layout_height="45dp"
+                android:layout_margin="0dp"
+                android:gravity="center"
+                android:padding="0dp"
+                android:text="@string/percentageMove"
+                android:textColor="#000"
+
+                android:layout_weight="2"
+                />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/minutesStopLine"
+            android:layout_width="fill_parent"
+            android:layout_margin="0dp"
+            android:layout_height="50dp"
+            android:weightSum="4"
+            android:layout_below="@id/percentageMoveLine">
+
+            <TextView
+                android:id="@+id/minutesStopLabel"
+                android:layout_width="fill_parent"
+                android:layout_height="45dp"
+                android:layout_margin="0dp"
+                android:gravity="center"
+                android:padding="0dp"
+                android:text="@string/minutesStopLabel"
+                android:textColor="#000"
+
+                android:layout_weight="2"
+                />
+
+            <TextView
+                android:id="@+id/minutesStop"
+                android:layout_width="fill_parent"
+                android:layout_height="45dp"
+                android:layout_margin="0dp"
+                android:gravity="center"
+                android:padding="0dp"
+                android:text="@string/minutesStop"
+                android:textColor="#000"
+
+                android:layout_weight="2"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/minutesMoveLine"
+            android:layout_width="fill_parent"
+            android:layout_margin="0dp"
+            android:layout_height="50dp"
+            android:weightSum="4"
+            android:layout_below="@+id/minutesStopLine">
+
+            <TextView
+                android:id="@+id/minutesMoveLabel"
+                android:layout_width="fill_parent"
+                android:layout_height="45dp"
+                android:layout_margin="0dp"
+                android:gravity="center"
+                android:padding="0dp"
+                android:text="@string/minutesMoveLabel"
+                android:textColor="#000"
+
+                android:layout_weight="2"
+                />
+
+            <TextView
+                android:id="@+id/minutesMove"
+                android:layout_width="fill_parent"
+                android:layout_height="45dp"
+                android:layout_margin="0dp"
+                android:gravity="center"
+                android:padding="0dp"
+                android:text="@string/minutesMove"
+                android:textColor="#000"
+
+                android:layout_weight="2"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/totalTimeLine"
+            android:layout_width="fill_parent"
+            android:layout_margin="0dp"
+            android:layout_height="50dp"
+            android:weightSum="4"
+            android:layout_below="@+id/minutesMoveLine">
+
+            <TextView
+                android:id="@+id/totalTimeLabel"
+                android:layout_width="fill_parent"
+                android:layout_height="45dp"
+                android:layout_margin="0dp"
+                android:gravity="center"
+                android:padding="0dp"
+                android:text="@string/totalTimeLabel"
+                android:textColor="#000"
+
+                android:layout_weight="2"
+                />
+
+            <TextView
+                android:id="@+id/totalTime"
+                android:layout_width="fill_parent"
+                android:layout_height="45dp"
+                android:layout_margin="0dp"
+                android:gravity="center"
+                android:padding="0dp"
+                android:text="@string/totalTime"
+                android:textColor="#000"
+
+                android:layout_weight="2"
+                />
+
+        </LinearLayout>
+
+
+        <Button
+            android:id="@+id/backToHome"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/totalTimeLine"
+            android:background="@color/customActionBarColor"
+            android:layout_centerHorizontal="true"
+            android:text="@string/backToHome"
+            android:textColor="@android:color/white" />
+
+
+
+    </RelativeLayout>
+
+
+</android.support.constraint.ConstraintLayout>
+
+
+
+
+
