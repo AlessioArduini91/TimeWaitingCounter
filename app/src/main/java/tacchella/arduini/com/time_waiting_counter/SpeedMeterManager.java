@@ -1,5 +1,6 @@
 package tacchella.arduini.com.time_waiting_counter;
 
+import android.content.Context;
 import android.location.Location;
 import android.location.LocationListener;
 import android.os.Bundle;
@@ -11,18 +12,21 @@ import android.widget.TextView;
 
 public class SpeedMeterManager {
 
-    private TextView speedView;
     private float speed = (float) 0.0;
-    private String speedUnitOfMeasure;
     boolean moveTime=true;
     boolean stopTime=true;
+    SpeedMeterInterface speedMeter;
+
+    interface SpeedMeterInterface {
+        void setSpeedView(float speed);
+    }
 
     final LocationListener locationListener = new LocationListener() {
         @Override
         public void onLocationChanged(Location location) {
 
             speed = location.getSpeed();
-            speedView.setText(Math.round(speed * 360)/100 + " " + speedUnitOfMeasure);
+            speedMeter.setSpeedView(speed);
 
             if(MainActivity.getStarted()) {
                 if (speed < 3.0 && moveTime) {
@@ -57,9 +61,8 @@ public class SpeedMeterManager {
         }
     };
 
-    public SpeedMeterManager(TextView textView, String speedUnitOfMeasure){
-        this.speedView = textView;
-        this.speedUnitOfMeasure = speedUnitOfMeasure;
-        speedView.setText(Math.round(speed * 360)/100 + " " + speedUnitOfMeasure);
+    public SpeedMeterManager(Context context){
+        speedMeter = (SpeedMeterInterface) context;
+        speedMeter.setSpeedView(speed);
     }
 }

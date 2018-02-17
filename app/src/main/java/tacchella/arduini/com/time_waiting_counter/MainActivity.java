@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.content.Context;
 import android.widget.Button;
@@ -18,7 +19,7 @@ import android.Manifest;
 import android.widget.Toast;
 import android.support.annotation.NonNull;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements SpeedMeterManager.SpeedMeterInterface {
 
     Button startChronometer, goToResult;
     TextView speedView;
@@ -79,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
 
         chronometerManager= new ChronometerManager();
 
-        final SpeedMeterManager speedMeterManager = new SpeedMeterManager(speedView, getString(R.string.speed_unit_of_measure));
+        final SpeedMeterManager speedMeterManager = new SpeedMeterManager(this);
 
         int permissionCheck = ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION);
         if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
@@ -207,5 +208,10 @@ public class MainActivity extends AppCompatActivity {
                 textView.setText(R.string.percentStopping);
             }
         }
+    }
+
+    @Override
+    public void setSpeedView(float speed) {
+     speedView.setText(Math.round(speed * 360)/100 + " " + getString(R.string.speed_unit_of_measure));
     }
 }
