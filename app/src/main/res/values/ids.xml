@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="text_view_moving" type="id"/>
+    <item name="chrono_moving" type="id"/>
+    <item name="text_view_stopping" type="id"/>
+    <item name="chrono_stopping" type="id"/>
+</resources>

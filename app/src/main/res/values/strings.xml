@@ -2,7 +2,9 @@
     <string name="app_name">Time Waiting Counter</string>
     <string name="title">Speed Test</string>
     <string name="timeMove">Tempo in Movimento</string>
+    <string name="percentMove">% Movimento</string>
     <string name="timeStop">Tempo Fermo</string>
+    <string name="percentStopping">% Fermo</string>
     <string name="startChronometer">Avvia</string>
     <string name="stopChronometer">Stop</string>
     <string name="timerChronometerMove">0 s</string>
