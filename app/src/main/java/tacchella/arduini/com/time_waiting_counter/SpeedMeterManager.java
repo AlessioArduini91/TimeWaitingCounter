@@ -28,7 +28,7 @@ public class SpeedMeterManager {
             speed = location.getSpeed();
             speedMeter.setSpeedView(speed);
 
-            if(MainActivity.getStarted()) {
+            //if(MainActivity.getStarted()) {
                 if (speed < 3.0 && moveTime) {
                     ChronometerManager.Chronometer1();
                     moveTime = false;
@@ -38,10 +38,10 @@ public class SpeedMeterManager {
                     moveTime = true;
                     stopTime = false;
                 }
-            }
+           /* }
             else{
                 ChronometerManager.stopAll();
-            }
+            }*/
 
         }
 

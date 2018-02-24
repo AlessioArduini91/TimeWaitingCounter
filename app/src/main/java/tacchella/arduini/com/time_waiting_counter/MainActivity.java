@@ -107,10 +107,21 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
                     startChronometer.setText(getString(R.string.stopChronometer));
                     started=true;
 
+
+
+                    //ChronometerManager.Chronometer1();
+
+
+
                 }
                 else{
                     startChronometer.setText(getString(R.string.startChronometer));
                     started=false;
+
+
+                   // ChronometerManager.Chronometer2();
+
+
                 }
                 switchStartButton=!switchStartButton;
             }
