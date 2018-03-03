@@ -10,8 +10,8 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/relativeLayout2"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
+        android:layout_height="match_parent"
+        android:gravity="center_vertical">
 
 
         <LinearLayout
@@ -19,13 +19,13 @@
             android:layout_width="fill_parent"
             android:layout_height="70dp"
             android:layout_margin="0dp"
+            android:clickable="true"
             android:padding="5dp"
-            android:weightSum="4"
-            android:gravity="center_vertical"
-            android:clickable="true">
+            android:weightSum="4">
 
-            <include android:id="@+id/chronoMoveLayout"
-                layout="@layout/chronometer_fragment"  />
+            <include
+                android:id="@+id/chronoMoveLayout"
+                layout="@layout/chronometer_fragment" />
 
         </LinearLayout>
 
@@ -35,13 +35,13 @@
             android:layout_height="70dp"
             android:layout_below="@id/buttonsMove"
             android:layout_margin="0dp"
+            android:clickable="true"
             android:padding="5dp"
-            android:weightSum="4"
-            android:gravity="center_vertical"
-            android:clickable="true">
+            android:weightSum="4">
 
-            <include android:id="@+id/chronoStopLayout"
-                layout="@layout/chronometer_fragment"  />
+            <include
+                android:id="@+id/chronoStopLayout"
+                layout="@layout/chronometer_fragment" />
 
 
         </LinearLayout>
@@ -51,32 +51,51 @@
             android:id="@+id/goToResult"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_centerHorizontal="true"
             android:layout_below="@+id/buttonsStop"
+            android:layout_centerHorizontal="true"
             android:background="@color/customActionBarColor"
             android:text="@string/goToResult"
             android:textColor="@android:color/white" />
 
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:layout_below="@+id/goToResult"
+            android:layout_marginTop="50dp">
+
+            <com.github.anastr.speedviewlib.ProgressiveGauge
+                android:id="@+id/speedView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:sv_maxSpeed="130"
+                app:sv_minSpeed="0" />
+
+
+        </LinearLayout>
+
     </RelativeLayout>
 
-    <TextView
-        android:id="@+id/speedView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="64dp"
-        android:layout_marginEnd="100dp"
-        android:layout_marginStart="100dp"
-        android:height="70dp"
-        android:background="@color/colorPrimary"
-        android:fontFamily="@font/cardo"
-        android:gravity="center"
-        android:text="TextView"
-        android:textAlignment="center"
-        android:textSize="36sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+    <!--<TextView-->
+    <!--android:id="@+id/speedView"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginBottom="64dp"-->
+    <!--android:layout_marginEnd="100dp"-->
+    <!--android:layout_marginStart="100dp"-->
+    <!--android:height="70dp"-->
+    <!--android:background="@color/colorPrimary"-->
+    <!--android:fontFamily="@font/cardo"-->
+    <!--android:gravity="center"-->
+    <!--android:text="TextView"-->
+    <!--android:textAlignment="center"-->
+    <!--android:textSize="36sp"-->
+    <!--app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--app:layout_constraintEnd_toEndOf="parent"-->
+    <!--app:layout_constraintStart_toStartOf="parent" />-->
+
 
 
 </android.support.constraint.ConstraintLayout>
