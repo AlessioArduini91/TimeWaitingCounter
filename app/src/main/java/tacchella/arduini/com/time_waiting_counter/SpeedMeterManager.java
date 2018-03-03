@@ -27,13 +27,13 @@ public class SpeedMeterManager {
 
             speed = location.getSpeed();
             speedMeter.setSpeedView(speed);
-
+                // false = stop
                 if (speed < 3.0 && moveTime) {
-                    ChronometerManager.Chronometer1();
+                    MainActivity.toggleChronometer(false);
                     moveTime = false;
                     stopTime = true;
                 } else if (speed >= 3.0 && stopTime) {
-                    ChronometerManager.Chronometer2();
+                    MainActivity.toggleChronometer(true);
                     moveTime = true;
                     stopTime = false;
                 }

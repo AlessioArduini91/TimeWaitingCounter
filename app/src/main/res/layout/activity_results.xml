@@ -109,7 +109,7 @@
                 />
 
             <TextView
-                android:id="@+id/minutesStop"
+                android:id="@+id/timeStop"
                 android:layout_width="fill_parent"
                 android:layout_height="45dp"
                 android:layout_margin="0dp"
@@ -145,7 +145,7 @@
                 />
 
             <TextView
-                android:id="@+id/minutesMove"
+                android:id="@+id/timeMove"
                 android:layout_width="fill_parent"
                 android:layout_height="45dp"
                 android:layout_margin="0dp"

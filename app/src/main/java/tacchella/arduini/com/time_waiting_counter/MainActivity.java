@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.content.Context;
 import android.widget.Button;
@@ -27,17 +26,18 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
     TextView stoppingTextView;
     TextView percentMovingTextView;
     TextView percentStoppingTextView;
+
     static Chronometer movingChrono;
     static Chronometer stoppingChrono;
+
     LinearLayout movingLayout;
     LinearLayout stoppingLayout;
     private int animationDuration;
     final int ACCESS_FINE_LOCATION_REQUEST_CODE = 5;
     //boolean usato per scambiare tra pulsante avvio e pulsante stop
     boolean switchStartButton=true;
-    static boolean started=false;
 
-    static ChronometerManager chronometerManager= null;
+    private static long lastPause = SystemClock.elapsedRealtime();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,9 +76,6 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
         //inizializzo componenti
         goToResult = findViewById(R.id.goToResult);
 
-
-        chronometerManager= new ChronometerManager();
-
         final SpeedMeterManager speedMeterManager = new SpeedMeterManager(this);
 
         int permissionCheck = ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION);
@@ -92,37 +89,16 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, speedMeterManager.locationListener);
         }
 
-
-
-        chronometerManager.setLastPause1(SystemClock.elapsedRealtime());
-        chronometerManager.setLastPause2(SystemClock.elapsedRealtime());
-
-
         goToResult.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 switchStartButton=true;
-                chronometerManager.resetChronometer();
-
+                resetChronometer();
                 Intent myIntent = new Intent(MainActivity.this, ResultsActivity.class);
                 MainActivity.this.startActivity(myIntent);
-
             }
         });
 
-    }
-
-    public static boolean getStarted(){
-            return started;
-    };
-
-    public static Chronometer getChronometer1() {
-       return movingChrono;
-    }
-
-    public static Chronometer getChronometer2() {
-        return stoppingChrono;
     }
 
     @Override
@@ -191,8 +167,39 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
         }
     }
 
+    public static void toggleChronometer(Boolean command){
+
+        if(command) {
+            movingChrono.setBase(movingChrono.getBase() + SystemClock.elapsedRealtime() - lastPause);
+            movingChrono.start();
+            lastPause = SystemClock.elapsedRealtime();
+            stoppingChrono.stop();
+        }
+        else {
+            stoppingChrono.setBase(stoppingChrono.getBase() + SystemClock.elapsedRealtime() - lastPause);
+            stoppingChrono.start();
+            lastPause = SystemClock.elapsedRealtime();
+            movingChrono.stop();
+        }
+
+    }
+
+    public static void resetChronometer(){
+
+        //imposto il cronometro come Stop
+        lastPause = SystemClock.elapsedRealtime();
+        movingChrono.stop();
+        stoppingChrono.stop();
+
+
+        //reset tempo
+        movingChrono.setBase(SystemClock.elapsedRealtime());
+        stoppingChrono.setBase(SystemClock.elapsedRealtime());
+
+    }
+
     @Override
     public void setSpeedView(float speed) {
-     speedView.setText(Math.round(speed * 360)/100 + " " + getString(R.string.speed_unit_of_measure));
+        speedView.setText(Math.round(speed * 360)/100 + " " + getString(R.string.speed_unit_of_measure));
     }
 }
