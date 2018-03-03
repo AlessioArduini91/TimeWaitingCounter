@@ -21,7 +21,7 @@ import android.support.annotation.NonNull;
 
 public class MainActivity extends AppCompatActivity implements SpeedMeterManager.SpeedMeterInterface {
 
-    Button startChronometer, goToResult;
+    Button goToResult;
     TextView speedView;
     TextView movingTextView;
     TextView stoppingTextView;
@@ -74,7 +74,6 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
         });
         speedView = (TextView) findViewById(R.id.speedView);
         //inizializzo componenti
-        startChronometer = findViewById(R.id.startChronometer);
         goToResult = findViewById(R.id.goToResult);
 
 
@@ -99,39 +98,10 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
         chronometerManager.setLastPause2(SystemClock.elapsedRealtime());
 
 
-        startChronometer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(switchStartButton) {
-
-                    startChronometer.setText(getString(R.string.stopChronometer));
-                    started=true;
-
-
-
-                    //ChronometerManager.Chronometer1();
-
-
-
-                }
-                else{
-                    startChronometer.setText(getString(R.string.startChronometer));
-                    started=false;
-
-
-                   // ChronometerManager.Chronometer2();
-
-
-                }
-                switchStartButton=!switchStartButton;
-            }
-        });
-
         goToResult.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                startChronometer.setText(getString(R.string.startChronometer));
                 switchStartButton=true;
                 chronometerManager.resetChronometer();
 

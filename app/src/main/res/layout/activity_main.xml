@@ -13,22 +13,11 @@
         android:layout_height="match_parent">
 
 
-        <Button
-            android:id="@+id/startChronometer"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="30dp"
-            android:background="@color/customActionBarColor"
-            android:text="@string/startChronometer"
-            android:textColor="@android:color/white" />
-
 
         <LinearLayout
             android:id="@+id/buttonsMove"
             android:layout_width="fill_parent"
             android:layout_height="70dp"
-            android:layout_below="@id/startChronometer"
             android:layout_margin="0dp"
             android:padding="5dp"
             android:weightSum="4"
