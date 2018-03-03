@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
     final int ACCESS_FINE_LOCATION_REQUEST_CODE = 5;
     //boolean usato per scambiare tra pulsante avvio e pulsante stop
     boolean switchStartButton=true;
+    long percentMoving=3, percentStopping=4;
 
     private static long lastPause = SystemClock.elapsedRealtime();
 
@@ -99,7 +100,13 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
                 switchStartButton=true;
                 resetChronometer();
                 Intent myIntent = new Intent(MainActivity.this, ResultsActivity.class);
-                MainActivity.this.startActivity(myIntent);
+
+                myIntent.putExtra("timeMoving", movingChrono.getBase());
+                myIntent.putExtra("timeStopping", stoppingChrono.getBase());
+                myIntent.putExtra("percentMoving", percentMoving);
+                myIntent.putExtra("percentStopping", percentStopping);
+
+                startActivity(myIntent);
             }
         });
 
@@ -205,5 +212,6 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
     @Override
     public void setSpeedView(float speed) {
         speedView.speedTo(Math.round(speed * 360)/100);
+
     }
 }
