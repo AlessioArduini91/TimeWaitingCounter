@@ -77,7 +77,6 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
         });
 
         speedView = (ProgressiveGauge) findViewById(R.id.speedView);
-        speedView.setSpeedometerColor(getResources().getColor(R.color.customActionBarColor));
         //inizializzo componenti
         goToResult = findViewById(R.id.goToResult);
 
