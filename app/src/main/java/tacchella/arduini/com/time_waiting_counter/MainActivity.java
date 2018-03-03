@@ -18,10 +18,12 @@ import android.Manifest;
 import android.widget.Toast;
 import android.support.annotation.NonNull;
 
+import com.github.anastr.speedviewlib.ProgressiveGauge;
+
 public class MainActivity extends AppCompatActivity implements SpeedMeterManager.SpeedMeterInterface {
 
     Button goToResult;
-    TextView speedView;
+    ProgressiveGauge speedView;
     TextView movingTextView;
     TextView stoppingTextView;
     TextView percentMovingTextView;
@@ -72,7 +74,9 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
                 toggleTextView(stoppingChrono, stoppingTextView);
             }
         });
-        speedView = (TextView) findViewById(R.id.speedView);
+
+        speedView = (ProgressiveGauge) findViewById(R.id.speedView);
+        speedView.setSpeedometerColor(getResources().getColor(R.color.customActionBarColor));
         //inizializzo componenti
         goToResult = findViewById(R.id.goToResult);
 
@@ -200,6 +204,6 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
 
     @Override
     public void setSpeedView(float speed) {
-        speedView.setText(Math.round(speed * 360)/100 + " " + getString(R.string.speed_unit_of_measure));
+        speedView.speedTo(Math.round(speed * 360)/100);
     }
 }
