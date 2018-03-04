@@ -64,15 +64,15 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
         stoppingChrono = stoppingLayout.findViewById(R.id.timeChrono);
         percentMovingTextView = movingLayout.findViewById(R.id.timePercent);
         percentStoppingTextView = stoppingLayout.findViewById(R.id.timePercent);
-        Button testButton = (Button) findViewById(R.id.test);
-
-        testButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                toggleChronometer(test);
-                test = !(test);
-            }
-        });
+//        Button testButton = (Button) findViewById(R.id.test);
+//
+//        testButton.setOnClickListener(new View.OnClickListener(){
+//            @Override
+//            public void onClick(View v){
+//                toggleChronometer(test);
+//                test = !(test);
+//            }
+//        });
 
         toggleTextView(movingChrono, movingTextView);
         toggleTextView(stoppingChrono, stoppingTextView);
