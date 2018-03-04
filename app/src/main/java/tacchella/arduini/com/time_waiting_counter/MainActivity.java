@@ -38,9 +38,16 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
     final int ACCESS_FINE_LOCATION_REQUEST_CODE = 5;
     //boolean usato per scambiare tra pulsante avvio e pulsante stop
     boolean switchStartButton=true;
+    static long totalRealTime = 0;
     long percentMoving=3, percentStopping=4;
-
-    private static long lastPause = SystemClock.elapsedRealtime();
+    Boolean test = false;
+    private static long totalBaseTime;
+    private static long stopBaseTime;
+    private static long startBaseTime;
+    private static long lastPauseStart;
+    private static long lastPauseStop;
+    private static boolean stopAlreadyStarted = false;
+    private static boolean startAlreadyStarted = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +64,15 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
         stoppingChrono = stoppingLayout.findViewById(R.id.timeChrono);
         percentMovingTextView = movingLayout.findViewById(R.id.timePercent);
         percentStoppingTextView = stoppingLayout.findViewById(R.id.timePercent);
+        Button testButton = (Button) findViewById(R.id.test);
+
+        testButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                toggleChronometer(test);
+                test = !(test);
+            }
+        });
 
         toggleTextView(movingChrono, movingTextView);
         toggleTextView(stoppingChrono, stoppingTextView);
@@ -97,7 +113,7 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
             @Override
             public void onClick(View v) {
                 switchStartButton=true;
-                resetChronometer();
+//                resetChronometer();
                 Intent myIntent = new Intent(MainActivity.this, ResultsActivity.class);
 
                 myIntent.putExtra("timeMoving", movingChrono.getBase());
@@ -109,6 +125,35 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
             }
         });
 
+        movingChrono.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener() {
+            @Override
+            public void onChronometerTick(Chronometer chronometer) {
+                if (stopAlreadyStarted) {
+                    percentMoving = (SystemClock.elapsedRealtime() - movingChrono.getBase()) * 100 /
+                            ((SystemClock.elapsedRealtime() - totalBaseTime));
+                    percentMovingTextView.setText(percentMoving + "%");
+                    percentStoppingTextView.setText(100 - percentMoving + "%");
+                } else {
+                    percentMovingTextView.setText("100%");
+                    percentStoppingTextView.setText ("0%");
+                }
+            }
+        });
+
+        stoppingChrono.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener() {
+            @Override
+            public void onChronometerTick(Chronometer chronometer) {
+                if (startAlreadyStarted) {
+                    percentStopping = (SystemClock.elapsedRealtime() - stoppingChrono.getBase()) * 100 /
+                            ((SystemClock.elapsedRealtime() - totalBaseTime));
+                    percentStoppingTextView.setText(percentStopping + "%");
+                    percentMovingTextView.setText(100 - percentStopping + "%");
+                } else {
+                    percentStoppingTextView.setText("100%");
+                    percentMovingTextView.setText ("0%");
+                }
+            }
+        });
     }
 
     @Override
@@ -179,38 +224,61 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
 
     public static void toggleChronometer(Boolean command){
 
-        if(command) {
-            movingChrono.setBase(movingChrono.getBase() + SystemClock.elapsedRealtime() - lastPause);
+        if (command) {
+            if (lastPauseStart == 0) {
+                movingChrono.setBase(SystemClock.elapsedRealtime());
+                if (stopAlreadyStarted) {
+                    lastPauseStop = SystemClock.elapsedRealtime();
+                }
+                else {
+                    totalBaseTime = SystemClock.elapsedRealtime();
+                }
+                startAlreadyStarted = true;
+            }
+            else {
+                movingChrono.setBase(movingChrono.getBase() + SystemClock.elapsedRealtime() - lastPauseStart);
+                lastPauseStop = SystemClock.elapsedRealtime();
+            }
             movingChrono.start();
-            lastPause = SystemClock.elapsedRealtime();
             stoppingChrono.stop();
         }
         else {
-            stoppingChrono.setBase(stoppingChrono.getBase() + SystemClock.elapsedRealtime() - lastPause);
+            if (lastPauseStop == 0) {
+                stoppingChrono.setBase(SystemClock.elapsedRealtime());
+                if (startAlreadyStarted) {
+                    lastPauseStart = SystemClock.elapsedRealtime();
+                }
+                else {
+                    totalBaseTime = SystemClock.elapsedRealtime();
+                }
+                stopAlreadyStarted = true;
+            }
+            else {
+                stoppingChrono.setBase(stoppingChrono.getBase() + SystemClock.elapsedRealtime() - lastPauseStop);
+                lastPauseStart = SystemClock.elapsedRealtime();
+            }
             stoppingChrono.start();
-            lastPause = SystemClock.elapsedRealtime();
             movingChrono.stop();
         }
-
     }
 
-    public static void resetChronometer(){
-
-        //imposto il cronometro come Stop
-        lastPause = SystemClock.elapsedRealtime();
-        movingChrono.stop();
-        stoppingChrono.stop();
-
-
-        //reset tempo
-        movingChrono.setBase(SystemClock.elapsedRealtime());
-        stoppingChrono.setBase(SystemClock.elapsedRealtime());
-
-    }
+//    public static void resetChronometer(){
+//
+//        //imposto il cronometro come Stop
+//        lastPause = SystemClock.elapsedRealtime();
+//        movingChrono.stop();
+//        stoppingChrono.stop();
+//
+//
+//        //reset tempo
+//        movingChrono.setBase(SystemClock.elapsedRealtime());
+//        stoppingChrono.setBase(SystemClock.elapsedRealtime());
+//
+//    }
 
     @Override
     public void setSpeedView(float speed) {
         speedView.speedTo(Math.round(speed * 360)/100);
-
     }
+
 }

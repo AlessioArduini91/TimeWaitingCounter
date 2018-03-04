@@ -24,4 +24,5 @@
     <string name="totalTimeLabel">Tempo totale tragitto:</string>
     <string name="totalTime">00:00</string>
     <string name="backToHome">Torna alla Home</string>
+    <string name="defaultPercent">0%</string>
 </resources>
