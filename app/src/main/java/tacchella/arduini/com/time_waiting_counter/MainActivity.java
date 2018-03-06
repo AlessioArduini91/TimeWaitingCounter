@@ -42,8 +42,6 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
     long percentMoving=3, percentStopping=4;
     Boolean test = false;
     private static long totalBaseTime;
-    private static long stopBaseTime;
-    private static long startBaseTime;
     private static long lastPauseStart;
     private static long lastPauseStop;
     private static boolean stopAlreadyStarted = false;
