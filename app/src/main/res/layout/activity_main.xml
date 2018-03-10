@@ -9,53 +9,49 @@
     android:gravity="center_vertical"
     tools:context="tacchella.arduini.com.time_waiting_counter.MainActivity">
 
-
     <LinearLayout
-        android:id="@+id/buttonsMove"
         android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:layout_margin="0dp"
-        android:clickable="true"
-        android:padding="5dp">
+        android:layout_height="150dp"
+        android:id="@+id/chronometers"
+        android:orientation="horizontal"
+        android:weightSum="2">
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="0dp"
+            android:clickable="true"
+            android:layout_weight="1"
+            android:padding="5dp"
+            >
 
-        <include
-            android:id="@+id/chronoMoveLayout"
-            layout="@layout/chronometer_fragment" />
+            <include
+                android:id="@+id/chronoMoveLayout"
+                layout="@layout/chronometer_fragment" />
 
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="0dp"
+            android:clickable="true"
+            android:layout_weight="1"
+            android:padding="5dp">
+
+            <include
+                android:id="@+id/chronoStopLayout"
+                layout="@layout/chronometer_fragment" />
+
+
+        </FrameLayout>
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/buttonsStop"
-        android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:layout_below="@id/buttonsMove"
-        android:layout_margin="0dp"
-        android:clickable="true"
-        android:padding="5dp">
-
-        <include
-            android:id="@+id/chronoStopLayout"
-            layout="@layout/chronometer_fragment" />
-
-
-    </LinearLayout>
-
-
-    <Button
-        android:id="@+id/goToResult"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/buttonsStop"
-        android:layout_centerHorizontal="true"
-        android:background="@color/customActionBarColor"
-        android:text="@string/goToResult"
-        android:textColor="@android:color/white" />
-
-    <LinearLayout
+    <FrameLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="5dp"
-        android:layout_below="@+id/goToResult"
+        android:padding="15dp"
+        android:id="@+id/testframe"
+        android:layout_below="@+id/chronometers"
         android:layout_marginTop="50dp">
 
         <com.github.anastr.speedviewlib.ProgressiveGauge
@@ -68,7 +64,20 @@
             app:sv_speedometerBackColor="@color/gaugeBackGround"
             app:sv_speedometerColor="@color/customActionBarColor" />
 
-    </LinearLayout>
+    </FrameLayout>
+
+    <Button
+        android:id="@+id/goToResult"
+        android:layout_width="150dp"
+        android:layout_below="@id/testframe"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/chronometer_shape"
+        android:text="@string/goToResult"
+        android:textColor="@android:color/white"
+        android:drawableRight="@drawable/ic_results"
+        android:paddingRight="15dp"
+        />
 
     <!--<Button-->
         <!--android:id="@+id/test"-->

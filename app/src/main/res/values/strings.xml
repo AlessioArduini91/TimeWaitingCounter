@@ -1,13 +1,13 @@
 <resources>
     <string name="app_name">Time Waiting Counter</string>
     <string name="title">Speed Test</string>
-    <string name="timeMove">Tempo in Movimento</string>
-    <string name="timeStop">Tempo Fermo</string>
+    <string name="timeMove">In Movimento</string>
+    <string name="timeStop">Fermo</string>
     <string name="timerChronometerMove">0 s</string>
     <string name="timerChronometerStop">5 s</string>
     <string name="percentMove">% Movimento</string>
     <string name="percentStopping">% Fermo</string>
-    <string name="goToResult">Vai ai risultati</string>
+    <string name="goToResult">Risultati</string>
     <string name="speedometer">50 km/h</string>
     <string name="history">Storico</string>
     <string name="speed_unit_of_measure">Km/h</string>

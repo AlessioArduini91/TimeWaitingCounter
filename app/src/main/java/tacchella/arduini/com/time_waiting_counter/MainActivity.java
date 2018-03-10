@@ -1,6 +1,9 @@
 package tacchella.arduini.com.time_waiting_counter;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.content.Intent;
+import android.os.CountDownTimer;
 import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -71,22 +74,20 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
 //                test = !(test);
 //            }
 //        });
-
-        toggleTextView(movingChrono, movingTextView);
-        toggleTextView(stoppingChrono, stoppingTextView);
+//
+        toggleTextView(true, movingTextView);
+        toggleTextView(true, stoppingTextView);
         movingLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                toggleVisibility(movingChrono, percentMovingTextView);
-                toggleTextView(movingChrono, movingTextView);
+                toggleVisibility(movingChrono, movingTextView, percentMovingTextView);
             }
         });
 
         stoppingLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                toggleVisibility(stoppingChrono, percentStoppingTextView);
-                toggleTextView(stoppingChrono, stoppingTextView);
+                toggleVisibility(stoppingChrono, stoppingTextView, percentStoppingTextView);
             }
         });
 
@@ -178,44 +179,55 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
         }
     }
 
-    private void toggleVisibility(Chronometer chrono, TextView percent){
+    private void toggleVisibility(final Chronometer chrono, final TextView label, final TextView percent){
 
         if (chrono.getVisibility() == View.VISIBLE){
-            chrono.setVisibility(View.GONE);
+            toggleTextView(false, label);
             percent.setVisibility(View.VISIBLE);
+            chrono.setVisibility(View.GONE);
             percent.setAlpha(0f);
             percent.animate()
                     .alpha(1f)
                     .setDuration(animationDuration)
-                    .setListener(null);
-        }
-        else{
-            percent.setVisibility(View.GONE);
-            chrono.setVisibility(View.VISIBLE);
-            chrono.setAlpha(0f);
-            chrono.animate()
-                    .alpha(1f)
-                    .setDuration(animationDuration)
-                    .setListener(null);
+                    .setListener(new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationEnd(Animator animator) {
+
+                            new CountDownTimer(1500,500) {
+                                @Override
+                                public void onTick(long l) {
+
+                                }
+
+                                @Override
+                                public void onFinish() {
+                                    percent.setVisibility(View.GONE);
+                                    chrono.setVisibility(View.VISIBLE);
+                                    toggleTextView(true, label);
+                                }
+                            }.start();
+                        }
+                    });
         }
 
     }
 
-    private void toggleTextView(Chronometer chrono, TextView textView) {
-        if (chrono.getVisibility() == View.VISIBLE){
-            if (textView.getId() == R.id.text_view_moving){
-                textView.setText(R.string.timeMove);
+    private void toggleTextView(Boolean mustBeChronometerVisible, TextView label) {
+        if (label.getId() == R.id.text_view_moving){
+            if (mustBeChronometerVisible) {
+                label.setText(R.string.timeMove);
             }
             else {
-                textView.setText(R.string.timeStop);
+                label.setText(R.string.percentMove);
             }
+
         }
         else {
-            if (textView.getId() == R.id.text_view_moving){
-                textView.setText(R.string.percentMove);
+            if (mustBeChronometerVisible) {
+                label.setText(R.string.timeStop);
             }
             else {
-                textView.setText(R.string.percentStopping);
+                label.setText(R.string.percentStopping);
             }
         }
     }
