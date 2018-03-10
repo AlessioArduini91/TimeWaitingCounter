@@ -175,31 +175,31 @@
             android:textColor="@android:color/white" />
 
 
-        <ProgressBar
-            android:id="@+id/loadingBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/backToHome"
-            android:indeterminate="true"
-            android:indeterminateTintMode="src_atop"
-            android:indeterminateTint="@color/customActionBarColor"
-            />
+        <!--<ProgressBar-->
+            <!--android:id="@+id/loadingBar"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_below="@+id/backToHome"-->
+            <!--android:indeterminate="true"-->
+            <!--android:indeterminateTintMode="src_atop"-->
+            <!--android:indeterminateTint="@color/customActionBarColor"-->
+            <!--/>-->
 
-        <TextView
-            android:id="@+id/errorSignal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/loadingBar"
-            android:text="Segnale GPS Assente"
-            />
+        <!--<TextView-->
+            <!--android:id="@+id/errorSignal"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_below="@+id/loadingBar"-->
+            <!--android:text="Segnale GPS Assente"-->
+            <!--/>-->
 
-        <TextView
-            android:id="@+id/errorPermission"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/errorSignal"
-            android:text="Abilitare Permessi GPS"
-            />
+        <!--<TextView-->
+            <!--android:id="@+id/errorPermission"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_below="@+id/errorSignal"-->
+            <!--android:text="Abilitare Permessi GPS"-->
+            <!--/>-->
 
 
     </RelativeLayout>
