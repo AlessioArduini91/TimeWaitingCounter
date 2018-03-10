@@ -12,9 +12,10 @@ public class ResultsActivity  extends AppCompatActivity {
 
     Button backToHome;
 
-    Chronometer timeMovingCM, timeStoppingCM;
-    TextView percentageMovingTV, percentageStoppingTV, totalTimeTV;
-    long timeMoving, timeStopping, percentageMoving, percentageStopping;
+    TextView timeMovingTV, timeStoppingTV;
+    TextView percentageMovingTV, percentageStoppingTV;
+    String timeMoving, timeStopping;
+    long percentageMoving, percentageStopping;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,23 +25,22 @@ public class ResultsActivity  extends AppCompatActivity {
         //inizializzo componenti
         percentageStoppingTV=findViewById(R.id.percentageStop);
         percentageMovingTV=findViewById(R.id.percentageMove);
-        timeStoppingCM=findViewById(R.id.timeStop);
-        timeMovingCM=findViewById(R.id.timeMove);
-        totalTimeTV=findViewById(R.id.totalTime);
+        timeStoppingTV=findViewById(R.id.timeStop);
+        timeMovingTV=findViewById(R.id.timeMove);
 
         //riempio valori
-        timeMoving=(long)getIntent().getExtras().get("timeMoving");
-        timeStopping=(long)getIntent().getExtras().get("timeStopping");
+        timeMoving=(String)getIntent().getExtras().get("timeMoving");
+        timeStopping=(String)getIntent().getExtras().get("timeStopping");
         percentageMoving=(long)getIntent().getExtras().get("percentMoving");
         percentageStopping=(long)getIntent().getExtras().get("percentStopping");
 
         //stampo su schermo valori
 
-        percentageMovingTV.setText(String.valueOf(percentageMoving));
-        percentageStoppingTV.setText(String.valueOf(percentageStopping));
-        timeStoppingCM.setBase(timeStopping);
-        timeMovingCM.setBase(timeMoving);
+        percentageMovingTV.setText(String.valueOf(percentageMoving)+'%');
+        percentageStoppingTV.setText(String.valueOf(percentageStopping)+'%');
 
+        timeStoppingTV.setText(String.valueOf(timeStopping));
+        timeMovingTV.setText(String.valueOf(timeMoving));
 
         //inizializzo gli oggetti
         backToHome= findViewById(R.id.backToHome);
@@ -48,6 +48,7 @@ public class ResultsActivity  extends AppCompatActivity {
         backToHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                MainActivity.resetChronometer();
                 Intent myIntent = new Intent(ResultsActivity.this, MainActivity.class);
                 startActivity(myIntent);
             }

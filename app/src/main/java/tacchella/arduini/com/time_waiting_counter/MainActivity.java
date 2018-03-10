@@ -36,10 +36,8 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
     LinearLayout stoppingLayout;
     private int animationDuration;
     final int ACCESS_FINE_LOCATION_REQUEST_CODE = 5;
-    //boolean usato per scambiare tra pulsante avvio e pulsante stop
-    boolean switchStartButton=true;
-    static long totalRealTime = 0;
-    long percentMoving=3, percentStopping=4;
+
+    long percentMoving=0, percentStopping=0;
     Boolean test = false;
     private static long totalBaseTime;
     private static long lastPauseStart;
@@ -110,14 +108,14 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
         goToResult.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                switchStartButton=true;
 //                resetChronometer();
                 Intent myIntent = new Intent(MainActivity.this, ResultsActivity.class);
 
-                myIntent.putExtra("timeMoving", movingChrono.getBase());
-                myIntent.putExtra("timeStopping", stoppingChrono.getBase());
+                myIntent.putExtra("timeMoving", movingChrono.getText());
+                myIntent.putExtra("timeStopping", stoppingChrono.getText());
                 myIntent.putExtra("percentMoving", percentMoving);
-                myIntent.putExtra("percentStopping", percentStopping);
+                myIntent.putExtra("percentStopping", 100-percentMoving);
+
 
                 startActivity(myIntent);
             }
@@ -133,7 +131,9 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
                     percentStoppingTextView.setText(100 - percentMoving + "%");
                 } else {
                     percentMovingTextView.setText("100%");
+                    percentMoving=100;
                     percentStoppingTextView.setText ("0%");
+                    percentStopping=0;
                 }
             }
         });
@@ -148,7 +148,9 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
                     percentMovingTextView.setText(100 - percentStopping + "%");
                 } else {
                     percentStoppingTextView.setText("100%");
+                    percentStopping=100;
                     percentMovingTextView.setText ("0%");
+                    percentMoving=0;
                 }
             }
         });
@@ -260,19 +262,24 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
         }
     }
 
-//    public static void resetChronometer(){
-//
-//        //imposto il cronometro come Stop
-//        lastPause = SystemClock.elapsedRealtime();
-//        movingChrono.stop();
-//        stoppingChrono.stop();
-//
-//
-//        //reset tempo
-//        movingChrono.setBase(SystemClock.elapsedRealtime());
-//        stoppingChrono.setBase(SystemClock.elapsedRealtime());
-//
-//    }
+    public static void resetChronometer(){
+
+       totalBaseTime=0;
+       lastPauseStart=0;
+       lastPauseStop=0;
+       stopAlreadyStarted = false;
+       startAlreadyStarted = false;
+        //imposto il cronometro come Stop
+        //lastPause = SystemClock.elapsedRealtime();
+        movingChrono.stop();
+        stoppingChrono.stop();
+
+
+        //reset tempo
+        movingChrono.setBase(SystemClock.elapsedRealtime());
+        stoppingChrono.setBase(SystemClock.elapsedRealtime());
+
+    }
 
     @Override
     public void setSpeedView(float speed) {
