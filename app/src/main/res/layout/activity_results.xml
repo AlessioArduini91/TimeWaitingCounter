@@ -1,212 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="tacchella.arduini.com.time_waiting_counter.ResultsActivity">
-
-    <RelativeLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    android:orientation="vertical"
+    android:padding="5dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="20dp"
-            android:clickable="true"
-            android:padding="5dp"
-            android:id="@+id/percentageMoveLine"
-            android:gravity="center_vertical"
-            android:background="@drawable/chronometer_shape"
-            android:orientation="horizontal"
-            android:weightSum="2">
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/chart"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
 
-            <TextView
-                android:id="@+id/percentageMoveLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/percentageMoveLabel"
-                android:textAlignment="center"
-                android:textColor="@android:color/white"
-                android:textSize="18sp" />
+        />
 
-            <TextView
-                android:id="@+id/percentageMove"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textAlignment="center"
-                android:textColor="@android:color/white"
-                android:textSize="24sp"
-                android:text="@string/percentageMove"
-                android:visibility="visible" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="10dp"
-            android:clickable="true"
-            android:padding="5dp"
-            android:id="@+id/percentageStopLine"
-            android:gravity="center_vertical"
-            android:background="@drawable/chronometer_shape"
-            android:orientation="horizontal"
-            android:weightSum="2"
-            android:layout_below="@id/percentageMoveLine">
-
-            <TextView
-                android:id="@+id/percentageStopLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/percentageStopLabel"
-                android:textAlignment="center"
-                android:textColor="@android:color/white"
-                android:textSize="18sp" />
-
-            <TextView
-                android:id="@+id/percentageStop"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textAlignment="center"
-                android:textColor="@android:color/white"
-                android:textSize="24sp"
-                android:text="@string/percentageStop"
-                android:visibility="visible" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="10dp"
-            android:clickable="true"
-            android:padding="5dp"
-            android:id="@+id/minutesMoveLine"
-            android:gravity="center_vertical"
-            android:background="@drawable/chronometer_shape"
-            android:orientation="horizontal"
-            android:weightSum="2"
-            android:layout_below="@id/percentageStopLine">
-
-            <TextView
-                android:id="@+id/minutesMoveLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/minutesMoveLabel"
-                android:textAlignment="center"
-                android:textColor="@android:color/white"
-                android:textSize="18sp" />
-
-            <TextView
-                android:id="@+id/timeMove"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textAlignment="center"
-                android:textColor="@android:color/white"
-                android:textSize="24sp"
-                android:text="@string/minutesMove"
-                android:visibility="visible" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="10dp"
-            android:clickable="true"
-            android:padding="5dp"
-            android:id="@+id/minutesStopLine"
-            android:gravity="center_vertical"
-            android:background="@drawable/chronometer_shape"
-            android:orientation="horizontal"
-            android:weightSum="2"
-            android:layout_below="@id/minutesMoveLine">
-
-            <TextView
-                android:id="@+id/minutesStopLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/minutesStopLabel"
-                android:textAlignment="center"
-                android:textColor="@android:color/white"
-                android:textSize="18sp" />
-
-            <TextView
-                android:id="@+id/timeStop"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textAlignment="center"
-                android:textColor="@android:color/white"
-                android:textSize="24sp"
-                android:text="@string/minutesStop"
-                android:visibility="visible" />
-
-        </LinearLayout>
-
-        <Button
-            android:id="@+id/backToHome"
-            android:layout_width="200dp"
-            android:layout_marginTop="30dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/minutesStopLine"
-            android:background="@color/customActionBarColor"
-            android:layout_centerHorizontal="true"
-            android:text="@string/backToHome"
-            android:textColor="@android:color/white" />
+    <ImageButton
+        android:id="@+id/home"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="15dp"
+        android:background="@android:color/transparent"
+        android:layout_gravity="top|right"
+        app:srcCompat="@drawable/ic_action_home"
+        android:tint="@color/customActionBarColor"
+        android:contentDescription="@string/backToHome"/>
 
 
-        <!--<ProgressBar-->
-            <!--android:id="@+id/loadingBar"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_below="@+id/backToHome"-->
-            <!--android:indeterminate="true"-->
-            <!--android:indeterminateTintMode="src_atop"-->
-            <!--android:indeterminateTint="@color/customActionBarColor"-->
-            <!--/>-->
-
-        <!--<TextView-->
-            <!--android:id="@+id/errorSignal"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_below="@+id/loadingBar"-->
-            <!--android:text="Segnale GPS Assente"-->
-            <!--/>-->
-
-        <!--<TextView-->
-            <!--android:id="@+id/errorPermission"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_below="@+id/errorSignal"-->
-            <!--android:text="Abilitare Permessi GPS"-->
-            <!--/>-->
-
-
-    </RelativeLayout>
-
-</android.support.constraint.ConstraintLayout>
-
-
-
-
-
+</FrameLayout>

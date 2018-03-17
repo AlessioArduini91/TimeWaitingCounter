@@ -6,6 +6,9 @@ import android.location.LocationListener;
 import android.os.Bundle;
 import android.widget.TextView;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 /**
  * Created by alessio on 04/02/18.
  */
@@ -16,9 +19,13 @@ public class SpeedMeterManager {
     boolean moveTime=true;
     boolean stopTime=true;
     SpeedMeterInterface speedMeter;
+    Timer timer = new Timer();
+    float timerSeconds;
+    final long TIMER_INTERVAL = 10000;
 
     interface SpeedMeterInterface {
         void setSpeedView(float speed);
+        void setGraphEntry(float time, float speed);
     }
 
     final LocationListener locationListener = new LocationListener() {
@@ -59,5 +66,12 @@ public class SpeedMeterManager {
     public SpeedMeterManager(Context context){
         speedMeter = (SpeedMeterInterface) context;
         speedMeter.setSpeedView(speed);
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                speedMeter.setGraphEntry(timerSeconds, speed);
+                timerSeconds += 10000;
+            }
+        },0, TIMER_INTERVAL);
     }
 }

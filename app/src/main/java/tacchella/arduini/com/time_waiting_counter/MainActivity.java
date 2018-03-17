@@ -22,6 +22,10 @@ import android.widget.Toast;
 import android.support.annotation.NonNull;
 
 import com.github.anastr.speedviewlib.ProgressiveGauge;
+import com.github.mikephil.charting.data.Entry;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements SpeedMeterManager.SpeedMeterInterface {
 
@@ -47,6 +51,7 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
     private static long lastPauseStop;
     private static boolean stopAlreadyStarted = false;
     private static boolean startAlreadyStarted = false;
+    static List<Entry> chartEntries = new ArrayList<Entry>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,7 +121,6 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
                 myIntent.putExtra("timeStopping", stoppingChrono.getText());
                 myIntent.putExtra("percentMoving", percentMoving);
                 myIntent.putExtra("percentStopping", 100-percentMoving);
-
 
                 startActivity(myIntent);
             }
@@ -286,11 +290,6 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
         movingChrono.stop();
         stoppingChrono.stop();
 
-
-        //reset tempo
-        movingChrono.setBase(SystemClock.elapsedRealtime());
-        stoppingChrono.setBase(SystemClock.elapsedRealtime());
-
     }
 
     @Override
@@ -298,4 +297,12 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
         speedView.speedTo(Math.round(speed * 360)/100);
     }
 
+    @Override
+    public void setGraphEntry(float time, float speed) {
+        chartEntries.add(new Entry(time/1000, Math.round(speed * 360)/100));
+    }
+
+    public static List<Entry> getChartEntries() {
+        return chartEntries;
+    }
 }
