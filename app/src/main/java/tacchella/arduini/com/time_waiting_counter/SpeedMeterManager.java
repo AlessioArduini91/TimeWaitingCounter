@@ -93,6 +93,7 @@ public class SpeedMeterManager {
         timer.cancel();
         timer = new Timer();
         timer.schedule(timerTask, 0, TIMER_INTERVAL);
+        speedMeter.setTimer(timer, timerTask);
     }
 
     public void setMoveTime(Boolean moveTime) {
