@@ -50,7 +50,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="15dp"
-        android:id="@+id/testframe"
+        android:id="@+id/gaugeFrame"
         android:layout_below="@+id/chronometers"
         android:layout_marginTop="50dp">
 
@@ -69,7 +69,7 @@
     <Button
         android:id="@+id/goToResult"
         android:layout_width="150dp"
-        android:layout_below="@id/testframe"
+        android:layout_below="@id/gaugeFrame"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:background="@drawable/chronometer_shape"
@@ -80,12 +80,20 @@
         />
 
     <!--<Button-->
-        <!--android:id="@+id/test"-->
+        <!--android:id="@+id/starttest"-->
         <!--android:layout_width="wrap_content"-->
         <!--android:layout_height="wrap_content"-->
         <!--android:layout_centerVertical="true"-->
         <!--android:layout_toStartOf="@+id/goToResult"-->
-        <!--android:text="Button" />-->
+        <!--android:text="Start" />-->
+
+    <!--<Button-->
+        <!--android:id="@+id/resettest"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_centerVertical="true"-->
+        <!--android:layout_toEndOf="@+id/goToResult"-->
+        <!--android:text="Reset" />-->
 
 </RelativeLayout>
 

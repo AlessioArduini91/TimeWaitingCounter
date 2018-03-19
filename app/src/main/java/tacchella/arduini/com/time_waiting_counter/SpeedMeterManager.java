@@ -16,16 +16,18 @@ import java.util.TimerTask;
 public class SpeedMeterManager {
 
     private float speed = (float) 0.0;
-    boolean moveTime=true;
-    boolean stopTime=true;
+    private boolean moveTime=true;
+    private boolean stopTime=true;
     SpeedMeterInterface speedMeter;
-    Timer timer = new Timer();
+    TimerTask timerTask;
+    Timer timer;
     float timerSeconds;
     final long TIMER_INTERVAL = 10000;
 
     interface SpeedMeterInterface {
         void setSpeedView(float speed);
         void setGraphEntry(float time, float speed);
+        void setTimer(Timer timer, TimerTask timerTask);
     }
 
     final LocationListener locationListener = new LocationListener() {
@@ -66,12 +68,42 @@ public class SpeedMeterManager {
     public SpeedMeterManager(Context context){
         speedMeter = (SpeedMeterInterface) context;
         speedMeter.setSpeedView(speed);
-        timer.schedule(new TimerTask() {
+        timer = new Timer();
+        timerTask = new TimerTask() {
             @Override
             public void run() {
                 speedMeter.setGraphEntry(timerSeconds, speed);
                 timerSeconds += 10000;
             }
-        },0, TIMER_INTERVAL);
+        };
+
+        timer.schedule(timerTask, 0, TIMER_INTERVAL);
+        speedMeter.setTimer(timer, timerTask);
+    }
+
+    public void createNewTimer() {
+        timerTask.cancel();
+        timerTask = new TimerTask() {
+            @Override
+            public void run() {
+                speedMeter.setGraphEntry(timerSeconds, speed);
+                timerSeconds += 10000;
+            }
+        };
+        timer.cancel();
+        timer = new Timer();
+        timer.schedule(timerTask, 0, TIMER_INTERVAL);
+    }
+
+    public void setMoveTime(Boolean moveTime) {
+        this.moveTime = moveTime;
+    }
+
+    public void setStopTime(Boolean stopTime) {
+        this.stopTime = stopTime;
+    }
+
+    public void setTimerSeconds(float timerSeconds) {
+        this.timerSeconds = timerSeconds;
     }
 }

@@ -36,12 +36,12 @@ public class ResultsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 MainActivity.resetChronometer();
-                Intent myIntent = new Intent(ResultsActivity.this, MainActivity.class);
-                startActivity(myIntent);
+                finish();
             }
         });
         LineDataSet dataSet = new LineDataSet(chartEntries, getString(R.string.legendLabel));
         dataSet.setColor(getResources().getColor(R.color.customActionBarColor));
+        dataSet.setLineWidth(3f);
         dataSet.setDrawValues(false);
         dataSet.setDrawCircles(false);
         LineData lineData = new LineData(dataSet);

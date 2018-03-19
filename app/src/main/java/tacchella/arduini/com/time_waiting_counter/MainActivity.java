@@ -26,6 +26,8 @@ import com.github.mikephil.charting.data.Entry;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity implements SpeedMeterManager.SpeedMeterInterface {
 
@@ -35,6 +37,8 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
     TextView stoppingTextView;
     TextView percentMovingTextView;
     TextView percentStoppingTextView;
+    static Timer threadTimer;
+    static TimerTask threadTimerTask;
 
     static Chronometer movingChrono;
     static Chronometer stoppingChrono;
@@ -45,12 +49,13 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
     final int ACCESS_FINE_LOCATION_REQUEST_CODE = 5;
 
     long percentMoving=0, percentStopping=0;
-    Boolean test = false;
+    Boolean testStart = false;
     private static long totalBaseTime;
     private static long lastPauseStart;
     private static long lastPauseStop;
     private static boolean stopAlreadyStarted = false;
     private static boolean startAlreadyStarted = false;
+    private static SpeedMeterManager speedMeterManager;
     static List<Entry> chartEntries = new ArrayList<Entry>();
 
     @Override
@@ -68,16 +73,25 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
         stoppingChrono = stoppingLayout.findViewById(R.id.timeChrono);
         percentMovingTextView = movingLayout.findViewById(R.id.timePercent);
         percentStoppingTextView = stoppingLayout.findViewById(R.id.timePercent);
-//        Button testButton = (Button) findViewById(R.id.test);
-//
-//        testButton.setOnClickListener(new View.OnClickListener(){
+
+        //Button testStartButton = (Button) findViewById(R.id.starttest);
+//        Button testResetButton = (Button) findViewById(R.id.resettest);
+
+//        testStartButton.setOnClickListener(new View.OnClickListener(){
 //            @Override
 //            public void onClick(View v){
-//                toggleChronometer(test);
-//                test = !(test);
+//                toggleChronometer(testStart);
+//                testStart = !(testStart);
 //            }
 //        });
 //
+//        testResetButton.setOnClickListener(new View.OnClickListener(){
+//            @Override
+//            public void onClick(View v){
+//                resetChronometer();
+//            }
+//        });
+
         toggleTextView(true, movingTextView);
         toggleTextView(true, stoppingTextView);
         movingLayout.setOnClickListener(new View.OnClickListener() {
@@ -98,7 +112,7 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
         //inizializzo componenti
         goToResult = findViewById(R.id.goToResult);
 
-        final SpeedMeterManager speedMeterManager = new SpeedMeterManager(this);
+        speedMeterManager = new SpeedMeterManager(this);
 
         int permissionCheck = ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION);
         if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
@@ -115,14 +129,15 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
             @Override
             public void onClick(View v) {
 //                resetChronometer();
-                Intent myIntent = new Intent(MainActivity.this, ResultsActivity.class);
 
-                myIntent.putExtra("timeMoving", movingChrono.getText());
-                myIntent.putExtra("timeStopping", stoppingChrono.getText());
-                myIntent.putExtra("percentMoving", percentMoving);
-                myIntent.putExtra("percentStopping", 100-percentMoving);
+                Intent openResultActivity = new Intent(MainActivity.this, ResultsActivity.class);
 
-                startActivity(myIntent);
+                openResultActivity.putExtra("timeMoving", movingChrono.getText());
+                openResultActivity.putExtra("timeStopping", stoppingChrono.getText());
+                openResultActivity.putExtra("percentMoving", percentMoving);
+                openResultActivity.putExtra("percentStopping", 100-percentMoving);
+
+                startActivity(openResultActivity);
             }
         });
 
@@ -245,6 +260,7 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
                 movingChrono.setBase(SystemClock.elapsedRealtime());
                 if (stopAlreadyStarted) {
                     lastPauseStop = SystemClock.elapsedRealtime();
+                    stoppingChrono.stop();
                 }
                 else {
                     totalBaseTime = SystemClock.elapsedRealtime();
@@ -254,15 +270,16 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
             else {
                 movingChrono.setBase(movingChrono.getBase() + SystemClock.elapsedRealtime() - lastPauseStart);
                 lastPauseStop = SystemClock.elapsedRealtime();
+                stoppingChrono.stop();
             }
             movingChrono.start();
-            stoppingChrono.stop();
         }
         else {
             if (lastPauseStop == 0) {
                 stoppingChrono.setBase(SystemClock.elapsedRealtime());
                 if (startAlreadyStarted) {
                     lastPauseStart = SystemClock.elapsedRealtime();
+                    movingChrono.stop();
                 }
                 else {
                     totalBaseTime = SystemClock.elapsedRealtime();
@@ -272,24 +289,27 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
             else {
                 stoppingChrono.setBase(stoppingChrono.getBase() + SystemClock.elapsedRealtime() - lastPauseStop);
                 lastPauseStart = SystemClock.elapsedRealtime();
+                movingChrono.stop();
             }
             stoppingChrono.start();
-            movingChrono.stop();
         }
     }
 
     public static void resetChronometer(){
-
-       totalBaseTime=0;
-       lastPauseStart=0;
-       lastPauseStop=0;
-       stopAlreadyStarted = false;
-       startAlreadyStarted = false;
-        //imposto il cronometro come Stop
-        //lastPause = SystemClock.elapsedRealtime();
         movingChrono.stop();
         stoppingChrono.stop();
-
+        totalBaseTime=0;
+        lastPauseStart=0;
+        lastPauseStop=0;
+        stopAlreadyStarted = false;
+        startAlreadyStarted = false;
+        chartEntries.clear();
+        movingChrono.setBase(SystemClock.elapsedRealtime());
+        stoppingChrono.setBase(SystemClock.elapsedRealtime());
+        speedMeterManager.createNewTimer();
+        speedMeterManager.setStopTime(true);
+        speedMeterManager.setMoveTime(true);
+        speedMeterManager.setTimerSeconds(0f);
     }
 
     @Override
@@ -300,6 +320,12 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
     @Override
     public void setGraphEntry(float time, float speed) {
         chartEntries.add(new Entry(time/1000, Math.round(speed * 360)/100));
+    }
+
+    @Override
+    public void setTimer(Timer timer, TimerTask timerTask) {
+        threadTimer = timer;
+        threadTimerTask = timerTask;
     }
 
     public static List<Entry> getChartEntries() {

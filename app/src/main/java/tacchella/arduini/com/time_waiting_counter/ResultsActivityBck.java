@@ -54,7 +54,7 @@ public class ResultsActivityBck extends AppCompatActivity {
         backToHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MainActivity.resetChronometer();
+                //MainActivity.resetChronometer();
                 Intent myIntent = new Intent(ResultsActivityBck.this, MainActivity.class);
                 startActivity(myIntent);
             }
