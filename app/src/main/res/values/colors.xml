@@ -6,5 +6,6 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="customActionBarColor">#3860cf</color>
+    <color name="noValueColor">#5c6170</color>
     <color name="gaugeBackGround">#dbe2f5</color>
 </resources>

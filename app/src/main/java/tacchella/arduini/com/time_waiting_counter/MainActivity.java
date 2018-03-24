@@ -327,15 +327,6 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
         speedMeterManager.setStopTime(true);
         speedMeterManager.setMoveTime(true);
     }
-//
-//    public static void reStartChronometers() {
-//        if (isStop) {
-//            toggleChronometer(false);
-//        }
-//        else if (isStart) {
-//            toggleChronometer(true);
-//        }
-//    }
 
     @Override
     public void setSpeedView(float speed) {
@@ -344,7 +335,7 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
 
     @Override
     public void setGraphEntry(float time, float speed) {
-        chartEntries.add(new Entry(time/1000, Math.round(speed * 360)/100));
+        chartEntries.add(new Entry(time/(1000 * 60), Math.round(speed * 360)/100));
     }
 
     @Override

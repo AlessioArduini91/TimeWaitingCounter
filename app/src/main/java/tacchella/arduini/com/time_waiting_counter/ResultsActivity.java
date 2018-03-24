@@ -9,6 +9,7 @@ import android.widget.ImageButton;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.LegendEntry;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
@@ -24,11 +25,22 @@ import java.util.List;
 
 public class ResultsActivity extends AppCompatActivity {
     private List<Entry> chartEntries = new ArrayList<Entry>();
+    private List<LegendEntry> legendEntries = new ArrayList<LegendEntry>();
+    private LegendEntry unitOfMeasureLegend = new LegendEntry();
+    private LegendEntry noValueLegend = new LegendEntry();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_results);
+        unitOfMeasureLegend.formColor = getResources().getColor(R.color.customActionBarColor);
+        unitOfMeasureLegend.label = getString(R.string.legendLabel);
+        unitOfMeasureLegend.form = Legend.LegendForm.CIRCLE;
+        noValueLegend.formColor = getResources().getColor(R.color.noValueColor);
+        noValueLegend.label = getString(R.string.noValueLabel);
+        noValueLegend.form = Legend.LegendForm.CIRCLE;
+        legendEntries.add(unitOfMeasureLegend);
+        legendEntries.add(noValueLegend);
         LineChart chart = (LineChart) findViewById(R.id.chart);
         chartEntries = MainActivity.getChartEntries();
         ImageButton backToHome = findViewById(R.id.home);
@@ -46,7 +58,8 @@ public class ResultsActivity extends AppCompatActivity {
         dataSet.setDrawCircles(false);
         LineData lineData = new LineData(dataSet);
         Legend legend = chart.getLegend();
-        legend.setForm(Legend.LegendForm.CIRCLE);
+//        legend.setForm(Legend.LegendForm.CIRCLE);
+        legend.setCustom(legendEntries);
 
         XAxis xAxis = chart.getXAxis();
         xAxis.setAxisMinimum(0f);
