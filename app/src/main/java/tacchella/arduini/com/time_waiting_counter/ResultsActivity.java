@@ -31,7 +31,7 @@ public class ResultsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_results);
         LineChart chart = (LineChart) findViewById(R.id.chart);
         chartEntries = MainActivity.getChartEntries();
-        ImageButton backToHome= findViewById(R.id.home);
+        ImageButton backToHome = findViewById(R.id.home);
         backToHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -41,7 +41,7 @@ public class ResultsActivity extends AppCompatActivity {
         });
         LineDataSet dataSet = new LineDataSet(chartEntries, getString(R.string.legendLabel));
         dataSet.setColor(getResources().getColor(R.color.customActionBarColor));
-        dataSet.setLineWidth(3f);
+        dataSet.setLineWidth(2f);
         dataSet.setDrawValues(false);
         dataSet.setDrawCircles(false);
         LineData lineData = new LineData(dataSet);

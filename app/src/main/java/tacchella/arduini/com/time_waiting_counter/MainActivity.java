@@ -7,6 +7,7 @@ import android.os.CountDownTimer;
 import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.content.Context;
 import android.widget.Button;
@@ -37,8 +38,6 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
     TextView stoppingTextView;
     TextView percentMovingTextView;
     TextView percentStoppingTextView;
-    static Timer threadTimer;
-    static TimerTask threadTimerTask;
 
     static Chronometer movingChrono;
     static Chronometer stoppingChrono;
@@ -50,6 +49,8 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
 
     long percentMoving=0, percentStopping=0;
     Boolean testStart = false;
+    private static Boolean isStart = false;
+    private static Boolean isStop = false;
     private static long totalBaseTime;
     private static long lastPauseStart;
     private static long lastPauseStop;
@@ -94,6 +95,7 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
 
         toggleTextView(true, movingTextView);
         toggleTextView(true, stoppingTextView);
+
         movingLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -179,11 +181,6 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
-        //reset tempo
-        movingChrono.setBase(SystemClock.elapsedRealtime());
-        stoppingChrono.setBase(SystemClock.elapsedRealtime());
-
     }
 
     @Override
@@ -256,6 +253,8 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
     public static void toggleChronometer(Boolean command){
 
         if (command) {
+            isStart = true;
+            isStop = false;
             if (lastPauseStart == 0) {
                 movingChrono.setBase(SystemClock.elapsedRealtime());
                 if (stopAlreadyStarted) {
@@ -275,6 +274,8 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
             movingChrono.start();
         }
         else {
+            isStart = false;
+            isStop = true;
             if (lastPauseStop == 0) {
                 stoppingChrono.setBase(SystemClock.elapsedRealtime());
                 if (startAlreadyStarted) {
@@ -303,14 +304,38 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
         lastPauseStop=0;
         stopAlreadyStarted = false;
         startAlreadyStarted = false;
+        speedMeterManager.setTimerSeconds(0f);
         chartEntries.clear();
         movingChrono.setBase(SystemClock.elapsedRealtime());
         stoppingChrono.setBase(SystemClock.elapsedRealtime());
         speedMeterManager.createNewTimer();
         speedMeterManager.setStopTime(true);
         speedMeterManager.setMoveTime(true);
-        speedMeterManager.setTimerSeconds(0f);
+
     }
+
+    public static void stopChronometers() {
+        if (isStop) {
+            lastPauseStop = SystemClock.elapsedRealtime();
+            stoppingChrono.stop();
+
+        }
+        else if (isStart) {
+            lastPauseStart = SystemClock.elapsedRealtime();
+            movingChrono.stop();
+        }
+        speedMeterManager.setStopTime(true);
+        speedMeterManager.setMoveTime(true);
+    }
+//
+//    public static void reStartChronometers() {
+//        if (isStop) {
+//            toggleChronometer(false);
+//        }
+//        else if (isStart) {
+//            toggleChronometer(true);
+//        }
+//    }
 
     @Override
     public void setSpeedView(float speed) {
@@ -323,9 +348,8 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
     }
 
     @Override
-    public void setTimer(Timer timer, TimerTask timerTask) {
-        threadTimer = timer;
-        threadTimerTask = timerTask;
+    public void onBackPressed() {
+        moveTaskToBack(true);
     }
 
     public static List<Entry> getChartEntries() {
