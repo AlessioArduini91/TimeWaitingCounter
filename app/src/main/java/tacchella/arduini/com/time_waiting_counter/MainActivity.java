@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
     Boolean testStart = false;
     private static Boolean isStart = false;
     private static Boolean isStop = false;
-    private static long totalBaseTime;
+    private static Boolean gpsSearching = false;
     private static long lastPauseStart;
     private static long lastPauseStop;
     private static boolean stopAlreadyStarted = false;
@@ -75,9 +75,9 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
         percentMovingTextView = movingLayout.findViewById(R.id.timePercent);
         percentStoppingTextView = stoppingLayout.findViewById(R.id.timePercent);
 
-        //Button testStartButton = (Button) findViewById(R.id.starttest);
+//        Button testStartButton = (Button) findViewById(R.id.starttest);
 //        Button testResetButton = (Button) findViewById(R.id.resettest);
-
+//
 //        testStartButton.setOnClickListener(new View.OnClickListener(){
 //            @Override
 //            public void onClick(View v){
@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
 //        testResetButton.setOnClickListener(new View.OnClickListener(){
 //            @Override
 //            public void onClick(View v){
-//                resetChronometer();
+//                stopChronometers();
 //            }
 //        });
 
@@ -130,7 +130,6 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
         goToResult.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                resetChronometer();
 
                 Intent openResultActivity = new Intent(MainActivity.this, ResultsActivity.class);
 
@@ -148,7 +147,7 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
             public void onChronometerTick(Chronometer chronometer) {
                 if (stopAlreadyStarted) {
                     percentMoving = (SystemClock.elapsedRealtime() - movingChrono.getBase()) * 100 /
-                            ((SystemClock.elapsedRealtime() - totalBaseTime));
+                            (SystemClock.elapsedRealtime() - movingChrono.getBase() + lastPauseStop - stoppingChrono.getBase());
                     percentMovingTextView.setText(percentMoving + "%");
                     percentStoppingTextView.setText(100 - percentMoving + "%");
                 } else {
@@ -165,7 +164,7 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
             public void onChronometerTick(Chronometer chronometer) {
                 if (startAlreadyStarted) {
                     percentStopping = (SystemClock.elapsedRealtime() - stoppingChrono.getBase()) * 100 /
-                            ((SystemClock.elapsedRealtime() - totalBaseTime));
+                            (SystemClock.elapsedRealtime() - stoppingChrono.getBase() + lastPauseStart - movingChrono.getBase());
                     percentStoppingTextView.setText(percentStopping + "%");
                     percentMovingTextView.setText(100 - percentStopping + "%");
                 } else {
@@ -253,45 +252,51 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
     public static void toggleChronometer(Boolean command){
 
         if (command) {
-            isStart = true;
-            isStop = false;
             if (lastPauseStart == 0) {
                 movingChrono.setBase(SystemClock.elapsedRealtime());
                 if (stopAlreadyStarted) {
-                    lastPauseStop = SystemClock.elapsedRealtime();
-                    stoppingChrono.stop();
-                }
-                else {
-                    totalBaseTime = SystemClock.elapsedRealtime();
+                    if (!gpsSearching) {
+                        lastPauseStop = SystemClock.elapsedRealtime();
+                        stoppingChrono.stop();
+                    }
+                    gpsSearching = false;
                 }
                 startAlreadyStarted = true;
             }
             else {
                 movingChrono.setBase(movingChrono.getBase() + SystemClock.elapsedRealtime() - lastPauseStart);
-                lastPauseStop = SystemClock.elapsedRealtime();
-                stoppingChrono.stop();
+                if (!gpsSearching) {
+                    lastPauseStop = SystemClock.elapsedRealtime();
+                    stoppingChrono.stop();
+                }
+                gpsSearching = false;
             }
+            isStart = true;
+            isStop = false;
             movingChrono.start();
         }
         else {
-            isStart = false;
-            isStop = true;
             if (lastPauseStop == 0) {
                 stoppingChrono.setBase(SystemClock.elapsedRealtime());
                 if (startAlreadyStarted) {
-                    lastPauseStart = SystemClock.elapsedRealtime();
-                    movingChrono.stop();
-                }
-                else {
-                    totalBaseTime = SystemClock.elapsedRealtime();
+                    if (!gpsSearching) {
+                        lastPauseStart = SystemClock.elapsedRealtime();
+                        movingChrono.stop();
+                    }
+                    gpsSearching = false;
                 }
                 stopAlreadyStarted = true;
             }
             else {
                 stoppingChrono.setBase(stoppingChrono.getBase() + SystemClock.elapsedRealtime() - lastPauseStop);
-                lastPauseStart = SystemClock.elapsedRealtime();
-                movingChrono.stop();
+                if (!gpsSearching) {
+                    lastPauseStart = SystemClock.elapsedRealtime();
+                    movingChrono.stop();
+                }
+                gpsSearching = false;
             }
+            isStart = false;
+            isStop = true;
             stoppingChrono.start();
         }
     }
@@ -299,7 +304,6 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
     public static void resetChronometer(){
         movingChrono.stop();
         stoppingChrono.stop();
-        totalBaseTime=0;
         lastPauseStart=0;
         lastPauseStop=0;
         stopAlreadyStarted = false;
@@ -318,12 +322,17 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
         if (isStop) {
             lastPauseStop = SystemClock.elapsedRealtime();
             stoppingChrono.stop();
-
+            unlockChronometersForNextLoop();
         }
         else if (isStart) {
             lastPauseStart = SystemClock.elapsedRealtime();
             movingChrono.stop();
+            unlockChronometersForNextLoop();
         }
+    }
+
+    private static void unlockChronometersForNextLoop() {
+        gpsSearching = true;
         speedMeterManager.setStopTime(true);
         speedMeterManager.setMoveTime(true);
     }

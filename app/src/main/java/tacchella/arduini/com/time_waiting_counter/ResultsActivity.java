@@ -58,7 +58,6 @@ public class ResultsActivity extends AppCompatActivity {
         dataSet.setDrawCircles(false);
         LineData lineData = new LineData(dataSet);
         Legend legend = chart.getLegend();
-//        legend.setForm(Legend.LegendForm.CIRCLE);
         legend.setCustom(legendEntries);
 
         XAxis xAxis = chart.getXAxis();
@@ -69,14 +68,14 @@ public class ResultsActivity extends AppCompatActivity {
         xAxis.setDrawGridLines(false);
         YAxis yAxis = chart.getAxisLeft();
         yAxis.setTextSize(8f);
-        yAxis.setAxisMinimum(0f); // start at zero
+        yAxis.setAxisMinimum(0f);
         yAxis.setDrawAxisLine(false);
-        yAxis.setDrawGridLines(false); // no grid lines
+        yAxis.setDrawGridLines(false);
         chart.getDescription().setText("");
         chart.setBackgroundColor(getResources().getColor(R.color.gaugeBackGround));
         chart.setHighlightPerDragEnabled(false);
         chart.setHighlightPerTapEnabled(false);
-        chart.getAxisRight().setEnabled(false); // no right axis
+        chart.getAxisRight().setEnabled(false);
         chart.setData(lineData);
         chart.invalidate();
 
