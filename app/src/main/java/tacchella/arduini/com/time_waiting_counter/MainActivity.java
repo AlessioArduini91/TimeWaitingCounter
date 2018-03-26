@@ -13,6 +13,7 @@ import android.view.View;
 import android.content.Context;
 import android.widget.Button;
 import android.widget.Chronometer;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -41,8 +42,7 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
     TextView percentMovingTextView;
     TextView percentStoppingTextView;
     static AnimationDrawable gpsAnimation;
-    ImageView gpsImage;
-
+    static ImageView gpsImage;
     static Chronometer movingChrono;
     static Chronometer stoppingChrono;
 
@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         gpsImage = (ImageView) findViewById(R.id.gps);
-        gpsImage.setImageDrawable(getResources().getDrawable(R.drawable.animation_gps));
+        gpsImage.setImageDrawable(getDrawable(R.drawable.animation_gps));
         gpsAnimation = (AnimationDrawable) gpsImage.getDrawable();
         animationDuration = getResources().getInteger(android.R.integer.config_longAnimTime);
         movingLayout = (LinearLayout) findViewById(R.id.chronoMoveLayout);
@@ -82,23 +82,23 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
         percentMovingTextView = movingLayout.findViewById(R.id.timePercent);
         percentStoppingTextView = stoppingLayout.findViewById(R.id.timePercent);
 
-//        Button testStartButton = (Button) findViewById(R.id.starttest);
-//        Button testResetButton = (Button) findViewById(R.id.resettest);
-//
-//        testStartButton.setOnClickListener(new View.OnClickListener(){
-//            @Override
-//            public void onClick(View v){
-//                toggleChronometer(testStart);
-//                testStart = !(testStart);
-//            }
-//        });
-//
-//        testResetButton.setOnClickListener(new View.OnClickListener(){
-//            @Override
-//            public void onClick(View v){
-//                stopChronometers();
-//            }
-//        });
+        Button testStartButton = (Button) findViewById(R.id.starttest);
+        Button testResetButton = (Button) findViewById(R.id.resettest);
+
+        testStartButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                toggleChronometer(testStart);
+                testStart = !(testStart);
+            }
+        });
+
+        testResetButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                stopChronometers();
+            }
+        });
 
         toggleTextView(true, movingTextView);
         toggleTextView(true, stoppingTextView);
@@ -307,6 +307,7 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
             stoppingChrono.start();
         }
         gpsAnimation.stop();
+        gpsAnimation.selectDrawable(0);
     }
 
     public static void resetChronometer(){
