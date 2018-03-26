@@ -40,22 +40,22 @@ public class SpeedMeterManager {
     final LocationListener locationListener = new LocationListener() {
         @Override
         public void onLocationChanged(Location location) {
-//            if (!checkGps) {
-//                checkGps = true;
-//            }
-//            noSignal = false;
-//            speed = location.getSpeed();
-//            speedMeter.setSpeedView(speed);
-//                // false = stop
-//            if (speed < 1.0 && moveTime) {
-//                MainActivity.toggleChronometer(false);
-//                moveTime = false;
-//                stopTime = true;
-//            } else if (speed >= 1.0 && stopTime) {
-//                MainActivity.toggleChronometer(true);
-//                moveTime = true;
-//                stopTime = false;
-//            }
+            if (!checkGps) {
+                checkGps = true;
+            }
+            noSignal = false;
+            speed = location.getSpeed();
+            speedMeter.setSpeedView(speed);
+                // false = stop
+            if (speed < 1.0 && moveTime) {
+                MainActivity.toggleChronometer(false);
+                moveTime = false;
+                stopTime = true;
+            } else if (speed >= 1.0 && stopTime) {
+                MainActivity.toggleChronometer(true);
+                moveTime = true;
+                stopTime = false;
+            }
 
         }
 
@@ -105,12 +105,12 @@ public class SpeedMeterManager {
         checkTimerTask = new TimerTask() {
             @Override
             public void run() {
-//                if (noSignal && checkGps) {
-//                    MainActivity.stopChronometers();
-//                    checkGps = false;
-//                }
-//
-//                noSignal = true;
+                if (noSignal && checkGps) {
+                    MainActivity.stopChronometers();
+                    checkGps = false;
+                }
+
+                noSignal = true;
             }
         };
 

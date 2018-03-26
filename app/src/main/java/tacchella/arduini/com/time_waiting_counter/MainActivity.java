@@ -82,23 +82,23 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
         percentMovingTextView = movingLayout.findViewById(R.id.timePercent);
         percentStoppingTextView = stoppingLayout.findViewById(R.id.timePercent);
 
-        Button testStartButton = (Button) findViewById(R.id.starttest);
-        Button testResetButton = (Button) findViewById(R.id.resettest);
-
-        testStartButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                toggleChronometer(testStart);
-                testStart = !(testStart);
-            }
-        });
-
-        testResetButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                stopChronometers();
-            }
-        });
+//        Button testStartButton = (Button) findViewById(R.id.starttest);
+//        Button testResetButton = (Button) findViewById(R.id.resettest);
+//
+//        testStartButton.setOnClickListener(new View.OnClickListener(){
+//            @Override
+//            public void onClick(View v){
+//                toggleChronometer(testStart);
+//                testStart = !(testStart);
+//            }
+//        });
+//
+//        testResetButton.setOnClickListener(new View.OnClickListener(){
+//            @Override
+//            public void onClick(View v){
+//                stopChronometers();
+//            }
+//        });
 
         toggleTextView(true, movingTextView);
         toggleTextView(true, stoppingTextView);
