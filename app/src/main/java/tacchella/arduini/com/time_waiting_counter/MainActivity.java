@@ -328,17 +328,16 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
 
     public static void stopChronometers() {
         if (isStop) {
-            gpsAnimation.start();
             lastPauseStop = SystemClock.elapsedRealtime();
             stoppingChrono.stop();
             unlockChronometersForNextLoop();
         }
         else if (isStart) {
-            gpsAnimation.start();
             lastPauseStart = SystemClock.elapsedRealtime();
             movingChrono.stop();
             unlockChronometersForNextLoop();
         }
+        gpsAnimation.start();
     }
 
     private static void unlockChronometersForNextLoop() {
