@@ -1,101 +1,119 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/relativeLayoutMain"
+    android:id="@+id/frameLayoutMain"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center_vertical"
     tools:context="tacchella.arduini.com.time_waiting_counter.MainActivity">
 
-    <LinearLayout
+    <RelativeLayout
+        android:id="@+id/relativeLayoutMain"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:id="@+id/chronometers"
-        android:orientation="horizontal"
-        android:weightSum="2">
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="0dp"
-            android:clickable="true"
-            android:layout_weight="1"
-            android:padding="5dp"
-            >
+        android:layout_height="match_parent"
+        android:gravity="center_vertical">
 
-            <include
-                android:id="@+id/chronoMoveLayout"
-                layout="@layout/chronometer_fragment" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:id="@+id/chronometers"
+            android:orientation="horizontal"
+            android:weightSum="2">
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clickable="true"
+                android:layout_weight="1"
+                android:padding="5dp"
+                >
+
+                <include
+                    android:id="@+id/chronoMoveLayout"
+                    layout="@layout/chronometer_fragment" />
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="0dp"
+                android:clickable="true"
+                android:layout_weight="1"
+                android:padding="5dp">
+
+                <include
+                    android:id="@+id/chronoStopLayout"
+                    layout="@layout/chronometer_fragment" />
+
+
+            </FrameLayout>
+        </LinearLayout>
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="15dp"
+            android:id="@+id/gaugeFrame"
+            android:layout_below="@+id/chronometers"
+            android:layout_marginTop="50dp">
+
+            <com.github.anastr.speedviewlib.ProgressiveGauge
+                android:id="@+id/speedView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:sv_maxSpeed="130"
+                app:sv_minSpeed="0"
+                app:sv_withTremble="false"
+                app:sv_speedometerBackColor="@color/gaugeBackGround"
+                app:sv_speedometerColor="@color/customActionBarColor" />
 
         </FrameLayout>
 
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="0dp"
-            android:clickable="true"
-            android:layout_weight="1"
-            android:padding="5dp">
+        <Button
+            android:id="@+id/goToResult"
+            android:layout_width="150dp"
+            android:layout_below="@id/gaugeFrame"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/chronometer_shape"
+            android:text="@string/goToResult"
+            android:textColor="@android:color/white"
+            android:drawableRight="@drawable/ic_results"
+            android:paddingRight="15dp"
+            />
 
-            <include
-                android:id="@+id/chronoStopLayout"
-                layout="@layout/chronometer_fragment" />
 
+        <!--<Button-->
+            <!--android:id="@+id/starttest"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:layout_toStartOf="@+id/goToResult"-->
+            <!--android:text="Start" />-->
 
-        </FrameLayout>
-    </LinearLayout>
+        <!--<Button-->
+            <!--android:id="@+id/resettest"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:layout_toEndOf="@+id/goToResult"-->
+            <!--android:text="Reset" />-->
+    </RelativeLayout>
 
-    <FrameLayout
+    <ImageButton
+        android:id="@+id/gps"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="15dp"
-        android:id="@+id/gaugeFrame"
-        android:layout_below="@+id/chronometers"
-        android:layout_marginTop="50dp">
+        android:background="@android:color/transparent"
+        android:layout_gravity="bottom|left"
+        android:tint="@color/customActionBarColor"
+        android:contentDescription="@string/gpSignal"/>
 
-        <com.github.anastr.speedviewlib.ProgressiveGauge
-            android:id="@+id/speedView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:sv_maxSpeed="130"
-            app:sv_minSpeed="0"
-            app:sv_withTremble="false"
-            app:sv_speedometerBackColor="@color/gaugeBackGround"
-            app:sv_speedometerColor="@color/customActionBarColor" />
-
-    </FrameLayout>
-
-    <Button
-        android:id="@+id/goToResult"
-        android:layout_width="150dp"
-        android:layout_below="@id/gaugeFrame"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:background="@drawable/chronometer_shape"
-        android:text="@string/goToResult"
-        android:textColor="@android:color/white"
-        android:drawableRight="@drawable/ic_results"
-        android:paddingRight="15dp"
-        />
-
-    <!--<Button-->
-        <!--android:id="@+id/starttest"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_centerVertical="true"-->
-        <!--android:layout_toStartOf="@+id/goToResult"-->
-        <!--android:text="Start" />-->
-
-    <!--<Button-->
-        <!--android:id="@+id/resettest"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_centerVertical="true"-->
-        <!--android:layout_toEndOf="@+id/goToResult"-->
-        <!--android:text="Reset" />-->
-
-</RelativeLayout>
+</FrameLayout>
 
 
 

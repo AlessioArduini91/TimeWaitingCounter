@@ -3,6 +3,8 @@ package tacchella.arduini.com.time_waiting_counter;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.content.Intent;
+import android.graphics.drawable.AnimationDrawable;
+import android.media.Image;
 import android.os.CountDownTimer;
 import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
@@ -11,6 +13,7 @@ import android.view.View;
 import android.content.Context;
 import android.widget.Button;
 import android.widget.Chronometer;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.content.pm.PackageManager;
@@ -37,6 +40,8 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
     TextView stoppingTextView;
     TextView percentMovingTextView;
     TextView percentStoppingTextView;
+    static AnimationDrawable gpsAnimation;
+    ImageView gpsImage;
 
     static Chronometer movingChrono;
     static Chronometer stoppingChrono;
@@ -62,6 +67,9 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        gpsImage = (ImageView) findViewById(R.id.gps);
+        gpsImage.setImageDrawable(getResources().getDrawable(R.drawable.animation_gps));
+        gpsAnimation = (AnimationDrawable) gpsImage.getDrawable();
         animationDuration = getResources().getInteger(android.R.integer.config_longAnimTime);
         movingLayout = (LinearLayout) findViewById(R.id.chronoMoveLayout);
         stoppingLayout = (LinearLayout) findViewById(R.id.chronoStopLayout);
@@ -298,6 +306,7 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
             isStop = true;
             stoppingChrono.start();
         }
+        gpsAnimation.stop();
     }
 
     public static void resetChronometer(){
@@ -319,11 +328,13 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
 
     public static void stopChronometers() {
         if (isStop) {
+            gpsAnimation.start();
             lastPauseStop = SystemClock.elapsedRealtime();
             stoppingChrono.stop();
             unlockChronometersForNextLoop();
         }
         else if (isStart) {
+            gpsAnimation.start();
             lastPauseStart = SystemClock.elapsedRealtime();
             movingChrono.stop();
             unlockChronometersForNextLoop();
