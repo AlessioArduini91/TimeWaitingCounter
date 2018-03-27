@@ -1,16 +1,14 @@
-package tacchella.arduini.com.time_waiting_counter;
+package tacchella.arduini.com.time_waiting_counter.SupportClasses;
 
 import android.content.Context;
 import android.location.Location;
 import android.location.LocationListener;
 import android.os.Bundle;
-import android.util.Log;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import java.io.BufferedOutputStream;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import tacchella.arduini.com.time_waiting_counter.MainActivity;
 
 /**
  * Created by alessio on 04/02/18.
@@ -32,12 +30,12 @@ public class SpeedMeterManager {
     final long TIMER_INTERVAL_GPS = 5000;
     Boolean noSignal = false;
 
-    interface SpeedMeterInterface {
+    public interface SpeedMeterInterface {
         void setSpeedView(float speed);
         void setGraphEntry(float time, float speed);
     }
 
-    final LocationListener locationListener = new LocationListener() {
+    public final LocationListener locationListener = new LocationListener() {
         @Override
         public void onLocationChanged(Location location) {
             if (!checkGps) {

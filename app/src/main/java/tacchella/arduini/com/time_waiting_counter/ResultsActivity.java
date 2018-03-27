@@ -1,7 +1,5 @@
 package tacchella.arduini.com.time_waiting_counter;
 
-import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -19,6 +17,8 @@ import com.github.mikephil.charting.data.LineDataSet;
 import java.util.ArrayList;
 import java.util.List;
 
+import tacchella.arduini.com.time_waiting_counter.SupportClasses.ChartFormatter;
+
 /**
  * Created by alessio on 17/03/18.
  */
@@ -33,16 +33,18 @@ public class ResultsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_results);
-        unitOfMeasureLegend.formColor = getResources().getColor(R.color.customActionBarColor);
-        unitOfMeasureLegend.label = getString(R.string.legendLabel);
-        unitOfMeasureLegend.form = Legend.LegendForm.CIRCLE;
-        noValueLegend.formColor = getResources().getColor(R.color.noValueColor);
-        noValueLegend.label = getString(R.string.noValueLabel);
-        noValueLegend.form = Legend.LegendForm.CIRCLE;
+        unitOfMeasureLegend =
+                ChartFormatter.formatLegendEntry(getResources().getColor(R.color.customActionBarColor), getString(R.string.legendLabel));
+        noValueLegend =
+                ChartFormatter.formatLegendEntry(getResources().getColor(R.color.noValueColor), getString(R.string.noValueLabel));
         legendEntries.add(unitOfMeasureLegend);
         legendEntries.add(noValueLegend);
+
         LineChart chart = (LineChart) findViewById(R.id.chart);
         chartEntries = MainActivity.getChartEntries();
+        Legend legend = chart.getLegend();
+        legend.setCustom(legendEntries);
+
         ImageButton backToHome = findViewById(R.id.home);
         backToHome.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -51,33 +53,16 @@ public class ResultsActivity extends AppCompatActivity {
                 finish();
             }
         });
-        LineDataSet dataSet = new LineDataSet(chartEntries, getString(R.string.legendLabel));
-        dataSet.setColor(getResources().getColor(R.color.customActionBarColor));
-        dataSet.setLineWidth(2f);
-        dataSet.setDrawValues(false);
-        dataSet.setDrawCircles(false);
-        LineData lineData = new LineData(dataSet);
-        Legend legend = chart.getLegend();
-        legend.setCustom(legendEntries);
+
+        LineDataSet formattedDataSet =
+                ChartFormatter.formatLineDataSet(chartEntries, getString(R.string.legendLabel), getResources().getColor(R.color.customActionBarColor), 2f );
+        LineData lineData = new LineData(formattedDataSet);
 
         XAxis xAxis = chart.getXAxis();
-        xAxis.setAxisMinimum(0f);
-        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        xAxis.setTextSize(8f);
-        xAxis.setDrawAxisLine(false);
-        xAxis.setDrawGridLines(false);
         YAxis yAxis = chart.getAxisLeft();
-        yAxis.setTextSize(8f);
-        yAxis.setAxisMinimum(0f);
-        yAxis.setDrawAxisLine(false);
-        yAxis.setDrawGridLines(false);
-        chart.getDescription().setText("");
-        chart.setBackgroundColor(getResources().getColor(R.color.gaugeBackGround));
-        chart.setHighlightPerDragEnabled(false);
-        chart.setHighlightPerTapEnabled(false);
-        chart.getAxisRight().setEnabled(false);
-        chart.setData(lineData);
-        chart.invalidate();
+        ChartFormatter.formatXAxis(xAxis);
+        ChartFormatter.formatYAxis(yAxis);
 
+        ChartFormatter.formatChart(chart, getResources().getColor(R.color.gaugeBackGround), lineData);
     }
 }
