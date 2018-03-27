@@ -38,7 +38,7 @@ public class ResultsActivity extends AppCompatActivity {
         noValueLegend =
                 ChartFormatter.formatLegendEntry(getResources().getColor(R.color.noValueColor), getString(R.string.noValueLabel));
         legendEntries.add(unitOfMeasureLegend);
-        legendEntries.add(noValueLegend);
+        //(legendEntries.add(noValueLegend);
 
         LineChart chart = (LineChart) findViewById(R.id.chart);
         chartEntries = MainActivity.getChartEntries();
@@ -55,7 +55,7 @@ public class ResultsActivity extends AppCompatActivity {
         });
 
         LineDataSet formattedDataSet =
-                ChartFormatter.formatLineDataSet(chartEntries, getString(R.string.legendLabel), getResources().getColor(R.color.customActionBarColor), 2f );
+                ChartFormatter.formatLineDataSet(chartEntries, null, getResources().getColor(R.color.customActionBarColor), 2f );
         LineData lineData = new LineData(formattedDataSet);
 
         XAxis xAxis = chart.getXAxis();
