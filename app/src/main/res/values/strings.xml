@@ -24,6 +24,7 @@
     <string name="backToHome">Torna alla Home</string>
     <string name="gpsSignal">Gps Signal</string>
     <string name="stop">Stop</string>
+    <string name="reload">Reload</string>
     <string name="defaultPercent">0%</string>
     <string name="legendLabel">Km/h / Min.</string>
     <string name="noValueLabel">Non disponibile</string>

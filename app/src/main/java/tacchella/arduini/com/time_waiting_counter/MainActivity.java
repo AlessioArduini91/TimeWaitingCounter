@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
 
     Button goToResult;
     ImageButton stop;
+    ImageButton reload;
     ProgressiveGauge speedView;
     TextView movingTextView;
     TextView stoppingTextView;
@@ -87,23 +88,30 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
         percentMovingTextView = movingLayout.findViewById(R.id.timePercent);
         percentStoppingTextView = stoppingLayout.findViewById(R.id.timePercent);
 
-        Button testStartButton = (Button) findViewById(R.id.starttest);
-        Button testResetButton = (Button) findViewById(R.id.resettest);
+//        Button testStartButton = (Button) findViewById(R.id.starttest);
+//        Button testResetButton = (Button) findViewById(R.id.resettest);
 
-        testStartButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                toggleChronometer(testStart);
-                testStart = !(testStart);
-            }
-        });
+        speedView = (ProgressiveGauge) findViewById(R.id.speedView);
+        goToResult = findViewById(R.id.goToResult);
+        stop = findViewById(R.id.stop);
+        reload = findViewById(R.id.reload);
+        speedMeterManager = new SpeedMeterManager(this);
 
-        testResetButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                stopChronometers();
-            }
-        });
+
+//        testStartButton.setOnClickListener(new View.OnClickListener(){
+//            @Override
+//            public void onClick(View v){
+//                toggleChronometer(testStart);
+//                testStart = !(testStart);
+//            }
+//        });
+//
+//        testResetButton.setOnClickListener(new View.OnClickListener(){
+//            @Override
+//            public void onClick(View v){
+//                stopChronometers();
+//            }
+//        });
 
         toggleTextView(true, movingTextView);
         toggleTextView(true, stoppingTextView);
@@ -121,13 +129,6 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
                 toggleVisibility(stoppingChrono, stoppingTextView, percentStoppingTextView);
             }
         });
-
-        speedView = (ProgressiveGauge) findViewById(R.id.speedView);
-        //inizializzo componenti
-        goToResult = findViewById(R.id.goToResult);
-        stop = findViewById(R.id.stop);
-
-        speedMeterManager = new SpeedMeterManager(this);
 
         int permissionCheck = ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION);
         if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
@@ -159,6 +160,13 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
             @Override
             public void onClick(View v) {
                 stop();
+            }
+        });
+
+        reload.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                reload();
             }
         });
 
@@ -323,7 +331,7 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
         gpsAnimation.selectDrawable(0);
     }
 
-    public static void resetChronometer(){
+    public static void resetChronometers(){
         movingChrono.stop();
         stoppingChrono.stop();
         lastPauseStart=0;
@@ -353,6 +361,23 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
         }
 
         locationManager.removeUpdates(speedMeterManager.locationListener);
+        toggleIconVisibility(false);
+    }
+
+    public void reload() {
+        resetChronometers();
+        int permissionCheck = ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION);
+        if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(MainActivity.this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    ACCESS_FINE_LOCATION_REQUEST_CODE);
+        }
+        else {
+            locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, speedMeterManager.locationListener);
+        }
+
+        toggleIconVisibility(true);
     }
 
     public static void stopChronometers() {
@@ -373,6 +398,18 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
         gpsSearching = true;
         speedMeterManager.setStopTime(true);
         speedMeterManager.setMoveTime(true);
+    }
+
+    private void toggleIconVisibility(Boolean canStop) {
+        if (canStop) {
+            stop.setVisibility(View.VISIBLE);
+            reload.setVisibility(View.GONE);
+            gpsImage.setVisibility(View.VISIBLE);
+        } else {
+            stop.setVisibility(View.GONE);
+            reload.setVisibility(View.VISIBLE);
+            gpsImage.setVisibility(View.GONE);
+        }
     }
 
     @Override
