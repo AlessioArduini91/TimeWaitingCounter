@@ -5,6 +5,9 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.os.Bundle;
 
+import java.sql.Time;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -25,6 +28,8 @@ public class SpeedMeterManager {
     TimerTask checkTimerTask;
     Timer timer;
     Timer checkTimer;
+    List<Timer> timerList = new ArrayList<Timer>();
+    List<TimerTask> timerTaskList = new ArrayList<TimerTask>();
     float timerSeconds;
     final long TIMER_INTERVAL = 10000;
     final long TIMER_INTERVAL_GPS = 5000;
@@ -33,27 +38,29 @@ public class SpeedMeterManager {
     public interface SpeedMeterInterface {
         void setSpeedView(float speed);
         void setGraphEntry(float time, float speed);
+        void setTimers(List<Timer> timers);
+        void setTimerTasks(List<TimerTask> timerTasks);
     }
 
     public final LocationListener locationListener = new LocationListener() {
         @Override
         public void onLocationChanged(Location location) {
-            if (!checkGps) {
-                checkGps = true;
-            }
-            noSignal = false;
-            speed = location.getSpeed();
-            speedMeter.setSpeedView(speed);
-                // false = stop
-            if (speed < 1.0 && moveTime) {
-                MainActivity.toggleChronometer(false);
-                moveTime = false;
-                stopTime = true;
-            } else if (speed >= 1.0 && stopTime) {
-                MainActivity.toggleChronometer(true);
-                moveTime = true;
-                stopTime = false;
-            }
+//            if (!checkGps) {
+//                checkGps = true;
+//            }
+//            noSignal = false;
+//            speed = location.getSpeed();
+//            speedMeter.setSpeedView(speed);
+//                // false = stop
+//            if (speed < 1.0 && moveTime) {
+//                MainActivity.toggleChronometer(false);
+//                moveTime = false;
+//                stopTime = true;
+//            } else if (speed >= 1.0 && stopTime) {
+//                MainActivity.toggleChronometer(true);
+//                moveTime = true;
+//                stopTime = false;
+//            }
 
         }
 
@@ -114,6 +121,14 @@ public class SpeedMeterManager {
 
         checkTimer = new Timer();
         checkTimer.schedule(checkTimerTask, 0, TIMER_INTERVAL_GPS);
+
+        timerList.add(timer);
+        timerList.add(checkTimer);
+        timerTaskList.add(timerTask);
+        timerTaskList.add(checkTimerTask);
+
+        speedMeter.setTimers(timerList);
+        speedMeter.setTimerTasks(timerTaskList);
     }
 
     public void setMoveTime(Boolean moveTime) {

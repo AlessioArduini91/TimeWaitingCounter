@@ -12,6 +12,7 @@ import android.view.View;
 import android.content.Context;
 import android.widget.Button;
 import android.widget.Chronometer;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -28,21 +29,27 @@ import com.github.mikephil.charting.data.Entry;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import tacchella.arduini.com.time_waiting_counter.SupportClasses.SpeedMeterManager;
 
 public class MainActivity extends AppCompatActivity implements SpeedMeterManager.SpeedMeterInterface {
 
     Button goToResult;
+    ImageButton stop;
     ProgressiveGauge speedView;
     TextView movingTextView;
     TextView stoppingTextView;
     TextView percentMovingTextView;
     TextView percentStoppingTextView;
+    LocationManager locationManager;
     static AnimationDrawable gpsAnimation;
     static ImageView gpsImage;
     static Chronometer movingChrono;
     static Chronometer stoppingChrono;
+    List<Timer> timers;
+    List<TimerTask> timerTasks;
 
     LinearLayout movingLayout;
     LinearLayout stoppingLayout;
@@ -80,23 +87,23 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
         percentMovingTextView = movingLayout.findViewById(R.id.timePercent);
         percentStoppingTextView = stoppingLayout.findViewById(R.id.timePercent);
 
-//        Button testStartButton = (Button) findViewById(R.id.starttest);
-//        Button testResetButton = (Button) findViewById(R.id.resettest);
-//
-//        testStartButton.setOnClickListener(new View.OnClickListener(){
-//            @Override
-//            public void onClick(View v){
-//                toggleChronometer(testStart);
-//                testStart = !(testStart);
-//            }
-//        });
-//
-//        testResetButton.setOnClickListener(new View.OnClickListener(){
-//            @Override
-//            public void onClick(View v){
-//                stopChronometers();
-//            }
-//        });
+        Button testStartButton = (Button) findViewById(R.id.starttest);
+        Button testResetButton = (Button) findViewById(R.id.resettest);
+
+        testStartButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                toggleChronometer(testStart);
+                testStart = !(testStart);
+            }
+        });
+
+        testResetButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                stopChronometers();
+            }
+        });
 
         toggleTextView(true, movingTextView);
         toggleTextView(true, stoppingTextView);
@@ -118,6 +125,7 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
         speedView = (ProgressiveGauge) findViewById(R.id.speedView);
         //inizializzo componenti
         goToResult = findViewById(R.id.goToResult);
+        stop = findViewById(R.id.stop);
 
         speedMeterManager = new SpeedMeterManager(this);
 
@@ -128,7 +136,7 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
                     ACCESS_FINE_LOCATION_REQUEST_CODE);
         }
         else {
-            LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+            locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, speedMeterManager.locationListener);
         }
 
@@ -144,6 +152,13 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
                 openResultActivity.putExtra("percentStopping", 100-percentMoving);
 
                 startActivity(openResultActivity);
+            }
+        });
+
+        stop.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                stop();
             }
         });
 
@@ -325,6 +340,21 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
 
     }
 
+    public void stop() {
+        movingChrono.stop();
+        stoppingChrono.stop();
+
+        for (Timer timer : timers) {
+            timer.cancel();
+        }
+
+        for (TimerTask timerTask : timerTasks) {
+            timerTask.cancel();
+        }
+
+        locationManager.removeUpdates(speedMeterManager.locationListener);
+    }
+
     public static void stopChronometers() {
         if (isStop) {
             lastPauseStop = SystemClock.elapsedRealtime();
@@ -358,6 +388,16 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
     @Override
     public void onBackPressed() {
         moveTaskToBack(true);
+    }
+
+    @Override
+    public void setTimers(List<Timer> timers) {
+        this.timers = timers;
+    }
+
+    @Override
+    public void setTimerTasks(List<TimerTask> timerTasks) {
+        this.timerTasks = timerTasks;
     }
 
     public static List<Entry> getChartEntries() {

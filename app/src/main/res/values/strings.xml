@@ -22,7 +22,8 @@
     <string name="minutesMoveLabel">Tempo in Movimento:</string>
     <string name="minutesMove">00:00</string>
     <string name="backToHome">Torna alla Home</string>
-    <string name="gpSignal">Gps Signal</string>
+    <string name="gpsSignal">Gps Signal</string>
+    <string name="stop">Stop</string>
     <string name="defaultPercent">0%</string>
     <string name="legendLabel">Km/h / Min.</string>
     <string name="noValueLabel">Non disponibile</string>

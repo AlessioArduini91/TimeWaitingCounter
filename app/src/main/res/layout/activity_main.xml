@@ -85,22 +85,21 @@
             android:paddingRight="15dp"
             />
 
+        <Button
+            android:id="@+id/starttest"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toStartOf="@+id/goToResult"
+            android:text="Start" />
 
-        <!--<Button-->
-            <!--android:id="@+id/starttest"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_centerVertical="true"-->
-            <!--android:layout_toStartOf="@+id/goToResult"-->
-            <!--android:text="Start" />-->
-
-        <!--<Button-->
-            <!--android:id="@+id/resettest"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_centerVertical="true"-->
-            <!--android:layout_toEndOf="@+id/goToResult"-->
-            <!--android:text="Reset" />-->
+        <Button
+            android:id="@+id/resettest"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@+id/goToResult"
+            android:text="Reset" />
     </RelativeLayout>
 
     <ImageButton
@@ -111,7 +110,18 @@
         android:background="@android:color/transparent"
         android:layout_gravity="bottom|left"
         android:tint="@color/customActionBarColor"
-        android:contentDescription="@string/gpSignal"/>
+        android:contentDescription="@string/gpsSignal"/>
+
+    <ImageButton
+        android:id="@+id/stop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="15dp"
+        android:background="@android:color/transparent"
+        android:layout_gravity="bottom|right"
+        android:tint="@color/customActionBarColor"
+        android:contentDescription="@string/stop"
+        app:srcCompat="@drawable/ic_stop" />
 
 </FrameLayout>
 
