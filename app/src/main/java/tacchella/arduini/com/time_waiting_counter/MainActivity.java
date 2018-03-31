@@ -3,11 +3,16 @@ package tacchella.arduini.com.time_waiting_counter;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.content.Intent;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.AnimationDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.CountDownTimer;
 import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.content.Context;
 import android.widget.Button;
@@ -37,13 +42,14 @@ import tacchella.arduini.com.time_waiting_counter.SupportClasses.SpeedMeterManag
 public class MainActivity extends AppCompatActivity implements SpeedMeterManager.SpeedMeterInterface {
 
     Button goToResult;
-    ImageButton stop;
-    ImageButton reload;
     ProgressiveGauge speedView;
     TextView movingTextView;
     TextView stoppingTextView;
     TextView percentMovingTextView;
     TextView percentStoppingTextView;
+    Toolbar mainToolbar;
+    Drawable stopDrawable;
+    Drawable reloadDrawable;
     LocationManager locationManager;
     static AnimationDrawable gpsAnimation;
     static ImageView gpsImage;
@@ -67,6 +73,8 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
     private static boolean stopAlreadyStarted = false;
     private static boolean startAlreadyStarted = false;
     private static SpeedMeterManager speedMeterManager;
+    private Boolean systemInStop = false;
+    private Boolean systemReload = false;
     static List<Entry> chartEntries = new ArrayList<Entry>();
 
     @Override
@@ -93,9 +101,9 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
 
         speedView = (ProgressiveGauge) findViewById(R.id.speedView);
         goToResult = findViewById(R.id.goToResult);
-        stop = findViewById(R.id.stop);
-        reload = findViewById(R.id.reload);
         speedMeterManager = new SpeedMeterManager(this);
+        mainToolbar = (Toolbar) findViewById(R.id.mainToolbar);
+        setSupportActionBar(mainToolbar);
 
 
 //        testStartButton.setOnClickListener(new View.OnClickListener(){
@@ -153,20 +161,6 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
                 openResultActivity.putExtra("percentStopping", 100-percentMoving);
 
                 startActivity(openResultActivity);
-            }
-        });
-
-        stop.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                stop();
-            }
-        });
-
-        reload.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                reload();
             }
         });
 
@@ -349,35 +343,35 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
     }
 
     public void stop() {
-        movingChrono.stop();
-        stoppingChrono.stop();
+            movingChrono.stop();
+            stoppingChrono.stop();
 
-        for (Timer timer : timers) {
-            timer.cancel();
-        }
+            for (Timer timer : timers) {
+                timer.cancel();
+            }
 
-        for (TimerTask timerTask : timerTasks) {
-            timerTask.cancel();
-        }
+            for (TimerTask timerTask : timerTasks) {
+                timerTask.cancel();
+            }
 
-        locationManager.removeUpdates(speedMeterManager.locationListener);
-        toggleIconVisibility(false);
+            locationManager.removeUpdates(speedMeterManager.locationListener);
+            gpsImage.setVisibility(View.GONE);
     }
 
     public void reload() {
-        resetChronometers();
-        int permissionCheck = ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION);
-        if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(MainActivity.this,
-                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                    ACCESS_FINE_LOCATION_REQUEST_CODE);
-        }
-        else {
-            locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, speedMeterManager.locationListener);
-        }
-
-        toggleIconVisibility(true);
+            stop();
+            resetChronometers();
+            int permissionCheck = ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION);
+            if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(MainActivity.this,
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                        ACCESS_FINE_LOCATION_REQUEST_CODE);
+            }
+            else {
+                locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, speedMeterManager.locationListener);
+            }
+            gpsImage.setVisibility(View.VISIBLE);
     }
 
     public static void stopChronometers() {
@@ -400,15 +394,30 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
         speedMeterManager.setMoveTime(true);
     }
 
-    private void toggleIconVisibility(Boolean canStop) {
-        if (canStop) {
-            stop.setVisibility(View.VISIBLE);
-            reload.setVisibility(View.GONE);
-            gpsImage.setVisibility(View.VISIBLE);
-        } else {
-            stop.setVisibility(View.GONE);
-            reload.setVisibility(View.VISIBLE);
-            gpsImage.setVisibility(View.GONE);
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.toolbar_menu, menu);
+        stopDrawable = menu.findItem(R.id.action_stop).getIcon();
+        reloadDrawable = menu.findItem(R.id.action_reload).getIcon();
+        stopDrawable.setColorFilter(getResources().getColor(android.R.color.white),  PorterDuff.Mode.SRC_ATOP);
+        reloadDrawable.setColorFilter(getResources().getColor(android.R.color.white),  PorterDuff.Mode.SRC_ATOP);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_reload:
+                reload();
+                return true;
+
+            case R.id.action_stop:
+                stop();
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+
         }
     }
 

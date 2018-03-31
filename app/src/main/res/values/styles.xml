@@ -8,7 +8,7 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="CustomTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="CustomTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:colorBackground">@color/colorPrimary</item>
         <item name="colorPrimary">@color/customActionBarColor</item>
         <item name="android:navigationBarColor">@color/customActionBarColor</item>

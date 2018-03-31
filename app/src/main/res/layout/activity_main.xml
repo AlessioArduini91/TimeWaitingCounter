@@ -9,11 +9,22 @@
     android:gravity="center_vertical"
     tools:context="tacchella.arduini.com.time_waiting_counter.MainActivity">
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/mainToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_gravity="top"
+        android:background="@color/customActionBarColor"
+        android:elevation="10dp"
+        android:minHeight="?attr/actionBarSize"
+        app:titleTextColor="@android:color/white" />
+
     <RelativeLayout
         android:id="@+id/relativeLayoutMain"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center_vertical">
+
 
 
         <LinearLayout
@@ -85,6 +96,8 @@
             android:paddingRight="15dp"
             />
 
+
+
         <!--<Button-->
             <!--android:id="@+id/starttest"-->
             <!--android:layout_width="wrap_content"-->
@@ -114,28 +127,6 @@
         android:layout_gravity="bottom|left"
         android:tint="@color/customActionBarColor"
         android:contentDescription="@string/gpsSignal"/>
-
-    <ImageButton
-        android:id="@+id/stop"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
-        android:layout_gravity="center"
-        android:tint="@color/customActionBarColor"
-        android:contentDescription="@string/stop"
-        android:src="@drawable/ic_stop"
-        android:scaleType="centerInside"/>
-
-    <ImageButton
-        android:id="@+id/reload"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:background="@android:color/transparent"
-        android:tint="@color/customActionBarColor"
-        android:visibility="gone"
-        app:srcCompat="@drawable/ic_reload"
-        android:scaleType="centerInside"
         />
 
 </FrameLayout>
