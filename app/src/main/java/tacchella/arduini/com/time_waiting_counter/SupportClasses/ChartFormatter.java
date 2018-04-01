@@ -1,5 +1,7 @@
 package tacchella.arduini.com.time_waiting_counter.SupportClasses;
 
+import android.graphics.Color;
+
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.LegendEntry;
@@ -9,6 +11,7 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -24,12 +27,30 @@ public class ChartFormatter {
         return legendEntry;
     }
 
-    public static LineDataSet formatLineDataSet(List<Entry> chartEntries, String label, int dataSetColor, float width) {
+    public static LineDataSet formatLineDataSet(List<Entry> chartEntries, String label, int dataSetColor, int lowValuesColor, int middleValuesColor, int highValuesColor, float width) {
         LineDataSet lineDataSet = new LineDataSet(chartEntries, label);
         lineDataSet.setColor(dataSetColor);
         lineDataSet.setLineWidth(width);
+        ArrayList<Integer> colors = new ArrayList<Integer>();
+
+        for(int i = 0; i < chartEntries.size(); i++)
+        {
+
+            if(chartEntries.get(i).getY() < 10)
+            {
+                colors.add(lowValuesColor);
+            }
+            else if (chartEntries.get(i).getY() < 30)
+            {
+                colors.add(middleValuesColor);
+            }
+            else {
+                colors.add(highValuesColor);
+            }
+        }
+        lineDataSet.setCircleColors(colors);
         lineDataSet.setDrawValues(false);
-        lineDataSet.setDrawCircles(false);
+//        lineDataSet.setDrawCircles(false);
         return lineDataSet;
     }
 

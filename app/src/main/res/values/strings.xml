@@ -28,4 +28,7 @@
     <string name="defaultPercent">0%</string>
     <string name="legendLabel">Km/h / Min.</string>
     <string name="noValueLabel">Non disponibile</string>
+    <string name="lowValuesLabel"> &lt; 10 Km/h </string>
+    <string name="middleValuesLabel"> &lt; 30 Km/h </string>
+    <string name="highValuesLabel"> &gt; 30 Km/h </string>
 </resources>

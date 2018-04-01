@@ -17,6 +17,7 @@
         android:background="@color/customActionBarColor"
         android:elevation="10dp"
         android:minHeight="?attr/actionBarSize"
+        android:theme="@style/CustomTheme"
         app:titleTextColor="@android:color/white" />
 
     <RelativeLayout

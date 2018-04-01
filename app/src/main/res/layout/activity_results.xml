@@ -23,7 +23,7 @@
         android:background="@android:color/transparent"
         android:layout_gravity="top|right"
         app:srcCompat="@drawable/ic_action_home"
-        android:tint="@color/customActionBarColor"
+        android:tint="@color/lineChartColor"
         android:contentDescription="@string/backToHome"/>
 
 
