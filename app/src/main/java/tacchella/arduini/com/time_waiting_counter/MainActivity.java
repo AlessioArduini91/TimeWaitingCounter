@@ -11,6 +11,7 @@ import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.transition.CircularPropagation;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,6 +30,7 @@ import android.Manifest;
 import android.widget.Toast;
 import android.support.annotation.NonNull;
 
+import com.budiyev.android.circularprogressbar.CircularProgressBar;
 import com.github.anastr.speedviewlib.ProgressiveGauge;
 import com.github.mikephil.charting.data.Entry;
 
@@ -41,9 +43,8 @@ import tacchella.arduini.com.time_waiting_counter.SupportClasses.SpeedMeterManag
 
 public class MainActivity extends AppCompatActivity implements SpeedMeterManager.SpeedMeterInterface {
 
-    Button goToResult;
     static ProgressiveGauge speedView;
-    static ProgressBar noGpsBar;
+    static CircularProgressBar noGpsBar;
     TextView movingTextView;
     TextView stoppingTextView;
     TextView percentMovingTextView;
@@ -80,7 +81,7 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        noGpsBar = (ProgressBar) findViewById(R.id.noGpsBar);
+        noGpsBar = (CircularProgressBar) findViewById(R.id.noGpsBar);
         gpsImage = (ImageView) findViewById(R.id.gps);
         gpsImage.setImageDrawable(getDrawable(R.drawable.animation_gps));
         gpsAnimation = (AnimationDrawable) gpsImage.getDrawable();
@@ -100,7 +101,6 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
 //        Button testResetButton = (Button) findViewById(R.id.resettest);
 
         speedView = (ProgressiveGauge) findViewById(R.id.speedView);
-        goToResult = findViewById(R.id.goToResult);
         speedMeterManager = new SpeedMeterManager(this);
         mainToolbar = (Toolbar) findViewById(R.id.mainToolbar);
         setSupportActionBar(mainToolbar);
@@ -148,15 +148,6 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
             locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, speedMeterManager.locationListener);
         }
-
-        goToResult.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Intent openResultActivity = new Intent(MainActivity.this, ResultsActivity.class);
-                startActivity(openResultActivity);
-            }
-        });
 
         movingChrono.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener() {
             @Override
@@ -409,6 +400,10 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
                 stop();
                 return true;
 
+            case R.id.action_graph:
+                Intent openResultActivity = new Intent(MainActivity.this, ResultsActivity.class);
+                startActivity(openResultActivity);
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
 

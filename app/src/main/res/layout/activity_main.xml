@@ -70,7 +70,7 @@
             android:padding="15dp"
             android:id="@+id/gaugeFrame"
             android:layout_below="@+id/chronometers"
-            android:layout_marginTop="50dp">
+            android:layout_marginTop="70dp">
 
             <com.github.anastr.speedviewlib.ProgressiveGauge
                 android:id="@+id/speedView"
@@ -82,31 +82,36 @@
                 app:sv_speedometerBackColor="@color/gaugeBackGround"
                 app:sv_speedometerColor="@color/customActionBarColor" />
 
-            <ProgressBar
+            <com.budiyev.android.circularprogressbar.CircularProgressBar
                 android:id="@+id/noGpsBar"
-                style="?android:attr/progressBarStyle"
-                android:layout_gravity="center"
-                android:alpha="0"
-                android:indeterminateTint="@color/customActionBarColor"
                 android:layout_width="120dp"
                 android:layout_height="120dp"
-               />
+                app:animateProgress="true"
+                app:backgroundStrokeColor="@color/lineChartColor"
+                app:backgroundStrokeWidth="2dp"
+                app:drawBackgroundStroke="true"
+                app:foregroundStrokeCap="square"
+                app:foregroundStrokeColor="@color/customActionBarColor"
+                app:foregroundStrokeWidth="5dp"
+                app:indeterminate="true"
+                app:indeterminateRotationAnimationDuration="3000"
+                app:indeterminateSweepAnimationDuration="1500"
+                app:indeterminateMinimumAngle="20"
+                app:startAngle="270"
+                android:layout_gravity="center"
+                android:alpha="0"/>
+
+            <!--<ProgressBar-->
+                <!--android:id="@+id/noGpsBar"-->
+                <!--style="?android:attr/progressBarStyle"-->
+                <!--android:layout_gravity="center"-->
+                <!--android:alpha="0"-->
+                <!--android:indeterminateTint="@color/customActionBarColor"-->
+                <!--android:layout_width="120dp"-->
+                <!--android:layout_height="120dp"-->
+               <!--/>-->
 
         </FrameLayout>
-
-        <Button
-            android:id="@+id/goToResult"
-            android:layout_width="150dp"
-            android:layout_below="@id/gaugeFrame"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:background="@drawable/chronometer_shape"
-            android:text="@string/goToResult"
-            android:textColor="@android:color/white"
-            android:drawableRight="@drawable/ic_results"
-            android:paddingRight="15dp"
-            />
-
 
 
         <!--<Button-->
