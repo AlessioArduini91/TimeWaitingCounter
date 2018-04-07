@@ -82,6 +82,16 @@
                 app:sv_speedometerBackColor="@color/gaugeBackGround"
                 app:sv_speedometerColor="@color/customActionBarColor" />
 
+            <ProgressBar
+                android:id="@+id/noGpsBar"
+                style="?android:attr/progressBarStyle"
+                android:layout_gravity="center"
+                android:alpha="0"
+                android:indeterminateTint="@color/customActionBarColor"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+               />
+
         </FrameLayout>
 
         <Button

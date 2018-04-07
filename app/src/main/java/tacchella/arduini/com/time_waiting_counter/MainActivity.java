@@ -17,9 +17,9 @@ import android.view.View;
 import android.content.Context;
 import android.widget.Button;
 import android.widget.Chronometer;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
@@ -42,7 +42,8 @@ import tacchella.arduini.com.time_waiting_counter.SupportClasses.SpeedMeterManag
 public class MainActivity extends AppCompatActivity implements SpeedMeterManager.SpeedMeterInterface {
 
     Button goToResult;
-    ProgressiveGauge speedView;
+    static ProgressiveGauge speedView;
+    static ProgressBar noGpsBar;
     TextView movingTextView;
     TextView stoppingTextView;
     TextView percentMovingTextView;
@@ -73,14 +74,13 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
     private static boolean stopAlreadyStarted = false;
     private static boolean startAlreadyStarted = false;
     private static SpeedMeterManager speedMeterManager;
-    private Boolean systemInStop = false;
-    private Boolean systemReload = false;
     static List<Entry> chartEntries = new ArrayList<Entry>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        noGpsBar = (ProgressBar) findViewById(R.id.noGpsBar);
         gpsImage = (ImageView) findViewById(R.id.gps);
         gpsImage.setImageDrawable(getDrawable(R.drawable.animation_gps));
         gpsAnimation = (AnimationDrawable) gpsImage.getDrawable();
@@ -154,12 +154,6 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
             public void onClick(View v) {
 
                 Intent openResultActivity = new Intent(MainActivity.this, ResultsActivity.class);
-
-                openResultActivity.putExtra("timeMoving", movingChrono.getText());
-                openResultActivity.putExtra("timeStopping", stoppingChrono.getText());
-                openResultActivity.putExtra("percentMoving", percentMoving);
-                openResultActivity.putExtra("percentStopping", 100-percentMoving);
-
                 startActivity(openResultActivity);
             }
         });
@@ -321,6 +315,8 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
             isStop = true;
             stoppingChrono.start();
         }
+        noGpsBar.setAlpha(0);
+        speedView.setAlpha(1);
         gpsAnimation.stop();
         gpsAnimation.selectDrawable(0);
     }
@@ -332,19 +328,13 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
         lastPauseStop=0;
         stopAlreadyStarted = false;
         startAlreadyStarted = false;
-        speedMeterManager.setTimerSeconds(0f);
         chartEntries.clear();
         movingChrono.setBase(SystemClock.elapsedRealtime());
         stoppingChrono.setBase(SystemClock.elapsedRealtime());
         speedMeterManager.createNewTimer();
-        speedMeterManager.setStopTime(true);
-        speedMeterManager.setMoveTime(true);
-
     }
 
     public void stop() {
-            movingChrono.stop();
-            stoppingChrono.stop();
 
             for (Timer timer : timers) {
                 timer.cancel();
@@ -386,6 +376,8 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
             unlockChronometersForNextLoop();
         }
         gpsAnimation.start();
+        noGpsBar.setAlpha(1);
+        speedView.setAlpha(0);
     }
 
     private static void unlockChronometersForNextLoop() {
@@ -412,6 +404,8 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
                 return true;
 
             case R.id.action_stop:
+                movingChrono.stop();
+                stoppingChrono.stop();
                 stop();
                 return true;
 

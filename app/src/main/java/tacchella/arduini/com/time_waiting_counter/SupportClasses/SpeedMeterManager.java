@@ -4,8 +4,6 @@ import android.content.Context;
 import android.location.Location;
 import android.location.LocationListener;
 import android.os.Bundle;
-
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -20,9 +18,16 @@ import tacchella.arduini.com.time_waiting_counter.MainActivity;
 public class SpeedMeterManager {
     Context activityContext;
     private float speed = (float) 0.0;
+    private float avgSpeed = (float) 0.0;
     private boolean moveTime=true;
     private boolean stopTime=true;
     private boolean checkGps=true;
+    private double latitudeBeforeGpsLoss;
+    private double longitudeBeforeGpsLoss;
+    private double latitudeAfterGpsRestart;
+    private double longitudeAfterGpsRestart;
+    private float timeBeforeGpsLoss;
+    private float timeAfterGpsRestart;
     SpeedMeterInterface speedMeter;
     TimerTask timerTask;
     TimerTask checkTimerTask;
@@ -46,8 +51,15 @@ public class SpeedMeterManager {
         @Override
         public void onLocationChanged(Location location) {
             if (!checkGps) {
+                latitudeAfterGpsRestart = location.getLatitude();
+                longitudeAfterGpsRestart = location.getLongitude();
+                timeAfterGpsRestart = timerSeconds;
+                setAverageSpeed();
+                setAvgGraphEntries();
                 checkGps = true;
             }
+            latitudeBeforeGpsLoss = location.getLatitude();
+            longitudeBeforeGpsLoss = location.getLongitude();
             noSignal = false;
             speed = location.getSpeed();
             speedMeter.setSpeedView(speed);
@@ -92,6 +104,11 @@ public class SpeedMeterManager {
         checkTimer.cancel();
         timerTask.cancel();
         timer.cancel();
+        timerSeconds = 0f;
+        stopTime = true;
+        moveTime = true;
+        checkGps = true;
+        noSignal = false;
         initTimer();
     }
 
@@ -99,8 +116,13 @@ public class SpeedMeterManager {
         timerTask = new TimerTask() {
             @Override
             public void run() {
-                speedMeter.setGraphEntry(timerSeconds, speed);
-                timerSeconds += 10000;
+                if (checkGps) {
+                    speedMeter.setGraphEntry(timerSeconds, speed);
+                    timerSeconds += 10000;
+                    timeBeforeGpsLoss = timerSeconds;
+                } else {
+                    timerSeconds += 10000;
+                }
             }
         };
 
@@ -110,12 +132,11 @@ public class SpeedMeterManager {
         checkTimerTask = new TimerTask() {
             @Override
             public void run() {
-                if (noSignal && checkGps) {
-                    MainActivity.stopChronometers();
-                    checkGps = false;
-                }
-
-                noSignal = true;
+            if (noSignal && checkGps) {
+                MainActivity.stopChronometers();
+                checkGps = false;
+            }
+            noSignal = true;
             }
         };
 
@@ -131,15 +152,34 @@ public class SpeedMeterManager {
         speedMeter.setTimerTasks(timerTaskList);
     }
 
+    private void setAverageSpeed() {
+        if (latitudeBeforeGpsLoss == 0 || longitudeBeforeGpsLoss == 0) {
+            avgSpeed = 0; //valore fittizio nel caso in cui non ci sia campo all'avvio
+        } else {
+            Location locationBeforeGpsLoss = new Location("beforeLoss");
+            locationBeforeGpsLoss.setLatitude(latitudeBeforeGpsLoss);
+            locationBeforeGpsLoss.setLongitude(longitudeBeforeGpsLoss);
+
+            Location locationAfterGpsRestart = new Location("afterRestart");
+            locationAfterGpsRestart.setLatitude(latitudeAfterGpsRestart);
+            locationAfterGpsRestart.setLongitude(longitudeAfterGpsRestart);
+
+            float distance = locationBeforeGpsLoss.distanceTo(locationAfterGpsRestart);
+            avgSpeed = (distance * 1000) / (timeAfterGpsRestart - timeBeforeGpsLoss);
+        }
+    }
+
+    private void setAvgGraphEntries() {
+        for (float time = timeBeforeGpsLoss; time < timeAfterGpsRestart; time = time + 10000) {
+            speedMeter.setGraphEntry(time, avgSpeed);
+        }
+    }
+
     public void setMoveTime(Boolean moveTime) {
         this.moveTime = moveTime;
     }
 
     public void setStopTime(Boolean stopTime) {
         this.stopTime = stopTime;
-    }
-
-    public void setTimerSeconds(float timerSeconds) {
-        this.timerSeconds = timerSeconds;
     }
 }
