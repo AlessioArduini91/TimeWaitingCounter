@@ -37,7 +37,7 @@ public class SpeedMeterManager {
     List<TimerTask> timerTaskList = new ArrayList<TimerTask>();
     float timerSeconds;
     final long TIMER_INTERVAL = 10000;
-    final long TIMER_INTERVAL_GPS = 5000;
+    final long TIMER_INTERVAL_GPS = 1000;
     Boolean noSignal = false;
 
     public interface SpeedMeterInterface {
