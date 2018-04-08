@@ -4,7 +4,7 @@
     <string name="timeStop">Fermo</string>
     <string name="percentMove">% Movimento</string>
     <string name="percentStopping">% Fermo</string>
-    <string name="maxPercent">0%</string>
+    <string name="maxPercent">100%</string>
     <string name="minPercent">0%</string>
     <string name="speed_unit_of_measure">Km/h</string>
     <string name="access_fine_location_granted">Autorizzazione concessa per la posizione</string>
