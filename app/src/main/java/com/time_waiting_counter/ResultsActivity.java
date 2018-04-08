@@ -1,11 +1,9 @@
-package tacchella.arduini.com.time_waiting_counter;
+package com.time_waiting_counter;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageButton;
-
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.LegendEntry;
@@ -14,11 +12,12 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
-
 import java.util.ArrayList;
 import java.util.List;
 
-import tacchella.arduini.com.time_waiting_counter.SupportClasses.ChartFormatter;
+import com.time_waiting_counter.R;
+
+import com.time_waiting_counter.SupportClasses.ChartFormatter;
 
 /**
  * Created by alessio on 17/03/18.

@@ -1,6 +1,4 @@
-package tacchella.arduini.com.time_waiting_counter.SupportClasses;
-
-import android.graphics.Color;
+package com.time_waiting_counter.SupportClasses;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Legend;
@@ -10,7 +8,6 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
-
 import java.util.ArrayList;
 import java.util.List;
 

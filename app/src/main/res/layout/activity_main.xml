@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center_vertical"
-    tools:context="tacchella.arduini.com.time_waiting_counter.MainActivity">
+    tools:context="time_waiting_counter.com.time_waiting_counter.MainActivity">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/mainToolbar"

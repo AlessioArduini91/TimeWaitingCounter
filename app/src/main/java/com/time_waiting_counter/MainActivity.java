@@ -1,4 +1,4 @@
-package tacchella.arduini.com.time_waiting_counter;
+package com.time_waiting_counter;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -11,16 +11,13 @@ import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.transition.CircularPropagation;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.content.Context;
-import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
@@ -29,17 +26,17 @@ import android.support.v4.content.ContextCompat;
 import android.Manifest;
 import android.widget.Toast;
 import android.support.annotation.NonNull;
-
 import com.budiyev.android.circularprogressbar.CircularProgressBar;
 import com.github.anastr.speedviewlib.ProgressiveGauge;
 import com.github.mikephil.charting.data.Entry;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import tacchella.arduini.com.time_waiting_counter.SupportClasses.SpeedMeterManager;
+import com.time_waiting_counter.R;
+
+import com.time_waiting_counter.SupportClasses.SpeedMeterManager;
 
 public class MainActivity extends AppCompatActivity implements SpeedMeterManager.SpeedMeterInterface {
 

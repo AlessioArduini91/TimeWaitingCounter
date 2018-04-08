@@ -1,4 +1,4 @@
-package tacchella.arduini.com.time_waiting_counter.SupportClasses;
+package com.time_waiting_counter.SupportClasses;
 
 import android.content.Context;
 import android.location.Location;
@@ -8,8 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
-
-import tacchella.arduini.com.time_waiting_counter.MainActivity;
+import com.time_waiting_counter.MainActivity;
 
 /**
  * Created by alessio on 04/02/18.
