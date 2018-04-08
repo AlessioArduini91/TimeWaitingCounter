@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
 
     LinearLayout movingLayout;
     LinearLayout stoppingLayout;
-    private int animationDuration;
+    private static int animationDuration;
     final int ACCESS_FINE_LOCATION_REQUEST_CODE = 5;
 
     long percentMoving=0, percentStopping=0;
@@ -121,8 +121,8 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
 //            }
 //        });
 
-        toggleTextView(true, movingTextView);
-        toggleTextView(true, stoppingTextView);
+        toggleTextView(movingTextView);
+        toggleTextView(stoppingTextView);
 
         movingLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -158,9 +158,9 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
                     percentMovingTextView.setText(percentMoving + "%");
                     percentStoppingTextView.setText(100 - percentMoving + "%");
                 } else {
-                    percentMovingTextView.setText("100%");
+                    percentMovingTextView.setText(R.string.maxPercent);
                     percentMoving=100;
-                    percentStoppingTextView.setText ("0%");
+                    percentStoppingTextView.setText (R.string.minPercent);
                     percentStopping=0;
                 }
             }
@@ -175,9 +175,9 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
                     percentStoppingTextView.setText(percentStopping + "%");
                     percentMovingTextView.setText(100 - percentStopping + "%");
                 } else {
-                    percentStoppingTextView.setText("100%");
+                    percentStoppingTextView.setText(R.string.maxPercent);
                     percentStopping=100;
-                    percentMovingTextView.setText ("0%");
+                    percentMovingTextView.setText(R.string.minPercent);
                     percentMoving=0;
                 }
             }
@@ -203,10 +203,24 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
         }
     }
 
+    private static void toggleNoGpsVisibility(boolean noGps) {
+            if (noGps) {
+                speedView.setAlpha(0f);
+                noGpsBar.animate()
+                        .alpha(1f)
+                        .setDuration(animationDuration);
+            } else {
+                noGpsBar.setAlpha(0f);
+                speedView.animate()
+                        .alpha(1f)
+                        .setDuration(animationDuration);
+            }
+    }
+
     private void toggleVisibility(final Chronometer chrono, final TextView label, final TextView percent){
 
         if (chrono.getVisibility() == View.VISIBLE){
-            toggleTextView(false, label);
+//            toggleTextView(false, label);
             percent.setVisibility(View.VISIBLE);
             chrono.setVisibility(View.GONE);
             percent.setAlpha(0f);
@@ -227,7 +241,7 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
                                 public void onFinish() {
                                     percent.setVisibility(View.GONE);
                                     chrono.setVisibility(View.VISIBLE);
-                                    toggleTextView(true, label);
+//                                    toggleTextView(true, label);
                                 }
                             }.start();
                         }
@@ -236,23 +250,24 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
 
     }
 
-    private void toggleTextView(Boolean mustBeChronometerVisible, TextView label) {
+    private void toggleTextView( TextView label) {
         if (label.getId() == R.id.text_view_moving){
-            if (mustBeChronometerVisible) {
-                label.setText(R.string.timeMove);
-            }
-            else {
-                label.setText(R.string.percentMove);
-            }
-
+//            if (mustBeChronometerVisible) {
+//                label.setText(R.string.timeMove);
+//            }
+//            else {
+//                label.setText(R.string.percentMove);
+//            }
+            label.setText(R.string.timeMove);
         }
         else {
-            if (mustBeChronometerVisible) {
-                label.setText(R.string.timeStop);
-            }
-            else {
-                label.setText(R.string.percentStopping);
-            }
+//            if (mustBeChronometerVisible) {
+//                label.setText(R.string.timeStop);
+//            }
+//            else {
+//                label.setText(R.string.percentStopping);
+//            }
+            label.setText(R.string.timeStop);
         }
     }
 
@@ -306,8 +321,7 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
             isStop = true;
             stoppingChrono.start();
         }
-        noGpsBar.setAlpha(0);
-        speedView.setAlpha(1);
+        toggleNoGpsVisibility(false);
         gpsAnimation.stop();
         gpsAnimation.selectDrawable(0);
     }
@@ -367,8 +381,7 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
             unlockChronometersForNextLoop();
         }
         gpsAnimation.start();
-        noGpsBar.setAlpha(1);
-        speedView.setAlpha(0);
+        toggleNoGpsVisibility(true);
     }
 
     private static void unlockChronometersForNextLoop() {

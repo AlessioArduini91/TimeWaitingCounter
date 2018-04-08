@@ -105,6 +105,8 @@ public class SpeedMeterManager {
         timerTask.cancel();
         timer.cancel();
         timerSeconds = 0f;
+        latitudeBeforeGpsLoss = 0.0;
+        longitudeBeforeGpsLoss = 0.0;
         stopTime = true;
         moveTime = true;
         checkGps = true;
