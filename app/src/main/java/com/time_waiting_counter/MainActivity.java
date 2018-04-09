@@ -60,6 +60,7 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
     LinearLayout movingLayout;
     LinearLayout stoppingLayout;
     private static int animationDuration;
+    private static int animationGpsDuration;
     final int ACCESS_FINE_LOCATION_REQUEST_CODE = 5;
 
     long percentMoving=0, percentStopping=0;
@@ -83,6 +84,7 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
         gpsImage.setImageDrawable(getDrawable(R.drawable.animation_gps));
         gpsAnimation = (AnimationDrawable) gpsImage.getDrawable();
         animationDuration = getResources().getInteger(android.R.integer.config_longAnimTime);
+        animationGpsDuration = getResources().getInteger(android.R.integer.config_shortAnimTime);
         movingLayout = (LinearLayout) findViewById(R.id.chronoMoveLayout);
         stoppingLayout = (LinearLayout) findViewById(R.id.chronoStopLayout);
         movingTextView = movingLayout.findViewById(R.id.timeText);
@@ -205,12 +207,12 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
                 speedView.setAlpha(0f);
                 noGpsBar.animate()
                         .alpha(1f)
-                        .setDuration(animationDuration);
+                        .setDuration(animationGpsDuration);
             } else {
                 noGpsBar.setAlpha(0f);
                 speedView.animate()
                         .alpha(1f)
-                        .setDuration(animationDuration);
+                        .setDuration(animationGpsDuration);
             }
     }
 
