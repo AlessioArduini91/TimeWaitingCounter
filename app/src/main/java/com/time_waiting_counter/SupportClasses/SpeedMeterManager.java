@@ -129,7 +129,7 @@ public class SpeedMeterManager {
         };
 
         timer = new Timer();
-        timer.schedule(timerTask, 0, TIMER_INTERVAL);
+        timer.schedule(timerTask, 10000, TIMER_INTERVAL);
 
         checkTimerTask = new TimerTask() {
             @Override
@@ -152,6 +152,7 @@ public class SpeedMeterManager {
 
         speedMeter.setTimers(timerList);
         speedMeter.setTimerTasks(timerTaskList);
+        speedMeter.setGraphEntry(timerSeconds, speed);
     }
 
     private void setAverageSpeed() {
@@ -175,6 +176,14 @@ public class SpeedMeterManager {
         for (float time = timeBeforeGpsLoss; time < timeAfterGpsRestart; time = time + 10000) {
             speedMeter.setGraphEntry(time, avgSpeed);
         }
+    }
+
+    public String getTotalParsedTime() {
+        float seconds = (timerSeconds / 1000) % 60;
+        float minutes = (timerSeconds / (1000 * 60)) % 60;
+        float hours = (timerSeconds / (1000 * 60 * 60)) % 24;
+
+        return String.format("%02.0f : %02.0f : %02.0f", hours, minutes, seconds);
     }
 
     public void setMoveTime(Boolean moveTime) {

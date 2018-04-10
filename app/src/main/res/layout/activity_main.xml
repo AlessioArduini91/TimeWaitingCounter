@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center_vertical"
-    tools:context="time_waiting_counter.com.time_waiting_counter.MainActivity">
+    tools:context="com.time_waiting_counter.MainActivity">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/mainToolbar"
@@ -100,6 +100,17 @@
                 app:startAngle="270"
                 android:layout_gravity="center"
                 android:alpha="0"/>
+
+            <TextView
+                android:id="@+id/totalTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/totalTime"
+                android:textAlignment="center"
+                android:textColor="@android:color/white"
+                android:textSize="24sp"
+                android:visibility="gone"/>
 
             <!--<ProgressBar-->
                 <!--android:id="@+id/noGpsBar"-->

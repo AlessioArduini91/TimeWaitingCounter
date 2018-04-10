@@ -19,4 +19,5 @@
     <string name="lowValuesLabel"> &lt; 10 Km/h </string>
     <string name="middleValuesLabel"> &lt; 30 Km/h </string>
     <string name="highValuesLabel"> &gt; 30 Km/h </string>
+    <string name="totalTime">Tempo totale viaggio</string>
 </resources>
