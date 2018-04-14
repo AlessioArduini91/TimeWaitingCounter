@@ -35,7 +35,7 @@ public class SpeedMeterManager {
     List<Timer> timerList = new ArrayList<Timer>();
     List<TimerTask> timerTaskList = new ArrayList<TimerTask>();
     float timerSeconds;
-    final long TIMER_INTERVAL = 10000;
+    final long TIMER_INTERVAL = 5000;
     final long TIMER_INTERVAL_GPS = 1000;
     Boolean noSignal = false;
 
@@ -53,9 +53,11 @@ public class SpeedMeterManager {
                 latitudeAfterGpsRestart = location.getLatitude();
                 longitudeAfterGpsRestart = location.getLongitude();
                 timeAfterGpsRestart = timerSeconds;
-                setAverageSpeed();
-                setAvgGraphEntries();
                 checkGps = true;
+                if (timeAfterGpsRestart != timeBeforeGpsLoss) {
+                    setAverageSpeed();
+                    setAvgGraphEntries();
+                }
             }
             latitudeBeforeGpsLoss = location.getLatitude();
             longitudeBeforeGpsLoss = location.getLongitude();
@@ -104,9 +106,9 @@ public class SpeedMeterManager {
         timerTask.cancel();
         timer.cancel();
         timerSeconds = 0f;
+        speed = (float) 0.0;
         latitudeBeforeGpsLoss = 0.0;
         longitudeBeforeGpsLoss = 0.0;
-        speed = (float) 0.0;
         stopTime = true;
         moveTime = true;
         checkGps = true;
@@ -120,25 +122,25 @@ public class SpeedMeterManager {
             public void run() {
                 if (checkGps) {
                     speedMeter.setGraphEntry(timerSeconds, speed);
-                    timerSeconds += 10000;
+                    timerSeconds += TIMER_INTERVAL;
                     timeBeforeGpsLoss = timerSeconds;
                 } else {
-                    timerSeconds += 10000;
+                    timerSeconds += TIMER_INTERVAL;
                 }
             }
         };
 
         timer = new Timer();
-        timer.schedule(timerTask, 10000, TIMER_INTERVAL);
+        timer.schedule(timerTask, 0, TIMER_INTERVAL);
 
         checkTimerTask = new TimerTask() {
             @Override
             public void run() {
-            if (noSignal && checkGps) {
-                MainActivity.stopChronometers();
-                checkGps = false;
-            }
-            noSignal = true;
+                if (noSignal && checkGps) {
+                    MainActivity.stopChronometers();
+                    checkGps = false;
+                }
+                noSignal = true;
             }
         };
 
@@ -152,11 +154,10 @@ public class SpeedMeterManager {
 
         speedMeter.setTimers(timerList);
         speedMeter.setTimerTasks(timerTaskList);
-        speedMeter.setGraphEntry(timerSeconds, speed);
     }
 
     private void setAverageSpeed() {
-        if (latitudeBeforeGpsLoss == 0 || longitudeBeforeGpsLoss == 0) {
+        if (latitudeBeforeGpsLoss == 0.0 || longitudeBeforeGpsLoss == 0.0) {
             avgSpeed = 0; //valore fittizio nel caso in cui non ci sia campo all'avvio
         } else {
             Location locationBeforeGpsLoss = new Location("beforeLoss");
@@ -173,17 +174,17 @@ public class SpeedMeterManager {
     }
 
     private void setAvgGraphEntries() {
-        for (float time = timeBeforeGpsLoss; time < timeAfterGpsRestart; time = time + 10000) {
+        for (float time = timeBeforeGpsLoss; time < timeAfterGpsRestart; time = time + TIMER_INTERVAL) {
             speedMeter.setGraphEntry(time, avgSpeed);
         }
     }
 
     public String getTotalParsedTime() {
-        float seconds = (timerSeconds / 1000) % 60;
-        float minutes = (timerSeconds / (1000 * 60)) % 60;
-        float hours = (timerSeconds / (1000 * 60 * 60)) % 24;
+        int seconds = Math.round((timerSeconds / 1000) % 60);
+        int minutes = Math.round((timerSeconds / (1000 * 60)) % 60);
+        int hours = Math.round((timerSeconds / (1000 * 60 * 60)) % 24);
 
-        return String.format("%02.0f : %02.0f : %02.0f", hours, minutes, seconds);
+        return String.format("%02d : %02d : %02d", hours, minutes, seconds);
     }
 
     public void setMoveTime(Boolean moveTime) {
