@@ -53,12 +53,13 @@ public class SpeedMeterManager {
                 latitudeAfterGpsRestart = location.getLatitude();
                 longitudeAfterGpsRestart = location.getLongitude();
                 timeAfterGpsRestart = timerSeconds;
-                checkGps = true;
                 if (timeAfterGpsRestart != timeBeforeGpsLoss) {
                     setAverageSpeed();
                     setAvgGraphEntries();
                 }
+                checkGps = true;
             }
+            timeBeforeGpsLoss = timerSeconds;
             latitudeBeforeGpsLoss = location.getLatitude();
             longitudeBeforeGpsLoss = location.getLongitude();
             noSignal = false;
@@ -107,6 +108,8 @@ public class SpeedMeterManager {
         timer.cancel();
         timerSeconds = 0f;
         speed = (float) 0.0;
+        timeBeforeGpsLoss = 0;
+        timeAfterGpsRestart = 0;
         latitudeBeforeGpsLoss = 0.0;
         longitudeBeforeGpsLoss = 0.0;
         stopTime = true;
@@ -121,9 +124,11 @@ public class SpeedMeterManager {
             @Override
             public void run() {
                 if (checkGps) {
-                    speedMeter.setGraphEntry(timerSeconds, speed);
+                    if (timerSeconds != timeBeforeGpsLoss || timerSeconds == 0) {
+                        speedMeter.setGraphEntry(timerSeconds, speed);
+                    }
+//                    timeBeforeGpsLoss = timerSeconds;
                     timerSeconds += TIMER_INTERVAL;
-                    timeBeforeGpsLoss = timerSeconds;
                 } else {
                     timerSeconds += TIMER_INTERVAL;
                 }

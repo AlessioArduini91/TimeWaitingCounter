@@ -205,21 +205,21 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
     }
 
     private static void toggleNoGpsVisibility(boolean noGps) {
-            if (noGps) {
+//            if (noGps) {
+////                speedView.setAlpha(0f);
+////                noGpsBar.animate()
+////                        .alpha(1f)
+////                        .setDuration(animationGpsDuration);
 //                speedView.setAlpha(0f);
-//                noGpsBar.animate()
-//                        .alpha(1f)
-//                        .setDuration(animationGpsDuration);
-                speedView.setAlpha(0f);
-                noGpsBar.setAlpha(1f);
-            } else {
+//                noGpsBar.setAlpha(1f);
+//            } else {
+////                noGpsBar.setAlpha(0f);
+////                speedView.animate()
+////                        .alpha(1f)
+////                        .setDuration(animationGpsDuration);
 //                noGpsBar.setAlpha(0f);
-//                speedView.animate()
-//                        .alpha(1f)
-//                        .setDuration(animationGpsDuration);
-                noGpsBar.setAlpha(0f);
-                speedView.setAlpha(1f);
-            }
+//                speedView.setAlpha(1f);
+//            }
     }
 
     private void toggleVisibility(final Chronometer chrono, final TextView label, final TextView percent){
