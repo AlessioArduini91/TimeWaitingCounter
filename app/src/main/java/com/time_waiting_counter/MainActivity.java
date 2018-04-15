@@ -75,7 +75,8 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
     private static boolean startAlreadyStarted = false;
     private static SpeedMeterManager speedMeterManager;
     private static boolean activityPaused = false;
-    private static boolean noGps;
+    private static boolean noGps = false;
+    private static boolean isStopped = false;
     static List<Entry> chartEntries = new ArrayList<Entry>();
 
     @Override
@@ -201,7 +202,9 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
     @Override
     protected void onResume() {
         activityPaused = false;
-        toggleNoGpsVisibility();
+        if (!isStopped) {
+            toggleNoGpsVisibility();
+        }
         super.onResume();
     }
 
@@ -338,6 +341,7 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
     }
 
     public static void resetChronometers(){
+        isStopped = false;
         movingChrono.stop();
         stoppingChrono.stop();
         lastPauseStart=0;
@@ -351,7 +355,7 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
     }
 
     public void stop() {
-
+        isStopped = true;
         for (Timer timer : timers) {
             timer.cancel();
         }
