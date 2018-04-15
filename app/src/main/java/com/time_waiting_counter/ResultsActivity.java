@@ -72,7 +72,6 @@ public class ResultsActivity extends AppCompatActivity {
         backToHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //MainActivity.resetChronometers();
                 finish();
             }
         });

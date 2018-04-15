@@ -74,6 +74,8 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
     private static boolean stopAlreadyStarted = false;
     private static boolean startAlreadyStarted = false;
     private static SpeedMeterManager speedMeterManager;
+    private static boolean activityPaused = false;
+    private static boolean noGps;
     static List<Entry> chartEntries = new ArrayList<Entry>();
 
     @Override
@@ -191,6 +193,19 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
     }
 
     @Override
+    protected void onPause() {
+        activityPaused = true;
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        activityPaused = false;
+        toggleNoGpsVisibility();
+        super.onResume();
+    }
+
+    @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode) {
             case ACCESS_FINE_LOCATION_REQUEST_CODE:
@@ -204,22 +219,24 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
         }
     }
 
-    private static void toggleNoGpsVisibility(boolean noGps) {
-//            if (noGps) {
-////                speedView.setAlpha(0f);
-////                noGpsBar.animate()
-////                        .alpha(1f)
-////                        .setDuration(animationGpsDuration);
+    public static void toggleNoGpsVisibility() {
+        if (!activityPaused) {
+            if (noGps) {
 //                speedView.setAlpha(0f);
-//                noGpsBar.setAlpha(1f);
-//            } else {
-////                noGpsBar.setAlpha(0f);
-////                speedView.animate()
-////                        .alpha(1f)
-////                        .setDuration(animationGpsDuration);
+//                noGpsBar.animate()
+//                        .alpha(1f)
+//                        .setDuration(animationGpsDuration);
+                speedView.setAlpha(0f);
+                noGpsBar.setAlpha(1f);
+            } else {
 //                noGpsBar.setAlpha(0f);
-//                speedView.setAlpha(1f);
-//            }
+//                speedView.animate()
+//                        .alpha(1f)
+//                        .setDuration(animationGpsDuration);
+                noGpsBar.setAlpha(0f);
+                speedView.setAlpha(1f);
+            }
+        }
     }
 
     private void toggleVisibility(final Chronometer chrono, final TextView label, final TextView percent){
@@ -314,7 +331,8 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
             isStop = true;
             stoppingChrono.start();
         }
-        toggleNoGpsVisibility(false);
+        noGps = false;
+        toggleNoGpsVisibility();
         gpsAnimation.stop();
         gpsAnimation.selectDrawable(0);
     }
@@ -376,7 +394,8 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
             unlockChronometersForNextLoop();
         }
         gpsAnimation.start();
-        toggleNoGpsVisibility(true);
+        noGps = true;
+        toggleNoGpsVisibility();
     }
 
     private static void unlockChronometersForNextLoop() {

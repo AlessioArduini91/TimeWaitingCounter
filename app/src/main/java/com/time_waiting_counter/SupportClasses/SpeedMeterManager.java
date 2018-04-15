@@ -35,8 +35,8 @@ public class SpeedMeterManager {
     List<Timer> timerList = new ArrayList<Timer>();
     List<TimerTask> timerTaskList = new ArrayList<TimerTask>();
     float timerSeconds;
-    final long TIMER_INTERVAL = 5000;
-    final long TIMER_INTERVAL_GPS = 1000;
+    final long TIMER_INTERVAL = 6000;
+    final long TIMER_INTERVAL_GPS = 3000;
     Boolean noSignal = false;
 
     public interface SpeedMeterInterface {
@@ -50,14 +50,14 @@ public class SpeedMeterManager {
         @Override
         public void onLocationChanged(Location location) {
             if (!checkGps) {
+                checkGps = true;
                 latitudeAfterGpsRestart = location.getLatitude();
                 longitudeAfterGpsRestart = location.getLongitude();
-                timeAfterGpsRestart = timerSeconds;
+//                timeAfterGpsRestart = timerSeconds;
                 //if (timeAfterGpsRestart != timeBeforeGpsLoss + TIMER_INTERVAL) {
                 setAverageSpeed();
                 setAvgGraphEntries();
                 //}
-                checkGps = true;
             }
             latitudeBeforeGpsLoss = location.getLatitude();
             longitudeBeforeGpsLoss = location.getLongitude();
@@ -127,6 +127,7 @@ public class SpeedMeterManager {
                     timeBeforeGpsLoss = timerSeconds;
                     timerSeconds += TIMER_INTERVAL;
                 } else {
+                    timeAfterGpsRestart = timerSeconds;
                     timerSeconds += TIMER_INTERVAL;
                 }
             }
@@ -176,15 +177,15 @@ public class SpeedMeterManager {
     }
 
     private void setAvgGraphEntries() {
-        for (float time = timeBeforeGpsLoss + TIMER_INTERVAL; time < timeAfterGpsRestart; time = time + TIMER_INTERVAL) {
+        for (float time = timeBeforeGpsLoss + TIMER_INTERVAL; time <= timeAfterGpsRestart; time = time + TIMER_INTERVAL) {
             speedMeter.setGraphEntry(time, avgSpeed);
         }
     }
 
     public String getTotalParsedTime() {
-        int seconds = Math.round((timerSeconds / 1000) % 60);
-        int minutes = Math.round((timerSeconds / (1000 * 60)) % 60);
-        int hours = Math.round((timerSeconds / (1000 * 60 * 60)) % 24);
+        int seconds = (int) (timerSeconds / (1000)) % 60;
+        int minutes = (int) (timerSeconds / (1000 * 60)) % 60;
+        int hours = (int) (timerSeconds / (1000 * 60 * 60)) % 24;
 
         return String.format("%02d : %02d : %02d", hours, minutes, seconds);
     }
