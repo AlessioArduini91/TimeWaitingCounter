@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="preloaded_fonts" translatable="false">
+        <item>@font/acme</item>
+        <item>@font/belleza</item>
+        <item>@font/chelsea_market</item>
+        <item>@font/forum</item>
+        <item>@font/hind_vadodara_medium</item>
+    </array>
+</resources>

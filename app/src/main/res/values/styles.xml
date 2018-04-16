@@ -9,6 +9,7 @@
     </style>
 
     <style name="CustomTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:fontFamily">@font/belleza</item>
         <item name="android:colorBackground">@color/colorPrimary</item>
         <item name="colorPrimary">@color/customActionBarColor</item>
         <item name="android:navigationBarColor">@color/customActionBarColor</item>

@@ -14,22 +14,25 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="TextView"
+        android:fontFamily="@font/forum"
         android:gravity="bottom"
+        android:paddingBottom="5dp"
+        android:text="TextView"
         android:textColor="@android:color/white"
-        android:textSize="18sp"
-        android:paddingBottom="5dp"/>
+        android:textSize="18sp" />
 
     <Chronometer
         android:id="@+id/timeChrono"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:fontFamily="cursive"
         android:gravity="top"
+        android:includeFontPadding="false"
+        android:paddingTop="5dp"
         android:textColor="@android:color/white"
-        android:textSize="24sp"
-        android:visibility="visible"
-        android:paddingTop="5dp"/>
+        android:textSize="20sp"
+        android:visibility="visible" />
 
     <TextView
         android:id="@+id/timePercent"
