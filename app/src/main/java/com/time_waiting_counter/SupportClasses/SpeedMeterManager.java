@@ -53,18 +53,14 @@ public class SpeedMeterManager {
                 checkGps = true;
                 latitudeAfterGpsRestart = location.getLatitude();
                 longitudeAfterGpsRestart = location.getLongitude();
-//                timeAfterGpsRestart = timerSeconds;
-                //if (timeAfterGpsRestart != timeBeforeGpsLoss + TIMER_INTERVAL) {
                 setAverageSpeed();
                 setAvgGraphEntries();
-                //}
             }
             latitudeBeforeGpsLoss = location.getLatitude();
             longitudeBeforeGpsLoss = location.getLongitude();
             noSignal = false;
             speed = location.getSpeed();
             speedMeter.setSpeedView(speed);
-                // false = stop
             if (speed < 1.0 && moveTime) {
                 MainActivity.toggleChronometer(false);
                 moveTime = false;
@@ -97,24 +93,6 @@ public class SpeedMeterManager {
         activityContext = context;
         speedMeter = (SpeedMeterInterface) context;
         speedMeter.setSpeedView(speed);
-        initTimer();
-    }
-
-    public void createNewTimer() {
-        checkTimerTask.cancel();
-        checkTimer.cancel();
-        timerTask.cancel();
-        timer.cancel();
-        timerSeconds = 0f;
-        speed = (float) 0.0;
-        timeBeforeGpsLoss = 0;
-        timeAfterGpsRestart = 0;
-        latitudeBeforeGpsLoss = 0.0;
-        longitudeBeforeGpsLoss = 0.0;
-        stopTime = true;
-        moveTime = true;
-        checkGps = true;
-        noSignal = false;
         initTimer();
     }
 
