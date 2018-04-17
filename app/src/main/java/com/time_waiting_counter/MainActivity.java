@@ -63,11 +63,9 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
     LinearLayout movingLayout;
     LinearLayout stoppingLayout;
     private static int animationDuration;
-    private static int animationGpsDuration;
     final int ACCESS_FINE_LOCATION_REQUEST_CODE = 5;
 
     long percentMoving=0, percentStopping=0;
-    Boolean testStart = false;
     private static Boolean isStart = false;
     private static Boolean isStop = false;
     private static Boolean gpsSearching = false;
@@ -90,7 +88,6 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
         gpsImage.setImageDrawable(getDrawable(R.drawable.animation_gps));
         gpsAnimation = (AnimationDrawable) gpsImage.getDrawable();
         animationDuration = getResources().getInteger(android.R.integer.config_longAnimTime);
-        animationGpsDuration = getResources().getInteger(android.R.integer.config_shortAnimTime);
         movingLayout = (LinearLayout) findViewById(R.id.chronoMoveLayout);
         stoppingLayout = (LinearLayout) findViewById(R.id.chronoStopLayout);
         movingTextView = movingLayout.findViewById(R.id.timeText);
