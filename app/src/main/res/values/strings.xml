@@ -1,7 +1,7 @@
 <resources>
-    <string name="app_name">Time Waiting Counter</string>
+    <string name="app_name">Tempo in Attesa</string>
     <string name="timeMove">In Movimento</string>
-    <string name="timeStop">Fermo</string>
+    <string name="timeStop">In Attesa</string>
     <string name="percentMove">% Movimento</string>
     <string name="percentStopping">% Fermo</string>
     <string name="maxPercent">100%</string>
