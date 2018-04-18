@@ -209,6 +209,7 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
                 noGpsBar.setAlpha(1f);
             } else {
                 gpsAnimation.stop();
+                gpsAnimation.selectDrawable(0);
                 noGpsBar.setAlpha(0f);
                 speedView.setAlpha(1f);
             }
@@ -307,7 +308,6 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
         }
         noGps = false;
         toggleNoGpsVisibility();
-        gpsAnimation.selectDrawable(0);
     }
 
     public static void resetChronometers(){
@@ -321,7 +321,6 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
         chartEntries.clear();
         movingChrono.setBase(SystemClock.elapsedRealtime());
         stoppingChrono.setBase(SystemClock.elapsedRealtime());
-//        speedMeterManager.createNewTimer();
     }
 
     public void stop() {
