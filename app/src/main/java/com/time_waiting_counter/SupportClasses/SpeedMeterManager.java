@@ -135,7 +135,7 @@ public class SpeedMeterManager {
         checkTimer = new Timer();
 
         checkTimer.schedule(checkTimerTask, 0, TIMER_INTERVAL_GPS);
-        timer.schedule(timerTask, 100, 1000);
+        timer.schedule(timerTask, 0, 1000);
 
         timerList.add(timer);
         timerList.add(checkTimer);
