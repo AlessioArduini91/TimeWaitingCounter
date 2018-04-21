@@ -47,7 +47,6 @@ public class ChartFormatter {
         }
         lineDataSet.setCircleColors(colors);
         lineDataSet.setDrawValues(false);
-//        lineDataSet.setDrawCircles(false);
         return lineDataSet;
     }
 

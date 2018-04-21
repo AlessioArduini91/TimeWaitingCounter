@@ -3,9 +3,11 @@ package com.time_waiting_counter;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.os.CountDownTimer;
 import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
@@ -59,7 +61,6 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
     static Chronometer stoppingChrono;
     List<Timer> timers;
     List<TimerTask> timerTasks;
-
     LinearLayout movingLayout;
     LinearLayout stoppingLayout;
     private static int animationDuration;
@@ -103,6 +104,10 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
         speedView = (ProgressiveGauge) findViewById(R.id.speedView);
         speedMeterManager = new SpeedMeterManager(this);
         mainToolbar = (Toolbar) findViewById(R.id.mainToolbar);
+
+        movingLayout.setBackground(getDrawable(R.drawable.chronometer_shape_moving));
+        stoppingLayout.setBackground(getDrawable(R.drawable.chronometer_shape_stopping));
+
         setSupportActionBar(mainToolbar);
         toggleTextView(movingTextView);
         toggleTextView(stoppingTextView);
