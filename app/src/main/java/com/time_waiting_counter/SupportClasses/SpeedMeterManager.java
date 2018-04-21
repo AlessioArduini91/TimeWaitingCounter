@@ -27,6 +27,8 @@ public class SpeedMeterManager {
     private double longitudeAfterGpsRestart;
     private float timeBeforeGpsLoss;
     private float timeAfterGpsRestart;
+    private float realTimeBeforeGpsLoss;
+    private float realTimeAfterGpsRestart;
     SpeedMeterInterface speedMeter;
     TimerTask timerTask;
     TimerTask checkTimerTask;
@@ -53,11 +55,13 @@ public class SpeedMeterManager {
                 checkGps = true;
                 latitudeAfterGpsRestart = location.getLatitude();
                 longitudeAfterGpsRestart = location.getLongitude();
+                realTimeAfterGpsRestart = timerSeconds;
                 setAverageSpeed();
                 setAvgGraphEntries();
             }
             latitudeBeforeGpsLoss = location.getLatitude();
             longitudeBeforeGpsLoss = location.getLongitude();
+            realTimeBeforeGpsLoss = timerSeconds;
             noSignal = false;
             speed = location.getSpeed();
             speedMeter.setSpeedView(speed);
@@ -116,7 +120,6 @@ public class SpeedMeterManager {
         };
 
         timer = new Timer();
-        timer.schedule(timerTask, 0, 1000);
 
         checkTimerTask = new TimerTask() {
             @Override
@@ -130,7 +133,9 @@ public class SpeedMeterManager {
         };
 
         checkTimer = new Timer();
+
         checkTimer.schedule(checkTimerTask, 0, TIMER_INTERVAL_GPS);
+        timer.schedule(timerTask, 100, 1000);
 
         timerList.add(timer);
         timerList.add(checkTimer);
@@ -154,7 +159,7 @@ public class SpeedMeterManager {
             locationAfterGpsRestart.setLongitude(longitudeAfterGpsRestart);
 
             float distance = locationBeforeGpsLoss.distanceTo(locationAfterGpsRestart);
-            avgSpeed = (distance * 1000) / (timeAfterGpsRestart - timeBeforeGpsLoss);
+            avgSpeed = (distance * 1000) / (realTimeAfterGpsRestart - realTimeBeforeGpsLoss);
         }
     }
 
