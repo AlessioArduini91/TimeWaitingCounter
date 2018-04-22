@@ -130,7 +130,9 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
             @Override
             public void onDateSet(DatePicker view, int year,
                                   int monthOfYear, int dayOfMonth) {
-
+                Toast.makeText(getApplicationContext(),  String.format("Data: %s-%s-%s",
+                        String.valueOf(dayOfMonth), String.valueOf(monthOfYear), String.valueOf(year)) ,
+                        Toast.LENGTH_LONG ).show();
             }
         }, mYear, mMonth, mDay);
 
