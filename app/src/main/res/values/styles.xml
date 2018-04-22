@@ -15,4 +15,9 @@
         <item name="android:navigationBarColor">@color/customActionBarColor</item>
     </style>
 
+    <style name="datepicker" parent="Theme.AppCompat.Light.Dialog">
+        <item name="colorPrimary">@color/customActionBarColor</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/customActionBarColor</item>
+    </style>
 </resources>

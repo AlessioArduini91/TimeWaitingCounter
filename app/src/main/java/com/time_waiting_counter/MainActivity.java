@@ -2,6 +2,7 @@ package com.time_waiting_counter;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -17,7 +18,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.content.Context;
+import android.widget.Button;
 import android.widget.Chronometer;
+import android.widget.DatePicker;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -33,6 +36,7 @@ import com.budiyev.android.circularprogressbar.CircularProgressBar;
 import com.github.anastr.speedviewlib.ProgressiveGauge;
 import com.github.mikephil.charting.data.Entry;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -54,6 +58,7 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
     Toolbar mainToolbar;
     Drawable stopDrawable;
     Drawable reloadDrawable;
+    Button calendarTest;
     LocationManager locationManager;
     static AnimationDrawable gpsAnimation;
     static ImageView gpsImage;
@@ -78,6 +83,7 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
     private static boolean activityPaused = false;
     private static boolean noGps = false;
     private static boolean isStopped = false;
+    private DatePickerDialog datePickerDialog;
     static List<Entry> chartEntries = new ArrayList<Entry>();
 
     @Override
@@ -111,6 +117,31 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
         setSupportActionBar(mainToolbar);
         toggleTextView(movingTextView);
         toggleTextView(stoppingTextView);
+
+        final Calendar c = Calendar.getInstance();
+        int mYear = c.get(Calendar.YEAR);
+        int mMonth = c.get(Calendar.MONTH);
+        int mDay = c.get(Calendar.DAY_OF_MONTH);
+
+        datePickerDialog = new DatePickerDialog(this,
+                R.style.datepicker,
+                new DatePickerDialog.OnDateSetListener() {
+
+            @Override
+            public void onDateSet(DatePicker view, int year,
+                                  int monthOfYear, int dayOfMonth) {
+
+            }
+        }, mYear, mMonth, mDay);
+
+        calendarTest = (Button) findViewById(R.id.calendarTest);
+
+        calendarTest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                datePickerDialog.show();
+            }
+        });
 
         movingLayout.setOnClickListener(new View.OnClickListener() {
             @Override

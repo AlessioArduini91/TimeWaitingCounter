@@ -158,6 +158,14 @@
         android:contentDescription="@string/gpsSignal"/>
         />
 
+    <Button
+        android:id="@+id/calendarTest"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:layout_gravity="bottom|right"
+        android:text="Calendario" />
+
 </FrameLayout>
 
 
