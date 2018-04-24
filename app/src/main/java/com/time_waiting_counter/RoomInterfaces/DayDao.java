@@ -18,6 +18,9 @@ public interface DayDao {
     @Query("select * from day where dayId=:dayId")
     Day getDay(int dayId);
 
+    @Query("select * from day where dayDate=:date")
+    Day getDayByDate(String date);
+
     @Insert
     void insert(Day day);
 

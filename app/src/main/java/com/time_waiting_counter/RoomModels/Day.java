@@ -23,8 +23,8 @@ public class Day {
 //    @ColumnInfo(name = "weekId")
 //    private int weekId;
 
-    @ColumnInfo(name = "day")
-    private String day;
+    @ColumnInfo(name = "dayDate")
+    private String dayDate;
 
     @ColumnInfo(name = "dayMovingTime")
     private long dayMovingTime;
@@ -52,12 +52,12 @@ public class Day {
 //        this.weekId = weekId;
 //    }
 
-    public String getDay() {
-        return this.day;
+    public String getDayDate() {
+        return this.dayDate;
     }
 
-    public void setDay(String day) {
-        this.day = day;
+    public void setDayDate(String dayDate) {
+        this.dayDate = dayDate;
     }
 
     public long getDayMovingTime() {

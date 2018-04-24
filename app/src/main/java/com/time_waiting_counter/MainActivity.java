@@ -3,6 +3,7 @@ package com.time_waiting_counter;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.app.DatePickerDialog;
+import android.arch.persistence.room.Room;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -43,7 +44,10 @@ import java.util.TimerTask;
 
 import com.time_waiting_counter.R;
 
+import com.time_waiting_counter.RoomInterfaces.DayDao;
+import com.time_waiting_counter.RoomModels.Day;
 import com.time_waiting_counter.SupportClasses.SpeedMeterManager;
+import com.time_waiting_counter.WaitingCounterDatabase.WaitingCounterDatabase;
 
 public class MainActivity extends AppCompatActivity implements SpeedMeterManager.SpeedMeterInterface {
 
@@ -84,6 +88,10 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
     private static boolean noGps = false;
     private static boolean isStopped = false;
     private DatePickerDialog datePickerDialog;
+    private WaitingCounterDatabase waitingCounterDatabase;
+    private DayDao counterDayDao;
+    private static long initialMovingTime;
+    private static long initialStoppingTime;
     static List<Entry> chartEntries = new ArrayList<Entry>();
 
     @Override
@@ -123,6 +131,10 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
         int mMonth = c.get(Calendar.MONTH);
         int mDay = c.get(Calendar.DAY_OF_MONTH);
 
+        waitingCounterDatabase = Room.databaseBuilder(getApplicationContext(),
+                WaitingCounterDatabase.class, "counter-database").allowMainThreadQueries().build();
+        counterDayDao = waitingCounterDatabase.dayDao();
+
         datePickerDialog = new DatePickerDialog(this,
                 R.style.datepicker,
                 new DatePickerDialog.OnDateSetListener() {
@@ -130,9 +142,25 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
             @Override
             public void onDateSet(DatePicker view, int year,
                                   int monthOfYear, int dayOfMonth) {
-                Toast.makeText(getApplicationContext(),  String.format("Data: %s-%s-%s",
-                        String.valueOf(dayOfMonth), String.valueOf(monthOfYear), String.valueOf(year)) ,
-                        Toast.LENGTH_LONG ).show();
+                String dateAsString = String.format("Data: %s-%s-%s",
+                        String.valueOf(dayOfMonth),
+                        String.valueOf(monthOfYear),
+                        String.valueOf(year));
+
+                if (counterDayDao.getDayByDate(dateAsString) == null) {
+                    Day newDay = new Day();
+                    newDay.setDayDate(dateAsString);
+                    newDay.setDayMovingTime(lastPauseStart - initialMovingTime);
+                    newDay.setDayStoppingTime(lastPauseStop - initialStoppingTime);
+                    counterDayDao.insert(newDay);
+                } else {
+                    Day day = counterDayDao.getDayByDate(dateAsString);
+                    long oldPercentMoving = day.getDayMovingTime();
+                    long oldPercentStopping = day.getDayStoppingTime();
+                    day.setDayMovingTime(oldPercentMoving + lastPauseStart - initialMovingTime);
+                    day.setDayStoppingTime(oldPercentStopping + lastPauseStop - initialStoppingTime);
+                    counterDayDao.update(day);
+                }
             }
         }, mYear, mMonth, mDay);
 
@@ -298,6 +326,7 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
 
         if (command) {
             if (lastPauseStart == 0) {
+                initialMovingTime = SystemClock.elapsedRealtime();
                 movingChrono.setBase(SystemClock.elapsedRealtime());
                 if (stopAlreadyStarted) {
                     if (!gpsSearching) {
@@ -322,6 +351,7 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
         }
         else {
             if (lastPauseStop == 0) {
+                initialStoppingTime = SystemClock.elapsedRealtime();
                 stoppingChrono.setBase(SystemClock.elapsedRealtime());
                 if (startAlreadyStarted) {
                     if (!gpsSearching) {
@@ -354,6 +384,8 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
         stoppingChrono.stop();
         lastPauseStart=0;
         lastPauseStop=0;
+        initialMovingTime=0;
+        initialStoppingTime=0;
         stopAlreadyStarted = false;
         startAlreadyStarted = false;
         chartEntries.clear();
@@ -370,7 +402,6 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
         for (TimerTask timerTask : timerTasks) {
             timerTask.cancel();
         }
-
         locationManager.removeUpdates(speedMeterManager.locationListener);
         speedView.setAlpha(0f);
         noGpsBar.setAlpha(0f);
