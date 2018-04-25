@@ -20,4 +20,6 @@
     <string name="middleValuesLabel"> &lt; 30 Km/h </string>
     <string name="highValuesLabel"> &gt; 30 Km/h </string>
     <string name="totalTime">Tempo totale viaggio</string>
+    <string name="save">Save</string>
+    <string name="timePlaceholder">00:00:00</string>
 </resources>

@@ -56,6 +56,22 @@ public class Day {
         return this.dayDate;
     }
 
+    public String getFormattedMoveTime() {
+        return getFormattedTime(this.dayMovingTime);
+    }
+
+    public String getFormattedStopTime() {
+        return getFormattedTime(this.dayStoppingTime);
+    }
+
+    private String getFormattedTime(long timerSeconds) {
+        int seconds = (int) (timerSeconds / (1000)) % 60;
+        int minutes = (int) (timerSeconds / (1000 * 60)) % 60;
+        int hours = (int) (timerSeconds / (1000 * 60 * 60)) % 24;
+
+        return String.format("%02d : %02d : %02d", hours, minutes, seconds);
+    }
+
     public void setDayDate(String dayDate) {
         this.dayDate = dayDate;
     }

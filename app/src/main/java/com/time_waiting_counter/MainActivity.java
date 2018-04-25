@@ -23,6 +23,7 @@ import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.DatePicker;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -63,6 +64,7 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
     Drawable stopDrawable;
     Drawable reloadDrawable;
     Button calendarTest;
+    ImageButton saveDay;
     LocationManager locationManager;
     static AnimationDrawable gpsAnimation;
     static ImageView gpsImage;
@@ -92,6 +94,8 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
     private DayDao counterDayDao;
     private static long initialMovingTime;
     private static long initialStoppingTime;
+    private String dateAsString;
+    private String today;
     static List<Entry> chartEntries = new ArrayList<Entry>();
 
     @Override
@@ -118,6 +122,10 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
         speedView = (ProgressiveGauge) findViewById(R.id.speedView);
         speedMeterManager = new SpeedMeterManager(this);
         mainToolbar = (Toolbar) findViewById(R.id.mainToolbar);
+        saveDay = findViewById(R.id.save);
+        waitingCounterDatabase = Room.databaseBuilder(getApplicationContext(),
+                WaitingCounterDatabase.class, "counter-database").allowMainThreadQueries().build();
+        counterDayDao = waitingCounterDatabase.dayDao();
 
         movingLayout.setBackground(getDrawable(R.drawable.chronometer_shape_moving));
         stoppingLayout.setBackground(getDrawable(R.drawable.chronometer_shape_stopping));
@@ -126,43 +134,39 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
         toggleTextView(movingTextView);
         toggleTextView(stoppingTextView);
 
-        final Calendar c = Calendar.getInstance();
-        int mYear = c.get(Calendar.YEAR);
-        int mMonth = c.get(Calendar.MONTH);
-        int mDay = c.get(Calendar.DAY_OF_MONTH);
+        final Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
 
-        waitingCounterDatabase = Room.databaseBuilder(getApplicationContext(),
-                WaitingCounterDatabase.class, "counter-database").allowMainThreadQueries().build();
-        counterDayDao = waitingCounterDatabase.dayDao();
+        today = String.format("%s-%s-%s",
+                String.valueOf(year),
+                String.valueOf(month + 1),
+                String.valueOf(day));
 
         datePickerDialog = new DatePickerDialog(this,
                 R.style.datepicker,
                 new DatePickerDialog.OnDateSetListener() {
 
             @Override
-            public void onDateSet(DatePicker view, int year,
-                                  int monthOfYear, int dayOfMonth) {
-                String dateAsString = String.format("Data: %s-%s-%s",
-                        String.valueOf(dayOfMonth),
-                        String.valueOf(monthOfYear),
-                        String.valueOf(year));
+            public void onDateSet(DatePicker view, int selectedYear,
+                                  int selectedMonth, int selectedDay) {
+                dateAsString = String.format("%s-%s-%s",
+                        String.valueOf(selectedYear),
+                        String.valueOf(selectedMonth + 1),
+                        String.valueOf(selectedDay));
 
-                if (counterDayDao.getDayByDate(dateAsString) == null) {
-                    Day newDay = new Day();
-                    newDay.setDayDate(dateAsString);
-                    newDay.setDayMovingTime(lastPauseStart - initialMovingTime);
-                    newDay.setDayStoppingTime(lastPauseStop - initialStoppingTime);
-                    counterDayDao.insert(newDay);
-                } else {
-                    Day day = counterDayDao.getDayByDate(dateAsString);
-                    long oldPercentMoving = day.getDayMovingTime();
-                    long oldPercentStopping = day.getDayStoppingTime();
-                    day.setDayMovingTime(oldPercentMoving + lastPauseStart - initialMovingTime);
-                    day.setDayStoppingTime(oldPercentStopping + lastPauseStop - initialStoppingTime);
-                    counterDayDao.update(day);
-                }
+                Bundle historyBundle = new Bundle();
+                historyBundle.putString("dayDate", dateAsString);
+                historyBundle.putLong("initialMovingTime", initialMovingTime);
+                historyBundle.putLong("initialStoppingTime", initialStoppingTime);
+                historyBundle.putLong("lastPauseStart", lastPauseStart);
+                historyBundle.putLong("lastPauseStop", lastPauseStop);
+                Intent historyActivityIntent = new Intent(MainActivity.this, HistoryActivity.class);
+                historyActivityIntent.putExtras(historyBundle);
+                startActivity(historyActivityIntent);
             }
-        }, mYear, mMonth, mDay);
+        }, year, month, day);
 
         calendarTest = (Button) findViewById(R.id.calendarTest);
 
@@ -170,6 +174,26 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
             @Override
             public void onClick(View view) {
                 datePickerDialog.show();
+            }
+        });
+
+        saveDay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Day day = counterDayDao.getDayByDate(today);
+                if (counterDayDao.getDayByDate(today) == null) {
+                    Day newDay = new Day();
+                    newDay.setDayDate(today);
+                    newDay.setDayMovingTime(lastPauseStart - initialMovingTime);
+                    newDay.setDayStoppingTime(lastPauseStop - initialStoppingTime);
+                    counterDayDao.insert(newDay);
+                } else {
+                    long oldPercentMoving = day.getDayMovingTime();
+                    long oldPercentStopping = day.getDayStoppingTime();
+                    day.setDayMovingTime(oldPercentMoving + lastPauseStart - initialMovingTime);
+                    day.setDayStoppingTime(oldPercentStopping + lastPauseStop - initialStoppingTime);
+                    counterDayDao.update(day);
+                }
             }
         });
 
@@ -402,6 +426,12 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
         for (TimerTask timerTask : timerTasks) {
             timerTask.cancel();
         }
+        if (isStop) {
+            lastPauseStop = SystemClock.elapsedRealtime();
+        }
+        else if (isStart) {
+            lastPauseStart = SystemClock.elapsedRealtime();
+        }
         locationManager.removeUpdates(speedMeterManager.locationListener);
         speedView.setAlpha(0f);
         noGpsBar.setAlpha(0f);
@@ -426,6 +456,8 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
             movingChrono.stop();
             unlockChronometersForNextLoop();
         }
+        isStart = false;
+        isStop = false;
         noGps = true;
         toggleNoGpsVisibility();
     }
@@ -451,6 +483,7 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
         switch (item.getItemId()) {
             case R.id.action_reload:
                 totalTimeTextView.setVisibility(View.GONE);
+                saveDay.setVisibility(View.GONE);
                 reload();
                 return true;
 
@@ -461,6 +494,7 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
                 gaugeFrame.setBackgroundColor(getResources().getColor(R.color.customActionBarColor));
                 totalTimeTextView.setText(getString(R.string.totalTime) + "\n" + speedMeterManager.getTotalParsedTime());
                 totalTimeTextView.setVisibility(View.VISIBLE);
+                saveDay.setVisibility(View.VISIBLE);
                 return true;
 
             case R.id.action_graph:

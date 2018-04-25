@@ -22,11 +22,21 @@
             android:name="com.time_waiting_counter.ResultsActivity" android:configChanges="orientation" android:screenOrientation="portrait"
             >
             <intent-filter>
-                <action android:name="android.intent.action.ResultsActivity" />
+                <action android:name="com.time_waiting_counter.ResultsActivity" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="com.time_waiting_counter.HistoryActivity" android:configChanges="orientation" android:screenOrientation="portrait"
+            >
+            <intent-filter>
+                <action android:name="com.time_waiting_counter.HistoryActivity" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
 
         <meta-data
             android:name="preloaded_fonts"
