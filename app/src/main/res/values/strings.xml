@@ -22,4 +22,6 @@
     <string name="totalTime">Tempo totale viaggio</string>
     <string name="save">Save</string>
     <string name="timePlaceholder">00:00:00</string>
+    <string name="queryCorrect">Dati aggiornati correttamente</string>
+    <string name="date">Data:</string>
 </resources>

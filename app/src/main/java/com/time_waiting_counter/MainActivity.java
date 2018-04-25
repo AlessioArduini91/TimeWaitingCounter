@@ -92,8 +92,6 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
     private DatePickerDialog datePickerDialog;
     private WaitingCounterDatabase waitingCounterDatabase;
     private DayDao counterDayDao;
-    private static long initialMovingTime;
-    private static long initialStoppingTime;
     private String dateAsString;
     private String today;
     static List<Entry> chartEntries = new ArrayList<Entry>();
@@ -158,10 +156,6 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
 
                 Bundle historyBundle = new Bundle();
                 historyBundle.putString("dayDate", dateAsString);
-                historyBundle.putLong("initialMovingTime", initialMovingTime);
-                historyBundle.putLong("initialStoppingTime", initialStoppingTime);
-                historyBundle.putLong("lastPauseStart", lastPauseStart);
-                historyBundle.putLong("lastPauseStop", lastPauseStop);
                 Intent historyActivityIntent = new Intent(MainActivity.this, HistoryActivity.class);
                 historyActivityIntent.putExtras(historyBundle);
                 startActivity(historyActivityIntent);
@@ -180,20 +174,37 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
         saveDay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                long movingForTime;
+                long stoppingForTime;
+
+                if (startAlreadyStarted) {
+                    movingForTime = lastPauseStart - movingChrono.getBase();
+                } else {
+                    movingForTime = 0;
+                }
+
+                if (stopAlreadyStarted) {
+                    stoppingForTime = lastPauseStop - stoppingChrono.getBase();
+                } else {
+                    stoppingForTime = 0;
+                }
+
                 Day day = counterDayDao.getDayByDate(today);
                 if (counterDayDao.getDayByDate(today) == null) {
                     Day newDay = new Day();
                     newDay.setDayDate(today);
-                    newDay.setDayMovingTime(lastPauseStart - initialMovingTime);
-                    newDay.setDayStoppingTime(lastPauseStop - initialStoppingTime);
+                    newDay.setDayMovingTime(movingForTime);
+                    newDay.setDayStoppingTime(stoppingForTime);
                     counterDayDao.insert(newDay);
                 } else {
                     long oldPercentMoving = day.getDayMovingTime();
                     long oldPercentStopping = day.getDayStoppingTime();
-                    day.setDayMovingTime(oldPercentMoving + lastPauseStart - initialMovingTime);
-                    day.setDayStoppingTime(oldPercentStopping + lastPauseStop - initialStoppingTime);
+                    day.setDayMovingTime(oldPercentMoving + movingForTime);
+                    day.setDayStoppingTime(oldPercentStopping + stoppingForTime);
                     counterDayDao.update(day);
                 }
+
+                Toast.makeText(getApplicationContext(), getString(R.string.queryCorrect), Toast.LENGTH_LONG).show();
             }
         });
 
@@ -350,7 +361,6 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
 
         if (command) {
             if (lastPauseStart == 0) {
-                initialMovingTime = SystemClock.elapsedRealtime();
                 movingChrono.setBase(SystemClock.elapsedRealtime());
                 if (stopAlreadyStarted) {
                     if (!gpsSearching) {
@@ -375,7 +385,6 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
         }
         else {
             if (lastPauseStop == 0) {
-                initialStoppingTime = SystemClock.elapsedRealtime();
                 stoppingChrono.setBase(SystemClock.elapsedRealtime());
                 if (startAlreadyStarted) {
                     if (!gpsSearching) {
@@ -408,8 +417,6 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
         stoppingChrono.stop();
         lastPauseStart=0;
         lastPauseStop=0;
-        initialMovingTime=0;
-        initialStoppingTime=0;
         stopAlreadyStarted = false;
         startAlreadyStarted = false;
         chartEntries.clear();
@@ -426,12 +433,14 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
         for (TimerTask timerTask : timerTasks) {
             timerTask.cancel();
         }
+
         if (isStop) {
             lastPauseStop = SystemClock.elapsedRealtime();
         }
         else if (isStart) {
             lastPauseStart = SystemClock.elapsedRealtime();
         }
+
         locationManager.removeUpdates(speedMeterManager.locationListener);
         speedView.setAlpha(0f);
         noGpsBar.setAlpha(0f);

@@ -168,7 +168,8 @@
         android:contentDescription="@string/save"
         android:tint="@color/customActionBarColor"
         app:srcCompat="@drawable/ic_save"
-        android:visibility="gone"/>
+        android:visibility="gone"
+        />
 
     <Button
         android:id="@+id/calendarTest"

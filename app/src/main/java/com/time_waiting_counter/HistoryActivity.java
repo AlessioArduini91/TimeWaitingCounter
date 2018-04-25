@@ -3,6 +3,8 @@ package com.time_waiting_counter;
 import android.arch.persistence.room.Room;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -24,10 +26,6 @@ public class HistoryActivity extends AppCompatActivity {
     private WaitingCounterDatabase waitingCounterDatabase;
     private DayDao counterDayDao;
     private String dateAsString;
-    private long initialMovingTime;
-    private long initialStoppingTime;
-    private long lastPauseStart;
-    private long lastPauseStop;
     private TextView dayHeader;
     private LinearLayout rowDayMovingLayout;
     private TextView rowDayMovingTitle;
@@ -37,6 +35,7 @@ public class HistoryActivity extends AppCompatActivity {
     private TextView rowDayStoppingTitle;
     private TextView rowDayStoppingTime;
     private TextView rowDayStoppingPercent;
+    private Button delete;
 
     private Day day;
 
@@ -54,6 +53,7 @@ public class HistoryActivity extends AppCompatActivity {
         rowDayStoppingTitle = (TextView) rowDayStoppingLayout.findViewById(R.id.rowTitle);
         rowDayStoppingTime = (TextView) rowDayStoppingLayout.findViewById(R.id.rowTime);
         rowDayStoppingPercent = (TextView) rowDayStoppingLayout.findViewById(R.id.rowPercent);
+        delete = (Button) findViewById(R.id.delete);
 
         Bundle historyBundle = getIntent().getExtras();
 
@@ -63,13 +63,20 @@ public class HistoryActivity extends AppCompatActivity {
                 WaitingCounterDatabase.class, "counter-database").allowMainThreadQueries().build();
         counterDayDao = waitingCounterDatabase.dayDao();
         day = counterDayDao.getDayByDate(dateAsString);
-        dayHeader.setText(dateAsString);
+        dayHeader.setText(dayHeader.getText() + " " + dateAsString.replace("-", " "));
+        rowDayMovingTitle.setText(getString(R.string.timeMove));
+        rowDayStoppingTitle.setText(getString(R.string.timeStop));
         if (day != null) {
-            rowDayMovingTitle.setText(getString(R.string.timeMove));
             rowDayMovingTime.setText(day.getFormattedMoveTime());
-            rowDayStoppingTitle.setText(getString(R.string.timeStop));
             rowDayStoppingTime.setText(day.getFormattedStopTime());
         }
+
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                counterDayDao.delete(day);
+            }
+        });
     }
 }
 
