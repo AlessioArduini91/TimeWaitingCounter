@@ -63,8 +63,8 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
     Toolbar mainToolbar;
     Drawable stopDrawable;
     Drawable reloadDrawable;
-    Button calendarTest;
-    ImageButton saveDay;
+    Drawable historyDrawable;
+    Button saveDay;
     LocationManager locationManager;
     static AnimationDrawable gpsAnimation;
     static ImageView gpsImage;
@@ -120,7 +120,7 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
         speedView = (ProgressiveGauge) findViewById(R.id.speedView);
         speedMeterManager = new SpeedMeterManager(this);
         mainToolbar = (Toolbar) findViewById(R.id.mainToolbar);
-        saveDay = findViewById(R.id.save);
+        saveDay = (Button) findViewById(R.id.save);
         waitingCounterDatabase = Room.databaseBuilder(getApplicationContext(),
                 WaitingCounterDatabase.class, "counter-database").allowMainThreadQueries().build();
         counterDayDao = waitingCounterDatabase.dayDao();
@@ -161,15 +161,6 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
                 startActivity(historyActivityIntent);
             }
         }, year, month, day);
-
-        calendarTest = (Button) findViewById(R.id.calendarTest);
-
-        calendarTest.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                datePickerDialog.show();
-            }
-        });
 
         saveDay.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -496,8 +487,10 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
         getMenuInflater().inflate(R.menu.toolbar_menu, menu);
         stopDrawable = menu.findItem(R.id.action_stop).getIcon();
         reloadDrawable = menu.findItem(R.id.action_reload).getIcon();
+        historyDrawable = menu.findItem(R.id.action_history).getIcon();
         stopDrawable.setColorFilter(getResources().getColor(android.R.color.white),  PorterDuff.Mode.SRC_ATOP);
         reloadDrawable.setColorFilter(getResources().getColor(android.R.color.white),  PorterDuff.Mode.SRC_ATOP);
+        historyDrawable.setColorFilter(getResources().getColor(android.R.color.white),  PorterDuff.Mode.SRC_ATOP);
         return true;
     }
 
@@ -524,6 +517,11 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
                 Intent openResultActivity = new Intent(MainActivity.this, ResultsActivity.class);
                 startActivity(openResultActivity);
                 return true;
+
+            case R.id.action_history:
+                datePickerDialog.show();
+                return true;
+
             default:
                 return super.onOptionsItemSelected(item);
 
