@@ -282,6 +282,18 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
     @Override
     protected void onResume() {
         activityPaused = false;
+
+        //fix per aggiornamento immagine
+        if (isStart) {
+            stoppingChrono.start();
+            stoppingChrono.stop();
+        }
+
+        if (isStop) {
+            movingChrono.start();
+            movingChrono.stop();
+        }
+
         if (!isStopped) {
             toggleNoGpsVisibility();
         }
@@ -441,6 +453,8 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
             lastPauseStart = SystemClock.elapsedRealtime();
         }
 
+        isStop = false;
+        isStart = false;
         locationManager.removeUpdates(speedMeterManager.locationListener);
         speedView.setAlpha(0f);
         noGpsBar.setAlpha(0f);
