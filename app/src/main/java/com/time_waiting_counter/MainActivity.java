@@ -196,6 +196,7 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
                 }
 
                 Toast.makeText(getApplicationContext(), getString(R.string.queryCorrect), Toast.LENGTH_LONG).show();
+                reload();
             }
         });
 
@@ -455,7 +456,6 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
     public void reload() {
         stop();
         resetChronometers();
-        gpsImage.setVisibility(View.VISIBLE);
         recreate();
     }
 
@@ -498,8 +498,6 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_reload:
-                totalTimeTextView.setVisibility(View.GONE);
-                saveDay.setVisibility(View.GONE);
                 reload();
                 return true;
 
@@ -507,7 +505,6 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
                 movingChrono.stop();
                 stoppingChrono.stop();
                 stop();
-                gaugeFrame.setBackgroundColor(getResources().getColor(R.color.customActionBarColor));
                 totalTimeTextView.setText(getString(R.string.totalTime) + "\n" + speedMeterManager.getTotalParsedTime());
                 totalTimeTextView.setVisibility(View.VISIBLE);
                 saveDay.setVisibility(View.VISIBLE);

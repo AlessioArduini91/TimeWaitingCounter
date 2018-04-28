@@ -10,6 +10,7 @@
     <color name="middleValuesColor">#eabf14</color>
     <color name="highValuesColor">#22b60b</color>
     <color name="lineChartColor">#ffffff</color>
-    <color name="gaugeBackGround">@android:color/white</color>
-    <color name="chartBackGround">#9bb2ef</color>
+    <color name="gaugeBackground">@android:color/white</color>
+    <color name="chartBackground">#9bb2ef</color>
+    <color name="totalTimeBackground">#5a85f7</color>
 </resources>

@@ -85,6 +85,6 @@ public class ResultsActivity extends AppCompatActivity {
         ChartFormatter.formatXAxis(xAxis);
         ChartFormatter.formatYAxis(yAxis);
 
-        ChartFormatter.formatChart(chart, getResources().getColor(R.color.chartBackGround), lineData);
+        ChartFormatter.formatChart(chart, getResources().getColor(R.color.chartBackground), lineData);
     }
 }

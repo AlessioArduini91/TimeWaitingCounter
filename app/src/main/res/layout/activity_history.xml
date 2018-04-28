@@ -8,7 +8,7 @@
     <GridLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/chartBackGround"
+        android:background="@color/chartBackground"
         android:columnCount="1"
         android:rowCount="4">
 

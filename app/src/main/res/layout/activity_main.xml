@@ -81,7 +81,7 @@
                 app:sv_maxSpeed="130"
                 app:sv_minSpeed="0"
                 app:sv_withTremble="false"
-                app:sv_speedometerBackColor="@color/gaugeBackGround"
+                app:sv_speedometerBackColor="@color/gaugeBackground"
                 app:sv_speedometerColor="@color/customActionBarColor" />
 
             <com.budiyev.android.circularprogressbar.CircularProgressBar
@@ -110,7 +110,9 @@
                 android:layout_gravity="center"
                 android:text="@string/totalTime"
                 android:textAlignment="center"
+                android:padding="20dp"
                 android:textColor="@android:color/white"
+                android:background="@color/totalTimeBackground"
                 android:textSize="24sp"
                 android:visibility="gone" />
 
