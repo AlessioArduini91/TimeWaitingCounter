@@ -32,6 +32,12 @@ public class Day {
     @ColumnInfo(name = "dayStoppingTime")
     private long dayStoppingTime;
 
+    @ColumnInfo(name = "dayMovingPercent")
+    private int dayMovingPercent;
+
+    @ColumnInfo(name = "dayStoppingPercent")
+    private int dayStoppingPercent;
+
     public Day() {
 
     }
@@ -90,5 +96,33 @@ public class Day {
 
     public void setDayStoppingTime(long dayStoppingTime) {
         this.dayStoppingTime = dayStoppingTime;
+    }
+
+    public int getTotalTime() {
+        return (int) (this.dayMovingTime + this.dayStoppingTime);
+    }
+
+    public int getDayMovingPercent() {
+        if (this.getTotalTime() == 0) {
+            return 0;
+        } else {
+            return (int) ((this.dayMovingTime * 100) / this.getTotalTime());
+        }
+    }
+
+    public int getDayStoppingPercent() {
+        if (this.getTotalTime() == 0) {
+            return 0;
+        } else {
+            return 100 - getDayMovingPercent();
+        }
+    }
+
+    public void setDayMovingPercent(int dayMovingPercent) {
+        this.dayMovingPercent = dayMovingPercent;
+    }
+
+    public void setDayStoppingPercent(int dayStoppingPercent) {
+        this.dayStoppingPercent = dayStoppingPercent;
     }
 }

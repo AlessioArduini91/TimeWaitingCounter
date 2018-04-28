@@ -122,7 +122,7 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
         mainToolbar = (Toolbar) findViewById(R.id.mainToolbar);
         saveDay = (Button) findViewById(R.id.save);
         waitingCounterDatabase = Room.databaseBuilder(getApplicationContext(),
-                WaitingCounterDatabase.class, "counter-database").allowMainThreadQueries().build();
+                WaitingCounterDatabase.class, "counter-database").allowMainThreadQueries().fallbackToDestructiveMigration().build();
         counterDayDao = waitingCounterDatabase.dayDao();
 
         movingLayout.setBackground(getDrawable(R.drawable.chronometer_shape_moving));
@@ -137,10 +137,10 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
         int month = calendar.get(Calendar.MONTH);
         int day = calendar.get(Calendar.DAY_OF_MONTH);
 
-        today = String.format("%s-%s-%s",
-                String.valueOf(year),
-                String.valueOf(month + 1),
-                String.valueOf(day));
+        today = String.format("%02d-%02d-%02d",
+                day,
+                month + 1,
+                year);
 
         datePickerDialog = new DatePickerDialog(this,
                 R.style.datepicker,
@@ -149,10 +149,10 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
             @Override
             public void onDateSet(DatePicker view, int selectedYear,
                                   int selectedMonth, int selectedDay) {
-                dateAsString = String.format("%s-%s-%s",
-                        String.valueOf(selectedYear),
-                        String.valueOf(selectedMonth + 1),
-                        String.valueOf(selectedDay));
+                dateAsString = String.format("%02d-%02d-%02d",
+                        selectedDay,
+                        selectedMonth + 1,
+                        selectedYear);
 
                 Bundle historyBundle = new Bundle();
                 historyBundle.putString("dayDate", dateAsString);

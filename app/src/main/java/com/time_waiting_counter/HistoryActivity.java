@@ -1,10 +1,14 @@
 package com.time_waiting_counter;
 
+import android.arch.persistence.db.SupportSQLiteDatabase;
 import android.arch.persistence.room.Room;
+import android.arch.persistence.room.migration.Migration;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -35,7 +39,7 @@ public class HistoryActivity extends AppCompatActivity {
     private TextView rowDayStoppingTitle;
     private TextView rowDayStoppingTime;
     private TextView rowDayStoppingPercent;
-    private Button delete;
+    private ImageButton delete;
 
     private Day day;
 
@@ -43,7 +47,6 @@ public class HistoryActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
-
         dayHeader = (TextView) findViewById(R.id.day_header);
         rowDayMovingLayout = (LinearLayout) findViewById(R.id.list_row_moving_day);
         rowDayMovingTitle = (TextView) rowDayMovingLayout.findViewById(R.id.rowTitle);
@@ -53,30 +56,36 @@ public class HistoryActivity extends AppCompatActivity {
         rowDayStoppingTitle = (TextView) rowDayStoppingLayout.findViewById(R.id.rowTitle);
         rowDayStoppingTime = (TextView) rowDayStoppingLayout.findViewById(R.id.rowTime);
         rowDayStoppingPercent = (TextView) rowDayStoppingLayout.findViewById(R.id.rowPercent);
-        delete = (Button) findViewById(R.id.delete);
+        delete = (ImageButton) findViewById(R.id.delete);
 
         Bundle historyBundle = getIntent().getExtras();
 
         dateAsString = historyBundle.getString("dayDate");
 
         waitingCounterDatabase = Room.databaseBuilder(getApplicationContext(),
-                WaitingCounterDatabase.class, "counter-database").allowMainThreadQueries().build();
+                WaitingCounterDatabase.class, "counter-database").allowMainThreadQueries().fallbackToDestructiveMigration().build();
         counterDayDao = waitingCounterDatabase.dayDao();
         day = counterDayDao.getDayByDate(dateAsString);
-        dayHeader.setText(dayHeader.getText() + " " + dateAsString.replace("-", " "));
+        dayHeader.setText(dayHeader.getText() + " " + dateAsString);
         rowDayMovingTitle.setText(getString(R.string.timeMove));
         rowDayStoppingTitle.setText(getString(R.string.timeStop));
         if (day != null) {
             rowDayMovingTime.setText(day.getFormattedMoveTime());
             rowDayStoppingTime.setText(day.getFormattedStopTime());
+            rowDayMovingPercent.setText(day.getDayMovingPercent() + "%");
+            rowDayStoppingPercent.setText(day.getDayStoppingPercent() + "%");
         }
 
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                counterDayDao.delete(day);
+                if (day != null) {
+                    counterDayDao.delete(day);
+                    recreate();
+                }
             }
         });
     }
+
 }
 

@@ -3,7 +3,7 @@
     <color name="green">#32CD32</color>
     <color name="colorPrimary">#e1e9f9</color>
     <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorAccent">#ff4081</color>
     <color name="customActionBarColor">#0c43e1</color>
     <color name="noValueColor">#5c6170</color>
     <color name="lowValuesColor">#ea330e</color>

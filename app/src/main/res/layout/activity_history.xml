@@ -1,44 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:columnCount="1"
-    android:rowCount="4"
     android:padding="5dp">
 
-    <TextView
-        android:id="@+id/day_header"
+    <GridLayout
         android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:layout_column="0"
-        android:layout_row="0"
-        android:gravity="center"
-        android:text="@string/date" />
+        android:layout_height="match_parent"
+        android:background="@color/chartBackGround"
+        android:columnCount="1"
+        android:rowCount="4">
 
-    <include
-        android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:id="@+id/list_row_moving_day"
-        android:layout_column="0"
-        android:layout_row="1"
-        layout="@layout/list_row" />
+        <TextView
+            android:id="@+id/day_header"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:layout_column="0"
+            android:layout_row="0"
+            android:background="@color/customActionBarColor"
+            android:gravity="center"
+            android:text="@string/date"
+            android:textColor="@android:color/white"
+            android:textSize="22sp" />
 
-    <include
-        android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:layout_column="0"
-        android:id="@+id/list_row_stopping_day"
-        android:layout_row="2"
-        layout="@layout/list_row" />
+        <include
+            android:id="@+id/list_row_moving_day"
+            layout="@layout/list_row"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:layout_column="0"
+            android:layout_row="1" />
 
-    <Button
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/white"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"/>
+
+        <include
+            android:id="@+id/list_row_stopping_day"
+            layout="@layout/list_row"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:layout_column="0"
+            android:layout_row="2" />
+
+    </GridLayout>
+
+    <ImageButton
         android:id="@+id/delete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_column="0"
-        android:layout_row="3"
-        android:layout_gravity="center"
-        android:text="Cancella" />
+        android:layout_gravity="bottom|right"
+        android:padding="5dp"
+        android:layout_margin="10dp"
+        android:background="@drawable/chronometer_shape"
+        android:backgroundTint="@color/lineChartColor"
+        android:tint="@color/lowValuesColor"
+        app:srcCompat="@drawable/ic_trash" />
 
-
-</GridLayout>
+</FrameLayout>
