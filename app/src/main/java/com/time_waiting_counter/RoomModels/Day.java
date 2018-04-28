@@ -5,6 +5,8 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.PrimaryKey;
 
+import java.util.Calendar;
+
 import static android.arch.persistence.room.ForeignKey.CASCADE;
 
 /**
@@ -99,14 +101,14 @@ public class Day {
     }
 
     public int getTotalTime() {
-        return (int) (this.dayMovingTime + this.dayStoppingTime);
+        return (int) this.dayMovingTime + (int) this.dayStoppingTime;
     }
 
     public int getDayMovingPercent() {
         if (this.getTotalTime() == 0) {
             return 0;
         } else {
-            return (int) ((this.dayMovingTime * 100) / this.getTotalTime());
+            return ((int) this.dayMovingTime * 100) / this.getTotalTime();
         }
     }
 
@@ -124,5 +126,13 @@ public class Day {
 
     public void setDayStoppingPercent(int dayStoppingPercent) {
         this.dayStoppingPercent = dayStoppingPercent;
+    }
+
+    public int getWeek() {
+        return Calendar.WEEK_OF_YEAR;
+    }
+
+    public int getMonth() {
+        return Calendar.MONTH;
     }
 }
