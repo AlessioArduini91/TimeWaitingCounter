@@ -12,7 +12,7 @@ import com.time_waiting_counter.RoomModels.Day;
  * Created by alessio on 22/04/18.
  */
 
-@Database(entities = {Day.class}, version = 2)
+@Database(entities = {Day.class}, version = 1)
 public abstract class WaitingCounterDatabase extends RoomDatabase {
     public abstract DayDao dayDao();
 }

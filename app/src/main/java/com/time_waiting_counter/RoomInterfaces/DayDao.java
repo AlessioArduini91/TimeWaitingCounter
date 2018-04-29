@@ -21,6 +21,18 @@ public interface DayDao {
     @Query("select * from day where dayDate=:date")
     Day getDayByDate(String date);
 
+    @Query("select sum(dayMovingTime) from day where week=:week and year=:year")
+    long getWeekMovingTime(int week, int year);
+
+    @Query("select sum(dayStoppingTime) from day where week=:week and year=:year")
+    long getWeekStoppingTime(int week, int year);
+
+    @Query("select sum(dayMovingTime) from day where month=:month and year=:year")
+    long getMonthMovingTime(int month, int year);
+
+    @Query("select sum(dayStoppingTime) from day where month=:month and year=:year")
+    long getMonthStoppingTime(int month, int year);
+
     @Insert
     void insert(Day day);
 

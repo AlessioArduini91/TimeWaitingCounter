@@ -22,9 +22,6 @@ public class Day {
     @PrimaryKey(autoGenerate = true)
     private int dayId;
 
-//    @ColumnInfo(name = "weekId")
-//    private int weekId;
-
     @ColumnInfo(name = "dayDate")
     private String dayDate;
 
@@ -40,6 +37,18 @@ public class Day {
     @ColumnInfo(name = "dayStoppingPercent")
     private int dayStoppingPercent;
 
+    @ColumnInfo(name = "day")
+    private int day;
+
+    @ColumnInfo(name = "week")
+    private int week;
+
+    @ColumnInfo(name = "month")
+    private int month;
+
+    @ColumnInfo(name = "year")
+    private int year;
+
     public Day() {
 
     }
@@ -51,14 +60,6 @@ public class Day {
     public void setDayId(int dayId) {
         this.dayId = dayId;
     }
-
-//    public int getWeekId() {
-//        return this.weekId;
-//    }
-//
-//    public void setWeekId(int weekId) {
-//        this.weekId = weekId;
-//    }
 
     public String getDayDate() {
         return this.dayDate;
@@ -128,11 +129,35 @@ public class Day {
         this.dayStoppingPercent = dayStoppingPercent;
     }
 
+    public int getDay() {
+        return this.day;
+    }
+
+    public void setDay(int day) {
+        this.day = day;
+    }
+
     public int getWeek() {
-        return Calendar.WEEK_OF_YEAR;
+        return this.week;
+    }
+
+    public void setWeek(int week) {
+        this.week = week;
     }
 
     public int getMonth() {
-        return Calendar.MONTH;
+        return this.month;
+    }
+
+    public void setMonth(int month) {
+        this.month = month;
+    }
+
+    public int getYear() {
+        return this.year;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
     }
 }

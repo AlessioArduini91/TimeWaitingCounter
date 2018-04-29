@@ -39,6 +39,7 @@ import com.github.anastr.speedviewlib.ProgressiveGauge;
 import com.github.mikephil.charting.data.Entry;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -183,9 +184,14 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
                 Day day = counterDayDao.getDayByDate(today);
                 if (counterDayDao.getDayByDate(today) == null) {
                     Day newDay = new Day();
+                    Calendar calendar = new GregorianCalendar();
                     newDay.setDayDate(today);
                     newDay.setDayMovingTime(movingForTime);
                     newDay.setDayStoppingTime(stoppingForTime);
+                    newDay.setDay(calendar.get(Calendar.DAY_OF_WEEK));
+                    newDay.setWeek(calendar.get(Calendar.WEEK_OF_YEAR));
+                    newDay.setMonth(calendar.get(Calendar.MONTH));
+                    newDay.setYear(calendar.get(Calendar.YEAR));
                     counterDayDao.insert(newDay);
                 } else {
                     long oldPercentMoving = day.getDayMovingTime();

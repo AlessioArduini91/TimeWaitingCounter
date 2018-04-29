@@ -23,6 +23,8 @@
     <string name="save">Salva</string>
     <string name="timePlaceholder">00:00:00</string>
     <string name="queryCorrect">Dati aggiornati correttamente</string>
+    <string name="deleteDay">Dati eliminati per il giorno [[day]]</string>
     <string name="date">Data:</string>
+    <string name="week">Settimana</string>
     <string name="history">Storico</string>
 </resources>
