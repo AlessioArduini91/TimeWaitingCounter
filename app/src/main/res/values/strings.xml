@@ -26,5 +26,6 @@
     <string name="deleteDay">Dati eliminati per il giorno [[day]]</string>
     <string name="date">Data:</string>
     <string name="week">Settimana</string>
+    <string name="month">Mese</string>
     <string name="history">Storico</string>
 </resources>
