@@ -36,8 +36,8 @@ public class HistoryActivity extends AppCompatActivity {
     private LinearLayout rowWeekMovingLayout;
     private LinearLayout rowMonthMovingLayout;
     private TextView rowDayMovingTitle;
-    private  TextView rowWeekMovingTitle;
-    private  TextView rowMonthMovingTitle;
+    private TextView rowWeekMovingTitle;
+    private TextView rowMonthMovingTitle;
     private TextView rowDayMovingTime;
     private TextView rowWeekMovingTime;
     private TextView rowMonthMovingTime;
@@ -59,7 +59,8 @@ public class HistoryActivity extends AppCompatActivity {
     private ImageButton delete;
     private long weekMovingTime;
     private long weekStoppingTime;
-
+    private int selectedWeek;
+    private int selectedYear;
     private Day day;
 
     @Override
@@ -96,6 +97,8 @@ public class HistoryActivity extends AppCompatActivity {
         Bundle historyBundle = getIntent().getExtras();
 
         dateAsString = historyBundle.getString("dayDate");
+        selectedWeek = historyBundle.getInt("weekDate");
+        selectedYear = historyBundle.getInt("yearDate");
 
         waitingCounterDatabase = Room.databaseBuilder(getApplicationContext(),
                 WaitingCounterDatabase.class, "counter-database").allowMainThreadQueries().fallbackToDestructiveMigration().build();
@@ -109,12 +112,15 @@ public class HistoryActivity extends AppCompatActivity {
         rowWeekStoppingTitle.setText(getString(R.string.timeStop));
         rowMonthStoppingTitle.setText(getString(R.string.timeStop));
         if (day != null) {
-            weekMovingTime = counterDayDao.getWeekMovingTime(day.getWeek(), day.getYear());
-            weekStoppingTime = counterDayDao.getWeekStoppingTime(day.getWeek(), day.getYear());
             rowDayMovingTime.setText(getFormattedTime(day.getDayMovingTime()));
             rowDayStoppingTime.setText(getFormattedTime(day.getDayStoppingTime()));
             rowDayMovingPercent.setText(day.getDayMovingPercent() + "%");
             rowDayStoppingPercent.setText(day.getDayStoppingPercent() + "%");
+        }
+
+        if (selectedWeek != 0 && selectedYear != 0) {
+            weekMovingTime = counterDayDao.getWeekMovingTime(selectedWeek, selectedYear);
+            weekStoppingTime = counterDayDao.getWeekStoppingTime(selectedWeek, selectedYear);
             rowWeekMovingTime.setText(getFormattedTime(weekMovingTime));
             rowWeekStoppingTime.setText(getFormattedTime(weekStoppingTime));
             rowWeekMovingPercent.setText(getWeekMovingPercent() + "%");

@@ -37,8 +37,12 @@ import android.support.annotation.NonNull;
 import com.budiyev.android.circularprogressbar.CircularProgressBar;
 import com.github.anastr.speedviewlib.ProgressiveGauge;
 import com.github.mikephil.charting.data.Entry;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Timer;
@@ -96,6 +100,9 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
     private String dateAsString;
     private String today;
     static List<Entry> chartEntries = new ArrayList<Entry>();
+    String format;
+    SimpleDateFormat dateFormat;
+    Date setDate = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,6 +135,8 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
 
         movingLayout.setBackground(getDrawable(R.drawable.chronometer_shape_moving));
         stoppingLayout.setBackground(getDrawable(R.drawable.chronometer_shape_stopping));
+        format  = "ddMMyyyy";
+        dateFormat = new SimpleDateFormat(format);
 
         setSupportActionBar(mainToolbar);
         toggleTextView(movingTextView);
@@ -155,8 +164,21 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
                         selectedMonth + 1,
                         selectedYear);
 
+                try {
+                    setDate = dateFormat.parse(dateAsString.replace("-",""));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+                Calendar setDateCalendar = Calendar.getInstance();
+                setDateCalendar.setTime(setDate);
+                int setWeek = setDateCalendar.get(Calendar.WEEK_OF_YEAR);
+                int setYear = setDateCalendar.get(Calendar.YEAR);
+
                 Bundle historyBundle = new Bundle();
                 historyBundle.putString("dayDate", dateAsString);
+                historyBundle.putInt("weekDate", setWeek);
+                historyBundle.putInt("yearDate", setYear);
                 Intent historyActivityIntent = new Intent(MainActivity.this, HistoryActivity.class);
                 historyActivityIntent.putExtras(historyBundle);
                 startActivity(historyActivityIntent);
@@ -184,7 +206,6 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
                 Day day = counterDayDao.getDayByDate(today);
                 if (counterDayDao.getDayByDate(today) == null) {
                     Day newDay = new Day();
-                    Calendar calendar = new GregorianCalendar();
                     newDay.setDayDate(today);
                     newDay.setDayMovingTime(movingForTime);
                     newDay.setDayStoppingTime(stoppingForTime);
