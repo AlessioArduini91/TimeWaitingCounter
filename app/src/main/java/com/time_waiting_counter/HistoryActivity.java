@@ -59,7 +59,10 @@ public class HistoryActivity extends AppCompatActivity {
     private ImageButton delete;
     private long weekMovingTime;
     private long weekStoppingTime;
+    private long monthMovingTime;
+    private long monthStoppingTime;
     private int selectedWeek;
+    private int selectedMonth;
     private int selectedYear;
     private Day day;
 
@@ -98,6 +101,7 @@ public class HistoryActivity extends AppCompatActivity {
 
         dateAsString = historyBundle.getString("dayDate");
         selectedWeek = historyBundle.getInt("weekDate");
+        selectedMonth = historyBundle.getInt("monthDate");
         selectedYear = historyBundle.getInt("yearDate");
 
         waitingCounterDatabase = Room.databaseBuilder(getApplicationContext(),
@@ -125,6 +129,15 @@ public class HistoryActivity extends AppCompatActivity {
             rowWeekStoppingTime.setText(getFormattedTime(weekStoppingTime));
             rowWeekMovingPercent.setText(getWeekMovingPercent() + "%");
             rowWeekStoppingPercent.setText(getWeekStoppingPercent() + "%");
+        }
+
+        if (selectedMonth != 0 && selectedYear != 0) {
+            monthMovingTime = counterDayDao.getMonthMovingTime(selectedMonth, selectedYear);
+            monthStoppingTime = counterDayDao.getMonthStoppingTime(selectedMonth, selectedYear);
+            rowMonthMovingTime.setText(getFormattedTime(monthMovingTime));
+            rowMonthStoppingTime.setText(getFormattedTime(monthStoppingTime));
+            rowMonthMovingPercent.setText(getMonthMovingPercent() + "%");
+            rowMonthStoppingPercent.setText(getMonthStoppingPercent() + "%");
         }
 
         delete.setOnClickListener(new View.OnClickListener() {
@@ -172,8 +185,28 @@ public class HistoryActivity extends AppCompatActivity {
         }
     }
 
+    public int getMonthMovingPercent() {
+        if (getTotalMonthTime() == 0) {
+            return 0;
+        } else {
+            return ((int) monthMovingTime * 100) / getTotalMonthTime();
+        }
+    }
+
+    public int getMonthStoppingPercent() {
+        if (getTotalMonthTime() == 0) {
+            return 0;
+        } else {
+            return 100 - getMonthMovingPercent();
+        }
+    }
+
     public int getTotalWeekTime() {
         return (int) weekMovingTime + (int) weekStoppingTime;
+    }
+
+    public int getTotalMonthTime() {
+        return (int) monthMovingTime + (int) monthStoppingTime;
     }
 }
 

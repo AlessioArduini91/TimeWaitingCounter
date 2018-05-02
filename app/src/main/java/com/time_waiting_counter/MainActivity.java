@@ -173,11 +173,13 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
                 Calendar setDateCalendar = Calendar.getInstance();
                 setDateCalendar.setTime(setDate);
                 int setWeek = setDateCalendar.get(Calendar.WEEK_OF_YEAR);
+                int setMonth = setDateCalendar.get(Calendar.MONTH);
                 int setYear = setDateCalendar.get(Calendar.YEAR);
 
                 Bundle historyBundle = new Bundle();
                 historyBundle.putString("dayDate", dateAsString);
                 historyBundle.putInt("weekDate", setWeek);
+                historyBundle.putInt("monthDate", setMonth);
                 historyBundle.putInt("yearDate", setYear);
                 Intent historyActivityIntent = new Intent(MainActivity.this, HistoryActivity.class);
                 historyActivityIntent.putExtras(historyBundle);
