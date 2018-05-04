@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Tempo in Attesa</string>
+    <string name="app_name">Attesa nel Traffico</string>
     <string name="timeMove">Movimento</string>
     <string name="timeStop">Attesa</string>
     <string name="percentMove">% Movimento</string>
