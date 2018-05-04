@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.time_waiting_counter.RoomInterfaces.DayDao;
 import com.time_waiting_counter.RoomModels.Day;
+import com.time_waiting_counter.SupportClasses.DataTimeFormatter;
 import com.time_waiting_counter.WaitingCounterDatabase.WaitingCounterDatabase;
 
 import org.w3c.dom.Text;
@@ -116,28 +117,28 @@ public class HistoryActivity extends AppCompatActivity {
         rowWeekStoppingTitle.setText(getString(R.string.timeStop));
         rowMonthStoppingTitle.setText(getString(R.string.timeStop));
         if (day != null) {
-            rowDayMovingTime.setText(getFormattedTime(day.getDayMovingTime()));
-            rowDayStoppingTime.setText(getFormattedTime(day.getDayStoppingTime()));
-            rowDayMovingPercent.setText(day.getDayMovingPercent() + "%");
-            rowDayStoppingPercent.setText(day.getDayStoppingPercent() + "%");
+            rowDayMovingTime.setText(DataTimeFormatter.getFormattedTime(day.getDayMovingTime()));
+            rowDayStoppingTime.setText(DataTimeFormatter.getFormattedTime(day.getDayStoppingTime()));
+            rowDayMovingPercent.setText(DataTimeFormatter.getMovingPercent((int) day.getDayMovingTime(), (int) day.getDayStoppingTime()) + "%");
+            rowDayStoppingPercent.setText(DataTimeFormatter.getStoppingPercent((int) day.getDayMovingTime(), (int) day.getDayStoppingTime()) + "%");
         }
 
         if (selectedWeek != 0 && selectedYear != 0) {
             weekMovingTime = counterDayDao.getWeekMovingTime(selectedWeek, selectedYear);
             weekStoppingTime = counterDayDao.getWeekStoppingTime(selectedWeek, selectedYear);
-            rowWeekMovingTime.setText(getFormattedTime(weekMovingTime));
-            rowWeekStoppingTime.setText(getFormattedTime(weekStoppingTime));
-            rowWeekMovingPercent.setText(getWeekMovingPercent() + "%");
-            rowWeekStoppingPercent.setText(getWeekStoppingPercent() + "%");
+            rowWeekMovingTime.setText(DataTimeFormatter.getFormattedTime(weekMovingTime));
+            rowWeekStoppingTime.setText(DataTimeFormatter.getFormattedTime(weekStoppingTime));
+            rowWeekMovingPercent.setText(DataTimeFormatter.getMovingPercent((int) weekMovingTime, (int) weekStoppingTime) + "%");
+            rowWeekStoppingPercent.setText(DataTimeFormatter.getStoppingPercent((int) weekMovingTime, (int) weekStoppingTime) + "%");
         }
 
         if (selectedMonth != 0 && selectedYear != 0) {
             monthMovingTime = counterDayDao.getMonthMovingTime(selectedMonth, selectedYear);
             monthStoppingTime = counterDayDao.getMonthStoppingTime(selectedMonth, selectedYear);
-            rowMonthMovingTime.setText(getFormattedTime(monthMovingTime));
-            rowMonthStoppingTime.setText(getFormattedTime(monthStoppingTime));
-            rowMonthMovingPercent.setText(getMonthMovingPercent() + "%");
-            rowMonthStoppingPercent.setText(getMonthStoppingPercent() + "%");
+            rowMonthMovingTime.setText(DataTimeFormatter.getFormattedTime(monthMovingTime));
+            rowMonthStoppingTime.setText(DataTimeFormatter.getFormattedTime(monthStoppingTime));
+            rowMonthMovingPercent.setText(DataTimeFormatter.getMovingPercent((int) monthMovingTime, (int) monthStoppingTime) + "%");
+            rowMonthStoppingPercent.setText(DataTimeFormatter.getStoppingPercent((int) monthMovingTime, (int) monthStoppingTime) + "%");
         }
 
         delete.setOnClickListener(new View.OnClickListener() {
@@ -152,61 +153,5 @@ public class HistoryActivity extends AppCompatActivity {
         });
     }
 
-    private String getFormattedTime(long timerSeconds) {
-        int seconds = (int) (timerSeconds / (1000)) % 60;
-        int minutes = (int) (timerSeconds / (1000 * 60)) % 60;
-        int hours = (int) (timerSeconds / (1000 * 60 * 60)) % 24;
-        int days = (int) (timerSeconds / (1000 * 60 * 60 * 24));
-
-        if (days != 0) {
-            if (days == 1) {
-                return String.format("%d giorno, %02d : %02d : %02d", days, hours, minutes, seconds);
-            } else {
-                return String.format("%d giorni, %02d : %02d : %02d", days, hours, minutes, seconds);
-            }
-        } else {
-            return String.format("%02d : %02d : %02d", hours, minutes, seconds);
-        }
-    }
-
-    public int getWeekMovingPercent() {
-        if (getTotalWeekTime() == 0) {
-            return 0;
-        } else {
-            return ((int) weekMovingTime * 100) / getTotalWeekTime();
-        }
-    }
-
-    public int getWeekStoppingPercent() {
-        if (getTotalWeekTime() == 0) {
-            return 0;
-        } else {
-            return 100 - getWeekMovingPercent();
-        }
-    }
-
-    public int getMonthMovingPercent() {
-        if (getTotalMonthTime() == 0) {
-            return 0;
-        } else {
-            return ((int) monthMovingTime * 100) / getTotalMonthTime();
-        }
-    }
-
-    public int getMonthStoppingPercent() {
-        if (getTotalMonthTime() == 0) {
-            return 0;
-        } else {
-            return 100 - getMonthMovingPercent();
-        }
-    }
-
-    public int getTotalWeekTime() {
-        return (int) weekMovingTime + (int) weekStoppingTime;
-    }
-
-    public int getTotalMonthTime() {
-        return (int) monthMovingTime + (int) monthStoppingTime;
-    }
 }
 

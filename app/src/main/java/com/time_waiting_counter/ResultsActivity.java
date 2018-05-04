@@ -77,8 +77,8 @@ public class ResultsActivity extends AppCompatActivity {
         });
 
         LineDataSet formattedDataSet =
-                ChartFormatter.formatLineDataSet(chartEntries, null, dataSetColor, lowValuesColor, middleValuesColor, highValuesColor, 2f );
-
+                ChartFormatter.formatLineDataSet(chartEntries, null, dataSetColor, lowValuesColor, middleValuesColor, highValuesColor, 1f );
+        formattedDataSet.setCircleRadius(2f);
         LineData lineData = new LineData(formattedDataSet);
         XAxis xAxis = chart.getXAxis();
         YAxis yAxis = chart.getAxisLeft();

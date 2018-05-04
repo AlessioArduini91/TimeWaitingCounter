@@ -65,22 +65,6 @@ public class Day {
         return this.dayDate;
     }
 
-    public String getFormattedMoveTime() {
-        return getFormattedTime(this.dayMovingTime);
-    }
-
-    public String getFormattedStopTime() {
-        return getFormattedTime(this.dayStoppingTime);
-    }
-
-    private String getFormattedTime(long timerSeconds) {
-        int seconds = (int) (timerSeconds / (1000)) % 60;
-        int minutes = (int) (timerSeconds / (1000 * 60)) % 60;
-        int hours = (int) (timerSeconds / (1000 * 60 * 60)) % 24;
-
-        return String.format("%02d : %02d : %02d", hours, minutes, seconds);
-    }
-
     public void setDayDate(String dayDate) {
         this.dayDate = dayDate;
     }
@@ -101,24 +85,12 @@ public class Day {
         this.dayStoppingTime = dayStoppingTime;
     }
 
-    public int getTotalTime() {
-        return (int) this.dayMovingTime + (int) this.dayStoppingTime;
-    }
-
     public int getDayMovingPercent() {
-        if (this.getTotalTime() == 0) {
-            return 0;
-        } else {
-            return ((int) this.dayMovingTime * 100) / this.getTotalTime();
-        }
+        return this.dayMovingPercent;
     }
 
     public int getDayStoppingPercent() {
-        if (this.getTotalTime() == 0) {
-            return 0;
-        } else {
-            return 100 - getDayMovingPercent();
-        }
+        return this.dayStoppingPercent;
     }
 
     public void setDayMovingPercent(int dayMovingPercent) {

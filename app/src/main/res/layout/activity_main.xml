@@ -88,6 +88,8 @@
                 android:id="@+id/noGpsBar"
                 android:layout_width="120dp"
                 android:layout_height="120dp"
+                android:layout_gravity="center"
+                android:alpha="0"
                 app:animateProgress="true"
                 app:backgroundStrokeColor="@color/lineChartColor"
                 app:backgroundStrokeWidth="2dp"
@@ -99,9 +101,7 @@
                 app:indeterminateRotationAnimationDuration="3000"
                 app:indeterminateSweepAnimationDuration="1500"
                 app:indeterminateMinimumAngle="20"
-                app:startAngle="270"
-                android:layout_gravity="center"
-                android:alpha="0"/>
+                app:startAngle="270" />
 
             <TextView
                 android:id="@+id/totalTime"
