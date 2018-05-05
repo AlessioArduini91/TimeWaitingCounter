@@ -303,6 +303,13 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
     @Override
     protected void onResume() {
         activityPaused = false;
+        if (!isStart && stopAlreadyStarted) {
+            stoppingChrono.setBase(stoppingChrono.getBase() + SystemClock.elapsedRealtime() - lastPauseStop);
+        }
+
+        if (!isStop && startAlreadyStarted) {
+            movingChrono.setBase(movingChrono.getBase() + SystemClock.elapsedRealtime() - lastPauseStart);
+        }
 
         if (!isStopped) {
             toggleNoGpsVisibility();
