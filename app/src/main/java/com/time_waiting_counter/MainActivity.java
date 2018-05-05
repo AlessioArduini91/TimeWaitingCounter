@@ -304,17 +304,6 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
     protected void onResume() {
         activityPaused = false;
 
-        //fix per aggiornamento immagine
-        if (isStart) {
-            stoppingChrono.start();
-            stoppingChrono.stop();
-        }
-
-        if (isStop) {
-            movingChrono.start();
-            movingChrono.stop();
-        }
-
         if (!isStopped) {
             toggleNoGpsVisibility();
         }
