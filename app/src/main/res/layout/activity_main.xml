@@ -20,19 +20,22 @@
         android:theme="@style/CustomTheme"
         app:titleTextColor="@android:color/white" />
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/relativeLayoutMain"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:weightSum="3"
         android:gravity="center_vertical">
-
 
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="150dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:id="@+id/chronometers"
             android:orientation="horizontal"
+            android:layout_marginTop="100dp"
             android:weightSum="2">
             <FrameLayout
                 android:layout_width="match_parent"
@@ -66,42 +69,52 @@
 
         <FrameLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:padding="15dp"
             android:id="@+id/gaugeFrame"
-            android:layout_below="@+id/chronometers"
+            android:layout_weight="2"
             android:layout_marginRight="5dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="70dp">
+            android:layout_marginLeft="5dp">
 
             <com.github.anastr.speedviewlib.ProgressiveGauge
                 android:id="@+id/speedView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 app:sv_maxSpeed="130"
                 app:sv_minSpeed="0"
                 app:sv_withTremble="false"
                 app:sv_speedometerBackColor="@color/gaugeBackground"
                 app:sv_speedometerColor="@color/customActionBarColor" />
 
-            <com.budiyev.android.circularprogressbar.CircularProgressBar
-                android:id="@+id/noGpsBar"
-                android:layout_width="120dp"
-                android:layout_height="120dp"
+            <TextView
+                android:id="@+id/noGpsText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:textSize="24sp"
+                android:layout_margin="15dp"
                 android:alpha="0"
-                app:animateProgress="true"
-                app:backgroundStrokeColor="@color/lineChartColor"
-                app:backgroundStrokeWidth="2dp"
-                app:drawBackgroundStroke="true"
-                app:foregroundStrokeCap="square"
-                app:foregroundStrokeColor="@color/customActionBarColor"
-                app:foregroundStrokeWidth="5dp"
-                app:indeterminate="true"
-                app:indeterminateRotationAnimationDuration="3000"
-                app:indeterminateSweepAnimationDuration="1500"
-                app:indeterminateMinimumAngle="20"
-                app:startAngle="270" />
+                android:text="@string/gpsSearch"/>
+
+            <!--<com.budiyev.android.circularprogressbar.CircularProgressBar-->
+                <!--android:id="@+id/noGpsBar"-->
+                <!--android:layout_width="120dp"-->
+                <!--android:layout_height="120dp"-->
+                <!--android:layout_gravity="center"-->
+                <!--android:alpha="0"-->
+                <!--app:animateProgress="true"-->
+                <!--app:backgroundStrokeColor="@color/lineChartColor"-->
+                <!--app:backgroundStrokeWidth="2dp"-->
+                <!--app:drawBackgroundStroke="true"-->
+                <!--app:foregroundStrokeCap="square"-->
+                <!--app:foregroundStrokeColor="@color/customActionBarColor"-->
+                <!--app:foregroundStrokeWidth="5dp"-->
+                <!--app:indeterminate="true"-->
+                <!--app:indeterminateRotationAnimationDuration="3000"-->
+                <!--app:indeterminateSweepAnimationDuration="1500"-->
+                <!--app:indeterminateMinimumAngle="20"-->
+                <!--app:startAngle="270" />-->
 
             <TextView
                 android:id="@+id/totalTime"
@@ -147,7 +160,7 @@
 
 
 
-    </RelativeLayout>
+    </LinearLayout>
 
     <ImageButton
         android:id="@+id/gps"
@@ -170,6 +183,8 @@
         android:textColor="@android:color/white"
         android:visibility="gone"
         android:text="@string/save" />
+
+
 
 </FrameLayout>
 

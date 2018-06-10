@@ -28,4 +28,5 @@
     <string name="week">Settimana</string>
     <string name="month">Mese</string>
     <string name="history">Storico</string>
+    <string name="gpsSearch">Ricerca Gps...</string>
 </resources>

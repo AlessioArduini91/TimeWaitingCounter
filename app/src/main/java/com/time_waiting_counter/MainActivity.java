@@ -58,7 +58,8 @@ import com.time_waiting_counter.WaitingCounterDatabase.WaitingCounterDatabase;
 public class MainActivity extends AppCompatActivity implements SpeedMeterManager.SpeedMeterInterface {
 
     static ProgressiveGauge speedView;
-    static CircularProgressBar noGpsBar;
+//    static CircularProgressBar noGpsBar;
+    static TextView noGpsText;
     FrameLayout gaugeFrame;
     TextView movingTextView;
     TextView stoppingTextView;
@@ -108,7 +109,8 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        noGpsBar = (CircularProgressBar) findViewById(R.id.noGpsBar);
+//        noGpsBar = (CircularProgressBar) findViewById(R.id.noGpsBar);
+        noGpsText = (TextView) findViewById (R.id.noGpsText);
         gpsImage = (ImageView) findViewById(R.id.gps);
         gpsImage.setImageDrawable(getDrawable(R.drawable.animation_gps));
         gpsAnimation = (AnimationDrawable) gpsImage.getDrawable();
@@ -336,11 +338,13 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
             if (noGps) {
                 gpsAnimation.start();
                 speedView.setAlpha(0f);
-                noGpsBar.setAlpha(1f);
+//                noGpsBar.setAlpha(1f);
+                noGpsText.setAlpha(1f);
             } else {
                 gpsAnimation.stop();
                 gpsAnimation.selectDrawable(0);
-                noGpsBar.setAlpha(0f);
+//                noGpsBar.setAlpha(0f);
+                noGpsText.setAlpha(0f);
                 speedView.setAlpha(1f);
             }
         }
@@ -474,7 +478,8 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
         isStart = false;
         locationManager.removeUpdates(speedMeterManager.locationListener);
         speedView.setAlpha(0f);
-        noGpsBar.setAlpha(0f);
+//        noGpsBar.setAlpha(0f);
+        noGpsText.setAlpha(0f);
         gpsImage.setVisibility(View.GONE);
     }
 
