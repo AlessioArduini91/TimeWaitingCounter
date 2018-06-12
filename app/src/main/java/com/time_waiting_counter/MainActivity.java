@@ -559,6 +559,7 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_reload:
+                noGps = false;
                 reload();
                 return true;
 
