@@ -71,6 +71,8 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
     Drawable reloadDrawable;
     Drawable historyDrawable;
     Button saveDay;
+    Button play;
+    Button stop;
     LocationManager locationManager;
     static AnimationDrawable gpsAnimation;
     static ImageView gpsImage;
@@ -110,6 +112,8 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 //        noGpsBar = (CircularProgressBar) findViewById(R.id.noGpsBar);
+        play = (Button) findViewById(R.id.play);
+        stop = (Button) findViewById(R.id.stop);
         noGpsText = (TextView) findViewById (R.id.noGpsText);
         gpsImage = (ImageView) findViewById(R.id.gps);
         gpsImage.setImageDrawable(getDrawable(R.drawable.animation_gps));
@@ -251,10 +255,37 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                     ACCESS_FINE_LOCATION_REQUEST_CODE);
         }
-        else {
-            locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, speedMeterManager.locationListener);
-        }
+
+        play.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int permissionCheckPlay = ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION);
+                if (permissionCheckPlay != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(MainActivity.this,
+                            new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                            ACCESS_FINE_LOCATION_REQUEST_CODE);
+                }
+                else {
+                    locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, speedMeterManager.locationListener);
+                    speedMeterManager.initTimer();
+                    play.setVisibility(View.GONE);
+                    stop.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
+        stop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                movingChrono.stop();
+                stoppingChrono.stop();
+                stop();
+                totalTimeTextView.setText(getString(R.string.totalTime) + "\n" + speedMeterManager.getTotalParsedTime());
+                totalTimeTextView.setVisibility(View.VISIBLE);
+                saveDay.setVisibility(View.VISIBLE);
+            }
+        });
 
         movingChrono.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener() {
             @Override

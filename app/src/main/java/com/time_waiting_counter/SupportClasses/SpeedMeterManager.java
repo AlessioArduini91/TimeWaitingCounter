@@ -97,10 +97,10 @@ public class SpeedMeterManager {
         activityContext = context;
         speedMeter = (SpeedMeterInterface) context;
         speedMeter.setSpeedView(speed);
-        initTimer();
+//        initTimer();
     }
 
-    private void initTimer() {
+    public void initTimer() {
         timerTask = new TimerTask() {
             @Override
             public void run() {
