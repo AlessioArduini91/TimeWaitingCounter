@@ -71,8 +71,9 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
     Drawable reloadDrawable;
     Drawable historyDrawable;
     Button saveDay;
-    Button play;
-    Button stop;
+    ImageButton play;
+    ImageButton stop;
+    ImageButton refresh;
     LocationManager locationManager;
     static AnimationDrawable gpsAnimation;
     static ImageView gpsImage;
@@ -112,8 +113,9 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 //        noGpsBar = (CircularProgressBar) findViewById(R.id.noGpsBar);
-        play = (Button) findViewById(R.id.play);
-        stop = (Button) findViewById(R.id.stop);
+        play = (ImageButton) findViewById(R.id.play);
+        stop = (ImageButton) findViewById(R.id.stop);
+        refresh = (ImageButton) findViewById(R.id.refresh);
         noGpsText = (TextView) findViewById (R.id.noGpsText);
         gpsImage = (ImageView) findViewById(R.id.gps);
         gpsImage.setImageDrawable(getDrawable(R.drawable.animation_gps));
@@ -283,7 +285,17 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
                 stop();
                 totalTimeTextView.setText(getString(R.string.totalTime) + "\n" + speedMeterManager.getTotalParsedTime());
                 totalTimeTextView.setVisibility(View.VISIBLE);
+                stop.setVisibility(View.GONE);
+                refresh.setVisibility(View.VISIBLE);
                 saveDay.setVisibility(View.VISIBLE);
+            }
+        });
+
+        refresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                noGps = false;
+                reload();
             }
         });
 
@@ -546,11 +558,11 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.toolbar_menu, menu);
-        stopDrawable = menu.findItem(R.id.action_stop).getIcon();
-        reloadDrawable = menu.findItem(R.id.action_reload).getIcon();
+//        stopDrawable = menu.findItem(R.id.action_stop).getIcon();
+//        reloadDrawable = menu.findItem(R.id.action_reload).getIcon();
         historyDrawable = menu.findItem(R.id.action_history).getIcon();
-        stopDrawable.setColorFilter(getResources().getColor(android.R.color.white),  PorterDuff.Mode.SRC_ATOP);
-        reloadDrawable.setColorFilter(getResources().getColor(android.R.color.white),  PorterDuff.Mode.SRC_ATOP);
+//        stopDrawable.setColorFilter(getResources().getColor(android.R.color.white),  PorterDuff.Mode.SRC_ATOP);
+//        reloadDrawable.setColorFilter(getResources().getColor(android.R.color.white),  PorterDuff.Mode.SRC_ATOP);
         historyDrawable.setColorFilter(getResources().getColor(android.R.color.white),  PorterDuff.Mode.SRC_ATOP);
         return true;
     }
@@ -558,19 +570,19 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_reload:
-                noGps = false;
-                reload();
-                return true;
-
-            case R.id.action_stop:
-                movingChrono.stop();
-                stoppingChrono.stop();
-                stop();
-                totalTimeTextView.setText(getString(R.string.totalTime) + "\n" + speedMeterManager.getTotalParsedTime());
-                totalTimeTextView.setVisibility(View.VISIBLE);
-                saveDay.setVisibility(View.VISIBLE);
-                return true;
+//            case R.id.action_reload:
+//                noGps = false;
+//                reload();
+//                return true;
+//
+//            case R.id.action_stop:
+//                movingChrono.stop();
+//                stoppingChrono.stop();
+//                stop();
+//                totalTimeTextView.setText(getString(R.string.totalTime) + "\n" + speedMeterManager.getTotalParsedTime());
+//                totalTimeTextView.setVisibility(View.VISIBLE);
+//                saveDay.setVisibility(View.VISIBLE);
+//                return true;
 
             case R.id.action_graph:
                 Intent openResultActivity = new Intent(MainActivity.this, ResultsActivity.class);

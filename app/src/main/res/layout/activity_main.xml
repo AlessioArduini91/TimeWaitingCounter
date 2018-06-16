@@ -129,6 +129,8 @@
                 android:textSize="24sp"
                 android:visibility="gone" />
 
+
+
             <!--<ProgressBar-->
                 <!--android:id="@+id/noGpsBar"-->
                 <!--style="?android:attr/progressBarStyle"-->
@@ -173,22 +175,6 @@
         android:contentDescription="@string/gpsSignal"/>
         />
 
-    <Button
-        android:id="@+id/play"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="15dp"
-        android:layout_gravity="bottom|right"
-        android:text="Play" />
-
-    <Button
-        android:id="@+id/stop"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="15dp"
-        android:layout_gravity="bottom|right"
-        android:visibility="gone"
-        android:text="Stop" />
 
     <Button
         android:id="@+id/save"
@@ -201,7 +187,37 @@
         android:visibility="gone"
         android:text="@string/save" />
 
+    <ImageButton
+        android:id="@+id/stop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:layout_gravity="bottom|right"
+        android:tint="@color/lowValuesColor"
+        android:background="@android:color/transparent"
+        android:visibility="gone"
+        app:srcCompat="@drawable/ic_stop" />
 
+    <ImageButton
+        android:id="@+id/refresh"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:layout_gravity="bottom|right"
+        android:tint="@color/customActionBarColor"
+        android:background="@android:color/transparent"
+        android:visibility="gone"
+        app:srcCompat="@drawable/ic_reload" />
+
+    <ImageButton
+        android:id="@+id/play"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:layout_gravity="bottom|right"
+        android:tint="@color/highValuesColor"
+        android:background="@android:color/transparent"
+        app:srcCompat="@drawable/ic_play" />
 
 </FrameLayout>
 
