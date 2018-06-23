@@ -58,7 +58,6 @@ import com.time_waiting_counter.WaitingCounterDatabase.WaitingCounterDatabase;
 public class MainActivity extends AppCompatActivity implements SpeedMeterManager.SpeedMeterInterface {
 
     static ProgressiveGauge speedView;
-//    static CircularProgressBar noGpsBar;
     static TextView noGpsText;
     FrameLayout gaugeFrame;
     TextView movingTextView;
@@ -69,7 +68,8 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
     Toolbar mainToolbar;
     Drawable stopDrawable;
     Drawable reloadDrawable;
-    Drawable historyDrawable;
+    MenuItem historyDrawable;
+    MenuItem graphDrawable;
     Button saveDay;
     ImageButton play;
     ImageButton stop;
@@ -112,7 +112,6 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-//        noGpsBar = (CircularProgressBar) findViewById(R.id.noGpsBar);
         play = (ImageButton) findViewById(R.id.play);
         stop = (ImageButton) findViewById(R.id.stop);
         refresh = (ImageButton) findViewById(R.id.refresh);
@@ -288,6 +287,8 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
                 stop.setVisibility(View.GONE);
                 refresh.setVisibility(View.VISIBLE);
                 saveDay.setVisibility(View.VISIBLE);
+                historyDrawable.setVisible(true);
+                graphDrawable.setVisible(true);
             }
         });
 
@@ -348,17 +349,6 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
     @Override
     protected void onResume() {
         activityPaused = false;
-        if (!isStart && stopAlreadyStarted) {
-            stoppingChrono.setBase(stoppingChrono.getBase() + SystemClock.elapsedRealtime() - lastPauseStop);
-        }
-
-        if (!isStop && startAlreadyStarted) {
-            movingChrono.setBase(movingChrono.getBase() + SystemClock.elapsedRealtime() - lastPauseStart);
-        }
-
-        if (!isStopped) {
-            toggleNoGpsVisibility();
-        }
         super.onResume();
     }
 
@@ -381,12 +371,10 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
             if (noGps) {
                 gpsAnimation.start();
                 speedView.setAlpha(0f);
-//                noGpsBar.setAlpha(1f);
                 noGpsText.setAlpha(1f);
             } else {
                 gpsAnimation.stop();
                 gpsAnimation.selectDrawable(0);
-//                noGpsBar.setAlpha(0f);
                 noGpsText.setAlpha(0f);
                 speedView.setAlpha(1f);
             }
@@ -521,7 +509,6 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
         isStart = false;
         locationManager.removeUpdates(speedMeterManager.locationListener);
         speedView.setAlpha(0f);
-//        noGpsBar.setAlpha(0f);
         noGpsText.setAlpha(0f);
         gpsImage.setVisibility(View.GONE);
     }
@@ -558,31 +545,15 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.toolbar_menu, menu);
-//        stopDrawable = menu.findItem(R.id.action_stop).getIcon();
-//        reloadDrawable = menu.findItem(R.id.action_reload).getIcon();
-        historyDrawable = menu.findItem(R.id.action_history).getIcon();
-//        stopDrawable.setColorFilter(getResources().getColor(android.R.color.white),  PorterDuff.Mode.SRC_ATOP);
-//        reloadDrawable.setColorFilter(getResources().getColor(android.R.color.white),  PorterDuff.Mode.SRC_ATOP);
-        historyDrawable.setColorFilter(getResources().getColor(android.R.color.white),  PorterDuff.Mode.SRC_ATOP);
+        historyDrawable = menu.findItem(R.id.action_history);
+        graphDrawable = menu.findItem(R.id.action_graph);
+        historyDrawable.getIcon().setColorFilter(getResources().getColor(android.R.color.white),  PorterDuff.Mode.SRC_ATOP);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-//            case R.id.action_reload:
-//                noGps = false;
-//                reload();
-//                return true;
-//
-//            case R.id.action_stop:
-//                movingChrono.stop();
-//                stoppingChrono.stop();
-//                stop();
-//                totalTimeTextView.setText(getString(R.string.totalTime) + "\n" + speedMeterManager.getTotalParsedTime());
-//                totalTimeTextView.setVisibility(View.VISIBLE);
-//                saveDay.setVisibility(View.VISIBLE);
-//                return true;
 
             case R.id.action_graph:
                 Intent openResultActivity = new Intent(MainActivity.this, ResultsActivity.class);
