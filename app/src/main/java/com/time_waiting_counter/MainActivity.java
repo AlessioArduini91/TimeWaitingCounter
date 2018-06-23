@@ -272,6 +272,7 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
                     speedMeterManager.initTimer();
                     play.setVisibility(View.GONE);
                     stop.setVisibility(View.VISIBLE);
+                    historyDrawable.setVisible(false);
                 }
             }
         });
