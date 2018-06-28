@@ -350,6 +350,17 @@ public class MainActivity extends AppCompatActivity implements SpeedMeterManager
     @Override
     protected void onResume() {
         activityPaused = false;
+        if (noGps) {
+            gpsAnimation.start();
+            speedView.setAlpha(0f);
+            noGpsText.setAlpha(1f);
+        } else {
+            gpsAnimation.stop();
+            gpsAnimation.selectDrawable(0);
+            noGpsText.setAlpha(0f);
+            speedView.setAlpha(1f);
+        }
+
         super.onResume();
     }
 
